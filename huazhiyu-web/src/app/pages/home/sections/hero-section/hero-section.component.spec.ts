@@ -41,4 +41,15 @@ describe('HeroSectionComponent', () => {
     expect(visual?.querySelector('.hero__composition, .hero__stage, svg')).toBeNull();
     expect(visual?.querySelector('.hero__visual-marker')).toBeNull();
   });
+
+  it('should render one decorative transition curve after the Hero content', async () => {
+    const fixture = TestBed.createComponent(HeroSectionComponent);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const transition = compiled.querySelector('.hero__transition');
+
+    expect(compiled.querySelectorAll('.hero__transition').length).toBe(1);
+    expect(transition?.getAttribute('aria-hidden')).toBe('true');
+    expect(transition?.querySelectorAll('path').length).toBe(1);
+  });
 });

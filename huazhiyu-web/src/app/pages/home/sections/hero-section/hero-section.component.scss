@@ -11,19 +11,6 @@
     var(--surface-white);
   padding-block: clamp(2.5rem, 4.5vw, 4rem);
 
-  &::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: clamp(-24px, -1.6vw, -10px);
-    height: clamp(36px, 5vw, 72px);
-    background: var(--surface-white);
-    border-bottom-left-radius: 72% 100%;
-    border-bottom: 1.5px solid var(--border-medium);
-    pointer-events: none;
-  }
-
   &__grid {
     display: grid;
     gap: var(--space-5);
@@ -159,6 +146,23 @@
 
   &__visual-image {
     object-fit: contain;
+  }
+
+  &__transition {
+    position: absolute;
+    z-index: 2;
+    inset: auto 0 clamp(-68px, -4.75vw, -44px);
+    height: clamp(72px, 9.5vw, 120px);
+    color: var(--surface-white);
+    pointer-events: none;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    path { fill: currentColor; }
   }
 }
 
