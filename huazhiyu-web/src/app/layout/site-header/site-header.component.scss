@@ -1,0 +1,44 @@
+@use "breakpoints" as bp;
+
+.site-header {
+  // docs/design/03: quiet default — white / nearly transparent, no heavy shadow
+  background: var(--surface-white);
+  border-bottom: 1px solid var(--border-soft);
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px; // mobile
+
+    @include bp.up(md) {
+      height: 74px; // desktop 72–76px
+    }
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--ink-950);
+  }
+
+  &__logo-zh {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  &__logo-en {
+    font-size: var(--font-size-small);
+    color: var(--ink-550);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    // docs/design/07: 不把双语 logo 缩到不可读;窄屏先隐藏英文辅助行
+    @include bp.down(xs) {
+      display: none;
+    }
+  }
+}

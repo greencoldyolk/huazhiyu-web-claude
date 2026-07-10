@@ -1,0 +1,19 @@
+.site-footer {
+  background: var(--ink-950);
+  color: var(--text-on-dark-muted);
+
+  &__inner {
+    padding-block: var(--space-5);
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  &__name {
+    color: var(--text-on-dark);
+    font-weight: 600;
+  }
+
+  &__note {
+    font-size: var(--font-size-small);
+  }
+}

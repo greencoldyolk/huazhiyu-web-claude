@@ -1,0 +1,26 @@
+// ============================================================
+// Global layout utilities — docs/design/03-global-layout.md
+// Keep this file small: container + a few section rhythm
+// helpers only. Sections own their internal layout.
+// ============================================================
+@use "breakpoints" as bp;
+
+.site-container {
+  width: min(1240px, calc(100% - 96px));
+  margin-inline: auto;
+
+  // mobile: 20px side padding
+  @include bp.down(xs) {
+    width: calc(100% - 40px);
+  }
+
+  // tablet: 32px side padding
+  @media (min-width: 480px) and (max-width: 1023.98px) {
+    width: min(1240px, calc(100% - 64px));
+  }
+}
+
+// Section vertical rhythm (ordinary section)
+.section-pad {
+  padding-block: clamp(4rem, 9vw, 8rem); // 64–80px mobile → 96–128px desktop
+}

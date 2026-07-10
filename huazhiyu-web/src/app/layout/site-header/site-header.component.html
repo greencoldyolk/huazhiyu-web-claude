@@ -1,0 +1,10 @@
+<header class="site-header">
+  <div class="site-container site-header__inner">
+    <a class="site-header__logo" href="/" [attr.aria-label]="content.logoAlt">
+      <span class="site-header__logo-zh">{{ content.siteName.zh }}</span>
+      <span class="site-header__logo-en">{{ content.siteName.en }}</span>
+    </a>
+    <!-- 导航项待信息架构确认后加入(Phase 2+);保留语义地标 -->
+    <nav class="site-header__nav" aria-label="主导航"></nav>
+  </div>
+</header>

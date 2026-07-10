@@ -1,0 +1,39 @@
+// ============================================================
+// Accessibility base — docs/design/07 + 06 (reduced motion)
+// ============================================================
+
+// Visible focus for all interactive elements; never remove
+// without an equally visible replacement.
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+// Screen-reader-only utility
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Global reduced-motion fallback: nonessential motion collapses
+// to near-instant changes. Component-level effects must ALSO
+// implement their own reduced-motion behavior (opacity-only or
+// none) — this is the safety net, not the whole strategy.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

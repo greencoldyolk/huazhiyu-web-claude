@@ -1,0 +1,37 @@
+// ============================================================
+// Typography base — docs/design/02-design-tokens.md
+// Chinese sans-serif system stack; no proprietary font files
+// shipped without explicit licensing.
+// ============================================================
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body);
+  color: var(--ink-850);
+  background: var(--surface-white);
+}
+
+h1 {
+  font-size: var(--font-size-hero);
+  line-height: 1.12;
+  font-weight: 700;
+  color: var(--ink-950);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--ink-950);
+}
+
+h3 {
+  font-size: var(--font-size-card-title);
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--ink-950);
+}
+
+small {
+  font-size: var(--font-size-small);
+}

@@ -1,0 +1,74 @@
+// ============================================================
+// Design tokens — docs/design/02-design-tokens.md
+// Values are implementation starting points; tune against
+// browser screenshots before final acceptance.
+// ============================================================
+
+:root {
+  // ---- Ink (text / dark surfaces) ----
+  --ink-950: #071638;
+  --ink-850: #12244d;
+  --ink-700: #314164;
+  --ink-550: #687493;
+
+  // ---- Brand ----
+  --brand-indigo-950: #07164a;
+  --brand-indigo-800: #122d78;
+  --brand-blue-600: #315fd6;
+  --brand-blue-500: #4e7cf0;
+  --brand-violet-500: #7659e8;
+
+  // ---- Surfaces ----
+  --surface-white: #ffffff;
+  --surface-cool-50: #f8f9fd;
+  --surface-cool-100: #f2f5fc;
+  --surface-blue-100: #edf2ff;
+
+  // ---- Amber / champagne (sparse, semantic accent only) ----
+  --amber-text: #a96d1f;
+  --amber-line: #d6a14a;
+  --amber-soft: #edca88;
+  --amber-glow: rgb(222 165 70 / 0.2);
+  --champagne-50: #fdfaf4;
+  --champagne-100: #faf3e7;
+
+  // ---- Borders / focus ----
+  --border-soft: rgb(18 45 120 / 0.1);
+  --border-medium: rgb(18 45 120 / 0.18);
+  --focus-ring: rgb(78 124 240 / 0.3);
+
+  // ---- Text on dark ----
+  --text-on-dark: #ffffff;
+  --text-on-dark-muted: rgb(255 255 255 / 0.72);
+
+  // ---- Typography scale ----
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei",
+               system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --font-size-hero: clamp(2.7rem, 5vw, 4.5rem);
+  --font-size-h2: clamp(2rem, 3.2vw, 3rem);
+  --font-size-card-title: clamp(1.2rem, 1.5vw, 1.5rem);
+  --font-size-body: 1rem;
+  --font-size-small: 0.875rem;
+
+  // ---- Spacing (8px base rhythm) ----
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4rem;
+  --space-7: 6rem;
+  --space-8: 8rem;
+
+  // ---- Radius ----
+  // controls 10–12px / cards 14–18px / large CTA panel 24–32px
+  --radius-control: 0.75rem;
+  --radius-card: 1rem;
+  --radius-panel: 1.75rem;
+
+  // ---- Shadows (cool, broad, low-opacity; max three levels) ----
+  --shadow-lift: 0 1px 2px rgb(18 45 120 / 0.06), 0 0 0 1px var(--border-soft);
+  --shadow-hover: 0 10px 30px -12px rgb(18 45 120 / 0.18);
+  --shadow-panel: 0 24px 60px -24px rgb(7 22 74 / 0.28);
+}

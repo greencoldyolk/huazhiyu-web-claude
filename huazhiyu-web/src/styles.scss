@@ -1,0 +1,11 @@
+// ============================================================
+// Global stylesheet entry — Phase 1 foundation
+// Order matters: tokens → motion → reset → typography →
+// layout → accessibility.
+// ============================================================
+@use "styles/tokens";
+@use "styles/motion";
+@use "styles/reset";
+@use "styles/typography";
+@use "styles/layout";
+@use "styles/accessibility";

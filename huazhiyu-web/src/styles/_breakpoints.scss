@@ -1,0 +1,38 @@
+// ============================================================
+// Breakpoints — docs/design/07-responsive-accessibility.md
+// Content-driven starting points, not device names:
+//   compact mobile  < 480px
+//   mobile/tablet   480–767px
+//   tablet          768–1023px
+//   desktop         1024–1439px
+//   wide desktop    ≥ 1440px
+// Usage:  @use "breakpoints" as bp;  @include bp.up(md) { … }
+// ============================================================
+@use "sass:map";
+
+$breakpoints: (
+  xs: 480px,
+  sm: 768px,
+  md: 1024px,
+  lg: 1440px,
+) !default;
+
+@mixin up($name) {
+  $min: map.get($breakpoints, $name);
+  @if $min == null {
+    @error "Unknown breakpoint `#{$name}`. Known: #{map.keys($breakpoints)}";
+  }
+  @media (min-width: $min) {
+    @content;
+  }
+}
+
+@mixin down($name) {
+  $max: map.get($breakpoints, $name);
+  @if $max == null {
+    @error "Unknown breakpoint `#{$name}`. Known: #{map.keys($breakpoints)}";
+  }
+  @media (max-width: ($max - 0.02px)) {
+    @content;
+  }
+}
