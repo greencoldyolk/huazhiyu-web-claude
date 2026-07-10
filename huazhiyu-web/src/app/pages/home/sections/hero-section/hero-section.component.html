@@ -27,37 +27,26 @@
       </ul>
     </div>
 
-    <!-- 分层视觉(Phase 4):层叠的技术文档面板由一条线路串联,
-         末端琥珀节点 —— 技术材料 → 梳理 → 确权。可替换为正式插画。 -->
-    <div class="hero__visual" aria-hidden="true" hzyReveal="stagger-item">
-      <div class="hero__grid-lines hero__layer hero__layer--far"></div>
-
-      <!-- 背景文档面板(远) -->
-      <div class="hero__doc hero__doc--back hero__layer hero__layer--far">
-        <span class="hero__doc-titlebar"></span>
-        <span class="hero__doc-lines"></span>
+    <!-- Approved abstract Hero artwork; the image itself carries no essential copy. -->
+    <div class="hero__visual">
+      <div class="hero__visual-artwork">
+        <picture class="hero__visual-picture">
+          <source
+            srcset="/images/hero-ip-structure-visual.webp"
+            type="image/webp"
+          />
+          <img
+            class="hero__visual-image"
+            src="/images/hero-ip-structure-visual.png"
+            width="1619"
+            height="971"
+            alt="抽象的技术信息与知识产权保护结构示意图"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
       </div>
-
-      <!-- 主文档面板(中):标题条 + 文字行 + 高亮行 -->
-      <div class="hero__doc hero__doc--main hero__layer hero__layer--mid">
-        <span class="hero__doc-titlebar hero__doc-titlebar--brand"></span>
-        <span class="hero__doc-lines"></span>
-        <span class="hero__doc-highlight"></span>
-        <span class="hero__doc-lines hero__doc-lines--short"></span>
-      </div>
-
-      <!-- 小结果卡(近):徽标点 + 两行 -->
-      <div class="hero__doc hero__doc--chip hero__layer hero__layer--near">
-        <span class="hero__chip-dot"></span>
-        <span class="hero__doc-lines hero__doc-lines--chip"></span>
-      </div>
-
-      <!-- 连接线路:从文档出发,末端琥珀节点(Hero 唯一琥珀点缀;业主要求移除基底黄光) -->
-      <svg class="hero__path hero__layer hero__layer--mid" viewBox="0 0 320 240" fill="none" preserveAspectRatio="none">
-        <path d="M36 206 C 96 196, 118 150, 168 122 S 262 66, 296 44" stroke="currentColor" stroke-width="1.5" stroke-dasharray="1 0" />
-        <circle cx="168" cy="122" r="3.5" class="hero__node hero__node--blue" />
-        <circle cx="296" cy="44" r="4.5" class="hero__node hero__node--amber" />
-      </svg>
     </div>
   </div>
 </section>

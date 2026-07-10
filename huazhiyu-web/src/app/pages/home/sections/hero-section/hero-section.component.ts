@@ -11,10 +11,9 @@ import { SITE_CONTENT } from '../../../../content/site-content.config';
 import { RevealDirective } from '../../../../shared/directives/reveal.directive';
 
 /**
- * 01 Hero — Phase 4 签名视觉(docs/design/05/06)。
- * 分层信息平面 + 细路径 + 一个琥珀端点节点 + 一处琥珀基底微光。
- * 指针视差:4–8px 协调深度位移;仅精确指针设备;Hero 离屏即停止;
- * prefers-reduced-motion 时完全关闭;passive 监听 + rAF 节流。
+ * 01 Hero — approved artwork with a feathered edge and restrained pointer response.
+ * Browser-only pointer work is attached after render and stays disabled for touch,
+ * narrow screens, and reduced-motion preferences.
  */
 @Component({
   selector: 'hzy-hero-section',
@@ -31,60 +30,73 @@ export class HeroSectionComponent {
 
   constructor() {
     afterNextRender(() => {
-      const canMatch = typeof window.matchMedia === 'function';
-      const reduced = canMatch && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const finePointer = canMatch && window.matchMedia('(pointer: fine)').matches;
-      if (reduced || !finePointer || typeof IntersectionObserver === 'undefined') {
-        return; // 静态呈现;移动端与 reduced-motion 无视差
-      }
-
-      const section = this.host.nativeElement.querySelector<HTMLElement>('.hero');
       const visual = this.host.nativeElement.querySelector<HTMLElement>('.hero__visual');
-      if (!section || !visual) {
+      if (!visual || typeof window.matchMedia !== 'function') {
         return;
       }
 
-      let active = false;
-      let rafId = 0;
+      const pointerQuery = window.matchMedia(
+        '(hover: hover) and (pointer: fine) and (not (any-pointer: coarse)) and ' +
+          '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
+      );
+      let frameId = 0;
+      let bounds: DOMRect | null = null;
+      let pointerX = 0;
+      let pointerY = 0;
 
-      const reset = () => {
-        visual.style.setProperty('--px', '0');
-        visual.style.setProperty('--py', '0');
+      const applyPointerPosition = () => {
+        frameId = 0;
+        visual.style.setProperty('--hx', `${(pointerX * 6).toFixed(2)}px`);
+        visual.style.setProperty('--hy', `${(pointerY * 4).toFixed(2)}px`);
+        visual.style.setProperty('--gx', `${(pointerX * 12).toFixed(2)}px`);
+        visual.style.setProperty('--gy', `${(pointerY * 8).toFixed(2)}px`);
       };
 
-      // Hero 离开视口即停止指针工作(doc 06 performance)
-      const observer = new IntersectionObserver(([entry]) => {
-        active = entry.isIntersecting;
-        if (!active) {
-          reset();
+      const resetPointerPosition = () => {
+        if (frameId) {
+          cancelAnimationFrame(frameId);
+          frameId = 0;
         }
-      });
-      observer.observe(section);
+        bounds = null;
+        pointerX = 0;
+        pointerY = 0;
+        visual.style.setProperty('--hx', '0px');
+        visual.style.setProperty('--hy', '0px');
+        visual.style.setProperty('--gx', '0px');
+        visual.style.setProperty('--gy', '0px');
+      };
+
+      const onPointerEnter = (event: PointerEvent) => {
+        if (pointerQuery.matches && event.pointerType === 'mouse') {
+          bounds = visual.getBoundingClientRect();
+        }
+      };
 
       const onPointerMove = (event: PointerEvent) => {
-        if (!active || rafId) {
+        if (!pointerQuery.matches || event.pointerType !== 'mouse') {
           return;
         }
-        rafId = requestAnimationFrame(() => {
-          rafId = 0;
-          const rect = section.getBoundingClientRect();
-          const dx = Math.max(-0.5, Math.min(0.5, (event.clientX - rect.left) / rect.width - 0.5));
-          const dy = Math.max(-0.5, Math.min(0.5, (event.clientY - rect.top) / rect.height - 0.5));
-          visual.style.setProperty('--px', dx.toFixed(3));
-          visual.style.setProperty('--py', dy.toFixed(3));
-        });
+
+        bounds ??= visual.getBoundingClientRect();
+        pointerX = Math.max(-1, Math.min(1, ((event.clientX - bounds.left) / bounds.width - 0.5) * 2));
+        pointerY = Math.max(-1, Math.min(1, ((event.clientY - bounds.top) / bounds.height - 0.5) * 2));
+
+        if (!frameId) {
+          frameId = requestAnimationFrame(applyPointerPosition);
+        }
       };
 
-      section.addEventListener('pointermove', onPointerMove, { passive: true });
-      section.addEventListener('pointerleave', reset, { passive: true });
+      visual.addEventListener('pointerenter', onPointerEnter, { passive: true });
+      visual.addEventListener('pointermove', onPointerMove, { passive: true });
+      visual.addEventListener('pointerleave', resetPointerPosition, { passive: true });
+      pointerQuery.addEventListener('change', resetPointerPosition);
 
       this.destroyRef.onDestroy(() => {
-        observer.disconnect();
-        if (rafId) {
-          cancelAnimationFrame(rafId);
-        }
-        section.removeEventListener('pointermove', onPointerMove);
-        section.removeEventListener('pointerleave', reset);
+        resetPointerPosition();
+        visual.removeEventListener('pointerenter', onPointerEnter);
+        visual.removeEventListener('pointermove', onPointerMove);
+        visual.removeEventListener('pointerleave', resetPointerPosition);
+        pointerQuery.removeEventListener('change', resetPointerPosition);
       });
     });
   }

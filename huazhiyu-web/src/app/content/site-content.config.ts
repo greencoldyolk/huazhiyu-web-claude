@@ -16,6 +16,19 @@ export const SITE_CONTENT = {
   // 现有 logo 上的全称(来源:assets/reference/current-logo.png)
   logoAlt: '武汉华之喻知识产权代理有限公司 Wuhan Huazhiyu Intellectual Property Agency Ltd.',
 
+  // 主导航(项目名取自业主认可的 mock);pending 项等对应页面上线后激活
+  nav: {
+    items: [
+      { label: '首页', href: '/', pending: false },
+      { label: '服务', href: '#services', pending: false },
+      { label: '案例', href: '#work', pending: false },
+      { label: '团队', href: '', pending: true },
+      { label: '关于我们', href: '', pending: true },
+      { label: '合作', href: '', pending: true },
+    ],
+    cta: '提交新事项',
+  },
+
   hero: {
     titleLine1: '主标题第一行占位',
     titleAccent: '渐变短语占位',
