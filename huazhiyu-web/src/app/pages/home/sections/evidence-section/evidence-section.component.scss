@@ -1,0 +1,63 @@
+@use "breakpoints" as bp;
+
+// 04 专业依据 — 深墨蓝段,纵向节奏 88–104px(docs/design/03)
+.evidence {
+  background: linear-gradient(170deg, var(--brand-indigo-950), var(--ink-950) 72%);
+  color: var(--text-on-dark);
+  padding-block: clamp(4rem, 8vw, 6.5rem);
+
+  &__heading {
+    color: var(--text-on-dark);
+  }
+
+  &__intro {
+    color: var(--text-on-dark-muted);
+  }
+
+  &__facts {
+    display: grid;
+    margin: 0;
+
+    // 移动:纵向堆叠 + 水平分隔(docs/design/07)
+    grid-template-columns: 1fr;
+
+    @include bp.up(sm) {
+      // 桌面:三列 + 垂直分隔
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+  }
+
+  &__fact {
+    display: grid;
+    gap: var(--space-1);
+    padding-block: var(--space-3);
+    border-top: 1px solid rgb(255 255 255 / 0.16);
+
+    @include bp.up(sm) {
+      padding-block: 0;
+      padding-inline: var(--space-3);
+      border-top: 0;
+      border-left: 1px solid rgb(255 255 255 / 0.16);
+
+      &:first-child {
+        padding-inline-start: 0;
+        border-left: 0;
+      }
+    }
+  }
+
+  // dt 在 DOM 中先于 dd(语义:说明→值),视觉上值在上方
+  &__fact-value {
+    order: -1;
+    margin: 0;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  &__fact-label {
+    color: var(--text-on-dark-muted);
+    font-size: var(--font-size-small);
+  }
+}

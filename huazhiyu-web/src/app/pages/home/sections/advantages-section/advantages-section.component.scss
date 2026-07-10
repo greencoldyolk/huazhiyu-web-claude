@@ -1,0 +1,64 @@
+@use "breakpoints" as bp;
+
+// 03 为什么选择华之喻 — 白色段(docs/design/03 背景节奏)
+.advantages {
+  background: var(--surface-white);
+
+  &__grid {
+    display: grid;
+    gap: var(--space-5);
+    align-items: start;
+
+    @include bp.up(md) {
+      grid-template-columns: 5fr 7fr;
+    }
+  }
+
+  &__intro {
+    display: grid;
+    gap: var(--space-2);
+    max-width: 30rem;
+
+    // 桌面导语 sticky(docs/design/05);窄屏由布局堆叠自然禁用
+    @include bp.up(md) {
+      position: sticky;
+      top: calc(74px + var(--space-3));
+    }
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3);
+    align-items: start;
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--border-soft);
+
+    &:last-child {
+      border-bottom: 1px solid var(--border-soft);
+    }
+  }
+
+  // 行编号:默认低对比(hover 转实属于 Phase 3)
+  &__row-index {
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: rgb(18 45 120 / 0.18);
+  }
+
+  &__row-body {
+    display: grid;
+    gap: var(--space-1);
+
+    p {
+      color: var(--ink-550);
+    }
+  }
+}

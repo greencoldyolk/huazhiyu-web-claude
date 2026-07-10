@@ -18,27 +18,18 @@
 
   &__logo {
     display: inline-flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: var(--ink-950);
+    align-items: center;
   }
 
-  &__logo-zh {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-  }
+  // 现有 logo(assets/reference/current-logo.png,394×80)。
+  // docs/design/07:双语 logo 不缩到不可读;移动端 36px 高仍可辨认,
+  // 若最终提供紧凑版标志,在此替换移动端资产。
+  &__logo-img {
+    height: 44px;
+    width: auto;
 
-  &__logo-en {
-    font-size: var(--font-size-small);
-    color: var(--ink-550);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-
-    // docs/design/07: 不把双语 logo 缩到不可读;窄屏先隐藏英文辅助行
     @include bp.down(xs) {
-      display: none;
+      height: 36px;
     }
   }
 }

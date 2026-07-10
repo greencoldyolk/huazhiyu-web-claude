@@ -1,0 +1,18 @@
+<section class="evidence" aria-labelledby="evidence-title">
+  <div class="site-container">
+    <header class="section-head">
+      <span class="section-number section-number--on-dark" aria-hidden="true">04</span>
+      <h2 id="evidence-title" class="evidence__heading">{{ content.heading }}</h2>
+      <p class="evidence__intro">{{ content.intro }}</p>
+    </header>
+
+    <dl class="evidence__facts">
+      @for (fact of content.facts; track $index) {
+        <div class="evidence__fact">
+          <dt class="evidence__fact-label">{{ fact.label }}</dt>
+          <dd class="evidence__fact-value">{{ fact.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>

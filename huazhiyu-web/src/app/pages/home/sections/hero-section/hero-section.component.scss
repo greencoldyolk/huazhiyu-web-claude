@@ -1,0 +1,96 @@
+@use "breakpoints" as bp;
+
+// 01 Hero — docs/design/03/05:白/极浅氛围背景、大量安静留白、
+// 标题强于视觉。桌面高度约 640–720px(含 header 视觉余量)。
+.hero {
+  background:
+    radial-gradient(1100px 520px at 82% 8%, var(--surface-blue-100) 0%, transparent 62%),
+    var(--surface-white);
+  padding-block: clamp(4rem, 8vw, 7rem);
+
+  &__grid {
+    display: grid;
+    gap: var(--space-5);
+    align-items: center;
+
+    // 桌面:约 7 列文案 + 5 列视觉
+    @include bp.up(md) {
+      grid-template-columns: 7fr 5fr;
+      min-height: min(560px, 62vh);
+    }
+  }
+
+  &__title {
+    max-width: 15em;
+  }
+
+  // 唯一允许的强色短语:蓝—紫渐变(docs/design/05)
+  &__title-accent {
+    background: linear-gradient(92deg, var(--brand-blue-500), var(--brand-violet-500));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  &__lead {
+    margin-top: var(--space-3);
+    max-width: 34em;
+    color: var(--ink-700);
+  }
+
+  &__actions {
+    margin-top: var(--space-4);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  // ---- 静态分层视觉占位(Phase 4 替换) ----
+  &__visual {
+    position: relative;
+    height: clamp(220px, 32vw, 380px);
+
+    // 移动端:视觉堆叠在文案下方并降低复杂度(docs/design/07)
+    @include bp.down(md) {
+      max-width: 420px;
+    }
+  }
+
+  &__plane {
+    position: absolute;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--border-soft);
+  }
+
+  &__plane--back {
+    inset: 0 12% 30% 24%;
+    background: linear-gradient(150deg, rgb(78 124 240 / 0.10), rgb(118 89 232 / 0.06));
+  }
+
+  &__plane--mid {
+    inset: 22% 0 12% 8%;
+    background: linear-gradient(160deg, rgb(18 45 120 / 0.08), rgb(78 124 240 / 0.05));
+    backdrop-filter: blur(2px);
+  }
+
+  &__plane--front {
+    inset: 46% 34% 0 0;
+    background: var(--surface-white);
+    border-color: var(--border-medium);
+    box-shadow: var(--shadow-lift);
+
+    // 移动端隐藏第三层,降低视觉复杂度
+    @include bp.down(xs) {
+      display: none;
+    }
+  }
+
+  &__path {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: rgb(49 95 214 / 0.35);
+  }
+}

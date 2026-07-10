@@ -1,0 +1,64 @@
+<section id="inquiry" class="inquiry" aria-labelledby="inquiry-title">
+  <div class="site-container inquiry__grid">
+    <header class="inquiry__intro">
+      <span class="section-number section-number--on-dark" aria-hidden="true">06</span>
+      <h2 id="inquiry-title" class="inquiry__heading">{{ content.heading }}</h2>
+      <p class="inquiry__lead">{{ content.intro }}</p>
+    </header>
+
+    <!-- 静态表单壳:提交逻辑与校验属于 Phase 3/5 -->
+    <form class="inquiry-form" autocomplete="off">
+      <div class="inquiry-form__row">
+        <div class="inquiry-form__field">
+          <label for="inquiry-matter-type">{{ content.form.matterTypeLabel }}</label>
+          <select id="inquiry-matter-type" name="matterType">
+            @for (option of content.form.matterTypeOptions; track option) {
+              <option>{{ option }}</option>
+            }
+          </select>
+        </div>
+        <div class="inquiry-form__field">
+          <label for="inquiry-name">{{ content.form.nameLabel }}</label>
+          <input id="inquiry-name" name="contactName" type="text" />
+        </div>
+      </div>
+
+      <div class="inquiry-form__row">
+        <div class="inquiry-form__field">
+          <label for="inquiry-phone">{{ content.form.phoneLabel }}</label>
+          <input id="inquiry-phone" name="phone" type="tel" />
+        </div>
+        <div class="inquiry-form__field">
+          <label for="inquiry-email">{{ content.form.emailLabel }}</label>
+          <input id="inquiry-email" name="email" type="email" />
+        </div>
+      </div>
+      <p class="inquiry-form__hint">{{ content.form.contactHint }}</p>
+
+      <div class="inquiry-form__field">
+        <label for="inquiry-description">{{ content.form.descriptionLabel }}</label>
+        <div class="inquiry-form__textarea-wrap">
+          <textarea
+            id="inquiry-description"
+            name="description"
+            rows="4"
+            [attr.maxlength]="content.form.descriptionMax"
+            [placeholder]="content.form.descriptionPlaceholder"
+          ></textarea>
+          <span class="inquiry-form__counter" aria-hidden="true">0 / {{ content.form.descriptionMax }}</span>
+        </div>
+      </div>
+
+      <div class="inquiry-form__field">
+        <span class="inquiry-form__upload-label" id="inquiry-upload-label">{{ content.form.uploadLabel }}</span>
+        <div class="inquiry-form__upload" aria-labelledby="inquiry-upload-label">
+          <p class="inquiry-form__upload-hint">{{ content.form.uploadHint }}</p>
+        </div>
+      </div>
+
+      <button class="btn-primary inquiry-form__submit" type="button">
+        {{ content.form.submitLabel }}
+      </button>
+    </form>
+  </div>
+</section>

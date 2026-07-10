@@ -1,0 +1,20 @@
+<section id="services" class="services section-pad" aria-labelledby="services-title">
+  <div class="site-container">
+    <header class="section-head">
+      <span class="section-number" aria-hidden="true">02</span>
+      <h2 id="services-title">{{ content.heading }}</h2>
+      <p class="section-intro">{{ content.intro }}</p>
+    </header>
+
+    <div class="services__grid">
+      @for (item of content.items; track item.index) {
+        <article class="service-card" [class.service-card--warm]="item.warm">
+          <span class="service-card__index" aria-hidden="true">{{ item.index }}</span>
+          <h3 class="service-card__title">{{ item.title }}</h3>
+          <p class="service-card__desc">{{ item.desc }}</p>
+          <span class="service-card__arrow" aria-hidden="true">→</span>
+        </article>
+      }
+    </div>
+  </div>
+</section>

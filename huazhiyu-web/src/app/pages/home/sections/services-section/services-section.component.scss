@@ -1,0 +1,76 @@
+@use "breakpoints" as bp;
+
+// 02 核心服务 — 浅冷色背景段(docs/design/03 背景节奏)
+.services {
+  background: var(--surface-cool-100);
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr; // 移动:单列(docs/design/07)
+    gap: var(--space-2);
+
+    @include bp.up(sm) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+    }
+
+    @include bp.up(md) {
+      grid-template-columns: repeat(3, 1fr); // 桌面:3 × 2
+    }
+  }
+}
+
+.service-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--surface-white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+
+  &__index {
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink-550);
+  }
+
+  &__title {
+    margin-top: var(--space-1);
+  }
+
+  &__desc {
+    color: var(--ink-550);
+    font-size: var(--font-size-small);
+    max-width: 24em;
+  }
+
+  &__arrow {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    color: var(--brand-blue-600);
+  }
+
+  // ---- 暖色特殊卡(docs/design/04)----
+  // 香槟白底,暖色只出现在编号与底部细线,可见暖区 ≤ ~20%;
+  // 禁止整卡黄色。局部径向辉光属于 Phase 4。
+  &--warm {
+    background: var(--champagne-50);
+    border-color: rgb(214 161 74 / 0.28);
+
+    .service-card__index {
+      color: var(--amber-text);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: auto var(--space-4) 0 var(--space-4);
+      height: 2px;
+      background: var(--amber-line);
+      border-radius: 1px;
+    }
+  }
+}

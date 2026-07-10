@@ -1,0 +1,141 @@
+@use "breakpoints" as bp;
+
+// 06 提交新事项 — 强靛紫渐变场 + 内部表单面板(docs/design/03/05)
+// CTA 段纵向节奏 104–128px;琥珀角部辉光与按钮 sheen 属于 Phase 4。
+.inquiry {
+  background: linear-gradient(135deg, var(--brand-indigo-950) 8%, var(--brand-indigo-800) 55%, #2c2470 100%);
+  color: var(--text-on-dark);
+  padding-block: clamp(4rem, 7vw, 6.5rem); // CTA 段取规格下限(104px 桌面),压缩总高
+
+  &__grid {
+    display: grid;
+    gap: var(--space-5);
+    align-items: start;
+
+    // 桌面:约 4 列导语 + 8 列表单
+    @include bp.up(md) {
+      grid-template-columns: 4fr 8fr;
+    }
+  }
+
+  &__intro {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  &__heading {
+    color: var(--text-on-dark);
+  }
+
+  &__lead {
+    color: var(--text-on-dark-muted);
+  }
+}
+
+.inquiry-form {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 2.5vw, 2rem); // 移动 20–24px 面板内边距
+  background: var(--surface-white);
+  color: var(--ink-850);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-panel);
+
+  &__row {
+    display: grid;
+    gap: 1.25rem;
+
+    @include bp.up(sm) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  // 联系方式提示紧跟联系行,收紧其上间距
+  > .inquiry-form__hint {
+    margin-top: -0.625rem;
+  }
+
+  &__field {
+    display: grid;
+    gap: 0.5rem;
+
+    label {
+      font-weight: 600;
+      font-size: var(--font-size-small);
+    }
+  }
+
+  // 控件:软边框、桌面 50–54px 高(docs/design/04)
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: 50px;
+    padding: 0.75rem 1rem;
+    background: var(--surface-white);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-control);
+  }
+
+  textarea {
+    // 取规格下限(docs/design/04:桌面 140–168px、移动 132–152px);仅纵向 resize
+    min-height: 140px;
+    resize: vertical;
+
+    @include bp.down(sm) {
+      min-height: 132px;
+    }
+  }
+
+  &__textarea-wrap {
+    position: relative;
+    display: grid;
+  }
+
+  // 字符计数:右下角、视觉次要(联动更新属于 Phase 3)
+  &__counter {
+    position: absolute;
+    right: 0.875rem;
+    bottom: 0.625rem;
+    font-size: var(--font-size-small);
+    color: var(--ink-550);
+    pointer-events: none;
+  }
+
+  &__hint {
+    font-size: var(--font-size-small);
+    color: var(--ink-550);
+  }
+
+  &__upload-label {
+    font-weight: 600;
+    font-size: var(--font-size-small);
+  }
+
+  // 上传区壳:虚线软边框,不做聊天机器人外观(docs/design/04)
+  &__upload {
+    display: grid;
+    place-items: center;
+    min-height: 72px;
+    padding: var(--space-2);
+    border: 1.5px dashed var(--border-medium);
+    border-radius: var(--radius-card);
+    background: var(--surface-cool-50);
+    text-align: center;
+  }
+
+  &__upload-hint {
+    color: var(--ink-550);
+    font-size: var(--font-size-small);
+  }
+
+  &__submit {
+    justify-self: start;
+
+    // 移动:整宽提交按钮(docs/design/07)
+    @include bp.down(sm) {
+      justify-self: stretch;
+      width: 100%;
+    }
+  }
+}

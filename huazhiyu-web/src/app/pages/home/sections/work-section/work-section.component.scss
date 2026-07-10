@@ -1,0 +1,85 @@
+@use "breakpoints" as bp;
+
+// 05 代表性工作 — 白/冷白段(docs/design/03 背景节奏)
+.work {
+  background: var(--surface-cool-50);
+
+  &__grid {
+    display: grid;
+    gap: var(--space-4);
+    align-items: start;
+
+    // 桌面:8 列主推 + 4 列次要(docs/design/05 的不对称)
+    @include bp.up(md) {
+      grid-template-columns: 8fr 4fr;
+      gap: var(--space-5);
+    }
+  }
+
+  &__category {
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink-550);
+  }
+
+  // ---- 主推编辑式面板 ----
+  &__featured {
+    display: grid;
+    gap: var(--space-2);
+    padding: clamp(1.5rem, 3.5vw, 3rem);
+    background: var(--surface-white);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-lift);
+  }
+
+  &__featured-index {
+    font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1;
+    color: rgb(18 45 120 / 0.12);
+  }
+
+  &__featured-summary {
+    color: var(--ink-550);
+    max-width: 38em;
+  }
+
+  // ---- 次要条目 + 纵向时间线 ----
+  &__secondary {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    padding-inline-start: var(--space-3);
+    border-inline-start: 1px solid var(--border-medium); // 纵向时间线
+  }
+
+  &__secondary-item {
+    position: relative;
+    display: grid;
+    gap: var(--space-1);
+    padding-block: var(--space-3);
+
+    & + & {
+      border-top: 1px solid var(--border-soft);
+    }
+
+    // 时间线圆点(Phase 2 蓝紫中性;Phase 4 statement:琥珀点仅一个)
+    &:first-child::before {
+      content: "";
+      position: absolute;
+      inset-inline-start: calc(-1 * var(--space-3) - 4.5px);
+      top: calc(var(--space-3) + 0.45em);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--brand-violet-500);
+    }
+  }
+
+  &__secondary-title {
+    font-size: 1.05rem;
+  }
+}

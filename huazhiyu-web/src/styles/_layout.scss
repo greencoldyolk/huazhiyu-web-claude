@@ -24,3 +24,29 @@
 .section-pad {
   padding-block: clamp(4rem, 9vw, 8rem); // 64–80px mobile → 96–128px desktop
 }
+
+// Editorial section number — docs/design/04:大号、低对比;
+// 深色 section 用 --on-dark 变体。禁止全部做成亮琥珀色。
+.section-number {
+  display: block;
+  font-size: clamp(2.75rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1;
+  color: rgb(18 45 120 / 0.12);
+
+  &--on-dark {
+    color: rgb(255 255 255 / 0.14);
+  }
+}
+
+// Section heading block: number + h2 + optional intro
+.section-head {
+  display: grid;
+  gap: var(--space-2); // heading 与导语 16–24px
+  margin-bottom: clamp(1.75rem, 4vw, 3.5rem); // intro 与主内容 28–56px
+  max-width: 46rem;
+}
+
+.section-intro {
+  color: var(--ink-550);
+}
