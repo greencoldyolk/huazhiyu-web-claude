@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { SITE_CONTENT } from '../../../../content/site-content.config';
+import { RevealDirective } from '../../../../shared/directives/reveal.directive';
 
 /**
  * 03 为什么选择华之喻 — Phase 2 静态版(docs/design/05)。
@@ -9,6 +10,7 @@ import { SITE_CONTENT } from '../../../../content/site-content.config';
  */
 @Component({
   selector: 'hzy-advantages-section',
+  imports: [RevealDirective],
   templateUrl: './advantages-section.component.html',
   styleUrl: './advantages-section.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

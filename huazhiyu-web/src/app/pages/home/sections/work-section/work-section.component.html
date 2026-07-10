@@ -1,13 +1,13 @@
 <section class="work section-pad" aria-labelledby="work-title">
   <div class="site-container">
-    <header class="section-head">
+    <header class="section-head" hzyReveal>
       <span class="section-number" aria-hidden="true">05</span>
       <h2 id="work-title">{{ content.heading }}</h2>
       <p class="section-intro">{{ content.intro }}</p>
     </header>
 
     <div class="work__grid">
-      <article class="work__featured">
+      <article class="work__featured" hzyReveal>
         <span class="work__featured-index" aria-hidden="true">{{ content.featured.index }}</span>
         <p class="work__category">{{ content.featured.category }}</p>
         <h3 class="work__featured-title">{{ content.featured.title }}</h3>
@@ -20,7 +20,7 @@
 
       <ul class="work__secondary">
         @for (item of content.secondary; track item.title) {
-          <li class="work__secondary-item">
+          <li class="work__secondary-item" hzyReveal="stagger-item">
             <p class="work__category">{{ item.category }}</p>
             <h3 class="work__secondary-title">{{ item.title }}</h3>
           </li>

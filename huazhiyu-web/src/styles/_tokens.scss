@@ -37,6 +37,11 @@
   --border-medium: rgb(18 45 120 / 0.18);
   --focus-ring: rgb(78 124 240 / 0.3);
 
+  // 功能色:表单错误。doc 02 未定义错误色,此为功能性补充、最终值待确认;
+  // 错误态不做 color-only,始终伴随文字信息(doc 04)
+  --error-600: #b42318;
+  --error-ring: rgb(180 35 24 / 0.18);
+
   // ---- Text on dark ----
   --text-on-dark: #ffffff;
   --text-on-dark-muted: rgb(255 255 255 / 0.72);

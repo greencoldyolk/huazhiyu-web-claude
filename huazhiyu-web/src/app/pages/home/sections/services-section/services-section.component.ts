@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { SITE_CONTENT } from '../../../../content/site-content.config';
+import { RevealDirective } from '../../../../shared/directives/reveal.directive';
 
 /**
  * 02 核心服务入口 — Phase 2 静态版(docs/design/05)。
@@ -10,6 +11,7 @@ import { SITE_CONTENT } from '../../../../content/site-content.config';
  */
 @Component({
   selector: 'hzy-services-section',
+  imports: [RevealDirective],
   templateUrl: './services-section.component.html',
   styleUrl: './services-section.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

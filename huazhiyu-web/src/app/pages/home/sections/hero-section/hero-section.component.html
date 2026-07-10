@@ -1,6 +1,6 @@
 <section class="hero" aria-labelledby="hero-title">
   <div class="site-container hero__grid">
-    <div class="hero__copy">
+    <div class="hero__copy" hzyReveal="stagger-item">
       <h1 id="hero-title" class="hero__title">
         {{ content.titleLine1 }}<br />
         <span class="hero__title-accent">{{ content.titleAccent }}</span>
@@ -16,7 +16,7 @@
     </div>
 
     <!-- 静态分层视觉占位:半透明信息平面 + 细路径,Phase 4 替换为最终分层视觉 -->
-    <div class="hero__visual" aria-hidden="true">
+    <div class="hero__visual" aria-hidden="true" hzyReveal="stagger-item">
       <div class="hero__plane hero__plane--back"></div>
       <div class="hero__plane hero__plane--mid"></div>
       <div class="hero__plane hero__plane--front"></div>

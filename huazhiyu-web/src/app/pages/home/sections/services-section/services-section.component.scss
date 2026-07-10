@@ -29,6 +29,40 @@
   background: var(--surface-white);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-card);
+  transition:
+    transform 240ms var(--ease-standard),
+    border-color 240ms var(--ease-standard),
+    box-shadow 240ms var(--ease-standard);
+
+  // 底部延展线(doc 04 hover 契约);暖卡有自己的静态琥珀线
+  &:not(.service-card--warm)::after {
+    content: "";
+    position: absolute;
+    inset: auto var(--space-4) 0 var(--space-4);
+    height: 2px;
+    border-radius: 1px;
+    background: var(--brand-blue-500);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 240ms var(--ease-emphasized);
+  }
+
+  // hover:上移 3px、边框更清晰、底线延展、箭头位移 4px(220–260ms)
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-medium);
+      box-shadow: var(--shadow-hover);
+
+      &:not(.service-card--warm)::after {
+        transform: scaleX(1);
+      }
+
+      .service-card__arrow {
+        transform: translateX(4px);
+      }
+    }
+  }
 
   &__index {
     font-size: var(--font-size-small);
@@ -51,6 +85,7 @@
     margin-top: auto;
     padding-top: var(--space-2);
     color: var(--brand-blue-600);
+    transition: transform 240ms var(--ease-standard);
   }
 
   // ---- 暖色特殊卡(docs/design/04)----

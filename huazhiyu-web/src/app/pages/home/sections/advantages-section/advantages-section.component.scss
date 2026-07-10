@@ -38,19 +38,41 @@
     gap: var(--space-3);
     align-items: start;
     padding-block: var(--space-4);
+    padding-inline: var(--space-2);
     border-top: 1px solid var(--border-soft);
+    transition:
+      background-color var(--duration-standard) var(--ease-standard),
+      opacity var(--duration-standard) var(--ease-standard);
 
     &:last-child {
       border-bottom: 1px solid var(--border-soft);
     }
   }
 
-  // 行编号:默认低对比(hover 转实属于 Phase 3)
+  // hover 契约(doc 05):当前行增对比 + 局部水平微光,编号转实,
+  // 其余行轻微退让但保持可读(≥0.75)
+  @media (hover: hover) {
+    &__list:hover &__row {
+      opacity: 0.75;
+    }
+
+    &__list &__row:hover {
+      opacity: 1;
+      background: linear-gradient(90deg, rgb(78 124 240 / 0.07), rgb(78 124 240 / 0) 68%);
+
+      .advantages__row-index {
+        color: var(--brand-indigo-800);
+      }
+    }
+  }
+
+  // 行编号:默认低对比,hover 时转实色
   &__row-index {
     font-size: clamp(1.5rem, 2.4vw, 2rem);
     font-weight: 700;
     line-height: 1.2;
     color: rgb(18 45 120 / 0.18);
+    transition: color var(--duration-standard) var(--ease-standard);
   }
 
   &__row-body {

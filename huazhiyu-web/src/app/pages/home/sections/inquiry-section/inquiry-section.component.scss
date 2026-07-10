@@ -1,7 +1,7 @@
 @use "breakpoints" as bp;
 
 // 06 提交新事项 — 强靛紫渐变场 + 内部表单面板(docs/design/03/05)
-// CTA 段纵向节奏 104–128px;琥珀角部辉光与按钮 sheen 属于 Phase 4。
+// 字段基础样式(default/hover/focus/error/disabled)在全局 _controls.scss。
 .inquiry {
   background: linear-gradient(135deg, var(--brand-indigo-950) 8%, var(--brand-indigo-800) 55%, #2c2470 100%);
   color: var(--text-on-dark);
@@ -55,29 +55,7 @@
     margin-top: -0.625rem;
   }
 
-  &__field {
-    display: grid;
-    gap: 0.5rem;
-
-    label {
-      font-weight: 600;
-      font-size: var(--font-size-small);
-    }
-  }
-
-  // 控件:软边框、桌面 50–54px 高(docs/design/04)
-  input,
-  select,
-  textarea {
-    width: 100%;
-    min-height: 50px;
-    padding: 0.75rem 1rem;
-    background: var(--surface-white);
-    border: 1px solid var(--border-medium);
-    border-radius: var(--radius-control);
-  }
-
-  textarea {
+  textarea.form-control {
     // 取规格下限(docs/design/04:桌面 140–168px、移动 132–152px);仅纵向 resize
     min-height: 140px;
     resize: vertical;
@@ -90,9 +68,14 @@
   &__textarea-wrap {
     position: relative;
     display: grid;
+
+    // focus 时计数器略增对比(doc 04)
+    &:focus-within .inquiry-form__counter {
+      color: var(--ink-700);
+    }
   }
 
-  // 字符计数:右下角、视觉次要(联动更新属于 Phase 3)
+  // 字符计数:右下角、视觉次要;≈450 字起增强对比
   &__counter {
     position: absolute;
     right: 0.875rem;
@@ -100,6 +83,12 @@
     font-size: var(--font-size-small);
     color: var(--ink-550);
     pointer-events: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+
+    &.is-near-limit {
+      color: var(--ink-950);
+      font-weight: 600;
+    }
   }
 
   &__hint {
@@ -112,21 +101,73 @@
     font-size: var(--font-size-small);
   }
 
-  // 上传区壳:虚线软边框,不做聊天机器人外观(docs/design/04)
+  // ---- 上传区壳(doc 04):虚线软边框,非聊天机器人外观 ----
   &__upload {
+    position: relative;
     display: grid;
     place-items: center;
+    gap: 0.25rem;
     min-height: 72px;
     padding: var(--space-2);
     border: 1.5px dashed var(--border-medium);
     border-radius: var(--radius-card);
     background: var(--surface-cool-50);
     text-align: center;
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+
+    // hover:边框对比增、图标上移 2px(琥珀扫光属于 Phase 4)
+    @media (hover: hover) {
+      &:hover {
+        border-color: rgb(18 45 120 / 0.34);
+
+        .inquiry-form__upload-icon {
+          transform: translateY(-2px);
+        }
+      }
+    }
+
+    // 键盘聚焦隐藏的文件输入时,整个区域显示焦点环
+    &:focus-within {
+      border-color: var(--brand-blue-500);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    // drag active:更强品牌蓝边框 + 局部着色 + “松开放入”提示
+    &.is-dragover {
+      border-color: var(--brand-blue-500);
+      border-style: solid;
+      background: var(--surface-blue-100);
+
+      .inquiry-form__upload-hint {
+        display: none;
+      }
+
+      .inquiry-form__upload-drop {
+        display: block;
+      }
+    }
+  }
+
+  &__upload-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--ink-550);
+    transition: transform var(--duration-fast) var(--ease-standard);
   }
 
   &__upload-hint {
     color: var(--ink-550);
     font-size: var(--font-size-small);
+  }
+
+  &__upload-drop {
+    display: none;
+    color: var(--brand-blue-600);
+    font-size: var(--font-size-small);
+    font-weight: 600;
   }
 
   &__submit {

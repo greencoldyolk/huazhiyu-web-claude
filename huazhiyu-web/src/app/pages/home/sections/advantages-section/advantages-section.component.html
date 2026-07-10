@@ -1,6 +1,6 @@
 <section class="advantages section-pad" aria-labelledby="advantages-title">
   <div class="site-container advantages__grid">
-    <header class="advantages__intro">
+    <header class="advantages__intro" hzyReveal>
       <span class="section-number" aria-hidden="true">03</span>
       <h2 id="advantages-title">{{ content.heading }}</h2>
       <p class="section-intro">{{ content.intro }}</p>
@@ -8,7 +8,7 @@
 
     <ol class="advantages__list">
       @for (item of content.items; track item.index) {
-        <li class="advantages__row">
+        <li class="advantages__row" hzyReveal="stagger-item">
           <span class="advantages__row-index" aria-hidden="true">{{ item.index }}</span>
           <div class="advantages__row-body">
             <h3>{{ item.title }}</h3>

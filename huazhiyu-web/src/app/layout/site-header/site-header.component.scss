@@ -1,9 +1,23 @@
 @use "breakpoints" as bp;
 
 .site-header {
-  // docs/design/03: quiet default — white / nearly transparent, no heavy shadow
-  background: var(--surface-white);
-  border-bottom: 1px solid var(--border-soft);
+  // docs/design/03 默认态:视觉安静、近透明白、无重阴影
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgb(255 255 255 / 0);
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color var(--duration-standard) var(--ease-standard),
+    border-color var(--duration-standard) var(--ease-standard),
+    backdrop-filter var(--duration-standard) var(--ease-standard);
+
+  // 滚动态:88–92% 不透明白 + blur/saturate + 细分隔线;高度不变
+  &--scrolled {
+    background: rgb(255 255 255 / 0.9);
+    backdrop-filter: blur(18px) saturate(140%);
+    border-bottom-color: var(--border-soft);
+  }
 
   &__inner {
     display: flex;

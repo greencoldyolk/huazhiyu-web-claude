@@ -1,59 +1,82 @@
 <section id="inquiry" class="inquiry" aria-labelledby="inquiry-title">
   <div class="site-container inquiry__grid">
-    <header class="inquiry__intro">
+    <header class="inquiry__intro" hzyReveal>
       <span class="section-number section-number--on-dark" aria-hidden="true">06</span>
       <h2 id="inquiry-title" class="inquiry__heading">{{ content.heading }}</h2>
       <p class="inquiry__lead">{{ content.intro }}</p>
     </header>
 
-    <!-- 静态表单壳:提交逻辑与校验属于 Phase 3/5 -->
-    <form class="inquiry-form" autocomplete="off">
+    <!-- 表单壳 + 交互态;校验与提交逻辑属于 Phase 5 -->
+    <form class="inquiry-form" autocomplete="off" hzyReveal>
       <div class="inquiry-form__row">
-        <div class="inquiry-form__field">
+        <div class="form-field">
           <label for="inquiry-matter-type">{{ content.form.matterTypeLabel }}</label>
-          <select id="inquiry-matter-type" name="matterType">
+          <select id="inquiry-matter-type" name="matterType" class="form-control">
             @for (option of content.form.matterTypeOptions; track option) {
               <option>{{ option }}</option>
             }
           </select>
         </div>
-        <div class="inquiry-form__field">
+        <div class="form-field">
           <label for="inquiry-name">{{ content.form.nameLabel }}</label>
-          <input id="inquiry-name" name="contactName" type="text" />
+          <input id="inquiry-name" name="contactName" type="text" class="form-control" />
         </div>
       </div>
 
       <div class="inquiry-form__row">
-        <div class="inquiry-form__field">
+        <div class="form-field">
           <label for="inquiry-phone">{{ content.form.phoneLabel }}</label>
-          <input id="inquiry-phone" name="phone" type="tel" />
+          <input id="inquiry-phone" name="phone" type="tel" class="form-control" />
         </div>
-        <div class="inquiry-form__field">
+        <div class="form-field">
           <label for="inquiry-email">{{ content.form.emailLabel }}</label>
-          <input id="inquiry-email" name="email" type="email" />
+          <input id="inquiry-email" name="email" type="email" class="form-control" />
         </div>
       </div>
       <p class="inquiry-form__hint">{{ content.form.contactHint }}</p>
 
-      <div class="inquiry-form__field">
+      <div class="form-field">
         <label for="inquiry-description">{{ content.form.descriptionLabel }}</label>
         <div class="inquiry-form__textarea-wrap">
           <textarea
             id="inquiry-description"
             name="description"
             rows="4"
+            class="form-control"
             [attr.maxlength]="content.form.descriptionMax"
             [placeholder]="content.form.descriptionPlaceholder"
+            (input)="onDescriptionInput($event)"
           ></textarea>
-          <span class="inquiry-form__counter" aria-hidden="true">0 / {{ content.form.descriptionMax }}</span>
+          <span
+            class="inquiry-form__counter"
+            [class.is-near-limit]="descriptionLength() >= 450"
+          >{{ descriptionLength() }} / {{ content.form.descriptionMax }}</span>
         </div>
       </div>
 
-      <div class="inquiry-form__field">
+      <div class="form-field">
         <span class="inquiry-form__upload-label" id="inquiry-upload-label">{{ content.form.uploadLabel }}</span>
-        <div class="inquiry-form__upload" aria-labelledby="inquiry-upload-label">
+        <label
+          class="inquiry-form__upload"
+          [class.is-dragover]="dragOver()"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave()"
+          (drop)="onDrop($event)"
+        >
+          <!-- 标准文件入口,保证键盘可达(doc 07);文件处理在 Phase 5 -->
+          <input
+            class="visually-hidden"
+            type="file"
+            accept=".doc,.docx,.pdf"
+            aria-describedby="inquiry-upload-label"
+          />
+          <svg class="inquiry-form__upload-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 16V5m0 0-4 4m4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M5 15v3.2A1.8 1.8 0 0 0 6.8 20h10.4a1.8 1.8 0 0 0 1.8-1.8V15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
           <p class="inquiry-form__upload-hint">{{ content.form.uploadHint }}</p>
-        </div>
+          <p class="inquiry-form__upload-drop" aria-hidden="true">松开以放入文件</p>
+        </label>
       </div>
 
       <button class="btn-primary inquiry-form__submit" type="button">

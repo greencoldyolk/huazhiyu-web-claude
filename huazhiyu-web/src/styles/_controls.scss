@@ -1,10 +1,11 @@
 // ============================================================
-// Shared control base styles — Phase 2(仅默认态)
-// docs/design/04:hover / focus-visible / active / disabled
-// 等交互态在 Phase 3 统一实现;此处只定义静态外观。
+// Shared control styles — Phase 3(doc 04 契约:default / hover /
+// focus-visible / active / disabled / error)
+// CSS 优先;禁止持续 shine、禁止把琥珀按钮当全站主按钮。
 // ============================================================
 
-// 主按钮:ink-indigo 底、白字、subtle inner highlight、10–12px 圆角、默认无琥珀
+// ---- 主按钮 ----
+// ink-indigo 底、白字、subtle inner highlight、10–12px 圆角、默认无琥珀
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -18,9 +19,35 @@
   text-decoration: none;
   border-radius: var(--radius-control);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14);
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard);
+
+  // hover:上移 1–2px、内高光略亮,无大面积辉光
+  &:hover:not(:disabled, .is-disabled) {
+    transform: translateY(-1.5px);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.22),
+      0 6px 16px -8px rgb(7 22 74 / 0.4);
+  }
+
+  // active:回落、阴影减弱
+  &:active:not(:disabled, .is-disabled) {
+    transform: translateY(0);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1);
+  }
+
+  // disabled:无位移、降对比、明确禁用语义
+  &:disabled,
+  &.is-disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
 }
 
-// 次级文字链接:文本 + 箭头提示
+// ---- 次级文字链接 ----
 .text-link {
   display: inline-flex;
   align-items: center;
@@ -28,8 +55,72 @@
   color: var(--brand-blue-600);
   font-weight: 500;
   text-decoration: none;
+
+  // hover:箭头位移 3–4px(非 color-only:focus 有描边,hover 有位移)
+  &:hover .text-link__arrow {
+    transform: translateX(4px);
+  }
 }
 
 .text-link__arrow {
   display: inline-block;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+// ---- 表单字段(doc 04 form field 契约)----
+.form-field {
+  display: grid;
+  gap: 0.5rem;
+
+  label {
+    font-weight: 600;
+    font-size: var(--font-size-small);
+  }
+}
+
+.form-control {
+  width: 100%;
+  min-height: 50px; // 桌面 50–54px
+  padding: 0.75rem 1rem;
+  background: var(--surface-white);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-control);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+
+  // hover:边框对比略增
+  &:hover:not(:disabled, :focus) {
+    border-color: rgb(18 45 120 / 0.32);
+  }
+
+  // focus:清晰 focus ring + 品牌蓝边框;无布局跳动(边框宽度不变)
+  &:focus {
+    outline: none;
+    border-color: var(--brand-blue-500);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+  }
+
+  // disabled:可读但明确不可用
+  &:disabled {
+    background: var(--surface-cool-100);
+    color: var(--ink-550);
+    cursor: not-allowed;
+  }
+}
+
+// error:文字信息 + 边框变化,非 color-only,无抖动动画
+.form-field--error {
+  .form-control {
+    border-color: var(--error-600);
+
+    &:focus {
+      box-shadow: 0 0 0 3px var(--error-ring);
+    }
+  }
+}
+
+.form-error {
+  font-size: var(--font-size-small);
+  color: var(--error-600);
 }

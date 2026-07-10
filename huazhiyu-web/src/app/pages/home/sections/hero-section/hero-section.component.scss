@@ -24,9 +24,15 @@
     max-width: 15em;
   }
 
-  // 唯一允许的强色短语:蓝—紫渐变(docs/design/05)
+  // 唯一允许的强色短语(docs/design/05)。业主确认方向:同色系蓝渐变,
+  // 深蓝起步、末端变浅变透气(浅蓝为品牌蓝掺白的 tint,非新增色相)。
   &__title-accent {
-    background: linear-gradient(92deg, var(--brand-blue-500), var(--brand-violet-500));
+    background: linear-gradient(
+      94deg,
+      var(--brand-blue-600) 0%,
+      var(--brand-blue-500) 48%,
+      color-mix(in srgb, var(--brand-blue-500) 52%, white) 100%
+    );
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;

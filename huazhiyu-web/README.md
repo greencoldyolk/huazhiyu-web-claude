@@ -4,7 +4,7 @@
 
 > **仓库**:`huazhiyu-web-claude`(Claude 实现线)。同一份设计文档另有其他 AI 的独立实现仓库,各仓库互不合并;最终择优选定一版继续。仓库根目录是 `patent-web-fable` 交接包(含 `docs/design/` 与本应用)。
 
-设计与实施规格见仓库根目录 `docs/design/00` 至 `11`,执行约束见 `AGENTS.md`,阶段计划见 `IMPLEMENTATION_PLAN.md`。当前进度:**Phase 2(六个 section 静态响应式布局,全占位内容)**。
+设计与实施规格见仓库根目录 `docs/design/00` 至 `11`,执行约束见 `AGENTS.md`,阶段计划见 `IMPLEMENTATION_PLAN.md`。当前进度:**Phase 3(共享交互态:hover/focus-visible/active/disabled、header 滚动态、reveal 指令、reduced-motion 回退)**。
 
 ## 环境
 
