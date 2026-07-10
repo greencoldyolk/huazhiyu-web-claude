@@ -21,8 +21,9 @@
 }
 
 // Section vertical rhythm (ordinary section)
+// 业主要求:段间留白较规格缩小约一半
 .section-pad {
-  padding-block: clamp(4rem, 9vw, 8rem); // 64–80px mobile → 96–128px desktop
+  padding-block: clamp(2.5rem, 5vw, 4rem);
 }
 
 // Editorial section number — docs/design/04:大号、低对比;

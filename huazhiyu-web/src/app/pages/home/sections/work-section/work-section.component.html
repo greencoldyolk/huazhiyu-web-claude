@@ -1,6 +1,6 @@
 <section class="work section-pad" aria-labelledby="work-title">
-  <div class="site-container">
-    <header class="section-head" hzyReveal>
+  <div class="site-container work__layout">
+    <header class="section-head work__head" hzyReveal>
       <span class="section-number" aria-hidden="true">05</span>
       <h2 id="work-title">{{ content.heading }}</h2>
       <p class="section-intro">{{ content.intro }}</p>
@@ -8,21 +8,31 @@
 
     <div class="work__grid">
       <article class="work__featured" hzyReveal>
-        <span class="work__featured-index" aria-hidden="true">{{ content.featured.index }}</span>
-        <p class="work__category">{{ content.featured.category }}</p>
-        <h3 class="work__featured-title">{{ content.featured.title }}</h3>
-        <p class="work__featured-summary">{{ content.featured.summary }}</p>
-        <a class="text-link" href="#inquiry">
-          {{ content.featured.link }}
-          <span class="text-link__arrow" aria-hidden="true">→</span>
-        </a>
+        <div class="work__featured-side">
+          <span class="work__featured-index" aria-hidden="true">{{ content.featured.index }}</span>
+          <span class="work__featured-chip">{{ content.featured.category }}</span>
+        </div>
+        <div class="work__featured-body">
+          <h3 class="work__featured-title">{{ content.featured.title }}</h3>
+          <p class="work__featured-summary">{{ content.featured.summary }}</p>
+          <a class="text-link" href="#inquiry">
+            {{ content.featured.link }}
+            <span class="text-link__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
       </article>
 
       <ul class="work__secondary">
-        @for (item of content.secondary; track item.title) {
+        @for (item of content.secondary; track item.index) {
           <li class="work__secondary-item" hzyReveal="stagger-item">
-            <p class="work__category">{{ item.category }}</p>
-            <h3 class="work__secondary-title">{{ item.title }}</h3>
+            <span class="work__secondary-index" aria-hidden="true">{{ item.index }}</span>
+            <div class="work__secondary-body">
+              <h3 class="work__secondary-title">{{ item.title }}</h3>
+              <a class="text-link" href="#inquiry">
+                {{ item.link }}
+                <span class="text-link__arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
           </li>
         }
       </ul>

@@ -109,6 +109,40 @@
   }
 }
 
+// ---- 深色 section 上的半透明字段变体(doc 04:translucent or white
+// surface depending on section;Phase 4 用于第六段)----
+.form-field--on-dark {
+  label {
+    color: var(--text-on-dark);
+  }
+}
+
+.form-control--on-dark {
+  background: rgb(255 255 255 / 0.08);
+  border-color: rgb(255 255 255 / 0.2);
+  color: var(--text-on-dark);
+
+  &::placeholder {
+    color: rgb(255 255 255 / 0.45);
+  }
+
+  &:hover:not(:disabled, :focus) {
+    border-color: rgb(255 255 255 / 0.38);
+  }
+
+  &:focus {
+    border-color: var(--brand-blue-500);
+    background: rgb(255 255 255 / 0.12);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+  }
+
+  // select 下拉展开后的选项仍用系统面板;此处仅保证收起态可读
+  option {
+    color: var(--ink-850);
+    background: var(--surface-white);
+  }
+}
+
 // error:文字信息 + 边框变化,非 color-only,无抖动动画
 .form-field--error {
   .form-control {

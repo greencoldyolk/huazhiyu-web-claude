@@ -3,19 +3,20 @@
     <header class="advantages__intro" hzyReveal>
       <span class="section-number" aria-hidden="true">03</span>
       <h2 id="advantages-title">{{ content.heading }}</h2>
-      <p class="section-intro">{{ content.intro }}</p>
     </header>
 
-    <ol class="advantages__list">
+    <div class="advantages__content">
+      <p class="advantages__statement" hzyReveal>{{ content.intro }}</p>
+
+      <ol class="advantages__list">
       @for (item of content.items; track item.index) {
         <li class="advantages__row" hzyReveal="stagger-item">
           <span class="advantages__row-index" aria-hidden="true">{{ item.index }}</span>
-          <div class="advantages__row-body">
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.desc }}</p>
-          </div>
+          <h3 class="advantages__row-title">{{ item.title }}</h3>
+          <p class="advantages__row-desc">{{ item.desc }}</p>
         </li>
       }
-    </ol>
+      </ol>
+    </div>
   </div>
 </section>

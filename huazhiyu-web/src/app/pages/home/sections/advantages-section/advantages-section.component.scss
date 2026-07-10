@@ -10,47 +10,82 @@
     align-items: start;
 
     @include bp.up(md) {
-      grid-template-columns: 5fr 7fr;
+      grid-template-columns: minmax(150px, 2fr) 10fr; // 窄左栏(mock 尺寸)
     }
   }
 
   &__intro {
     display: grid;
-    gap: var(--space-2);
-    max-width: 30rem;
+    gap: var(--space-1);
 
     // 桌面导语 sticky(docs/design/05);窄屏由布局堆叠自然禁用
     @include bp.up(md) {
       position: sticky;
       top: calc(74px + var(--space-3));
     }
+
+    .section-number {
+      font-size: 2.5rem;
+    }
+
+    h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--ink-850);
+    }
+  }
+
+  // 内容区(mock):大字陈述 + 三项横排平分,细灰线分隔
+  &__content {
+    display: grid;
+    gap: var(--space-3);
+
+    @include bp.up(md) {
+      grid-template-columns: 1.15fr 3fr;
+      gap: var(--space-4);
+      align-items: start;
+    }
+  }
+
+  &__statement {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--ink-950);
+    max-width: 14em;
   }
 
   &__list {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    gap: var(--space-3);
+
+    @include bp.up(md) {
+      grid-template-columns: repeat(3, 1fr); // 三项平分
+      gap: var(--space-4);
+    }
   }
 
   &__row {
     display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--space-3);
-    align-items: start;
-    padding-block: var(--space-4);
-    padding-inline: var(--space-2);
+    gap: var(--space-1);
+    align-content: start;
+    padding-block: var(--space-2);
     border-top: 1px solid var(--border-soft);
-    transition:
-      background-color var(--duration-standard) var(--ease-standard),
-      opacity var(--duration-standard) var(--ease-standard);
+    transition: opacity var(--duration-standard) var(--ease-standard);
 
-    &:last-child {
-      border-bottom: 1px solid var(--border-soft);
+    // 桌面:竖直细灰线分隔(含陈述与第一项之间)
+    @include bp.up(md) {
+      border-top: 0;
+      padding-block: 0;
+      padding-inline-start: var(--space-3);
+      border-inline-start: 1px solid var(--border-soft);
     }
   }
 
-  // hover 契约(doc 05):当前行增对比 + 局部水平微光,编号转实,
-  // 其余行轻微退让但保持可读(≥0.75)
+  // hover 契约(doc 05 改横排后保留):当前项编号转实,其余项轻退让
   @media (hover: hover) {
     &__list:hover &__row {
       opacity: 0.75;
@@ -58,7 +93,6 @@
 
     &__list &__row:hover {
       opacity: 1;
-      background: linear-gradient(90deg, rgb(78 124 240 / 0.07), rgb(78 124 240 / 0) 68%);
 
       .advantages__row-index {
         color: var(--brand-indigo-800);
@@ -66,21 +100,21 @@
     }
   }
 
-  // 行编号:默认低对比,hover 时转实色
+  // 项编号:默认低对比,hover 时转实色
   &__row-index {
     font-size: clamp(1.5rem, 2.4vw, 2rem);
     font-weight: 700;
     line-height: 1.2;
-    color: rgb(18 45 120 / 0.18);
+    color: rgb(18 45 120 / 0.22);
     transition: color var(--duration-standard) var(--ease-standard);
   }
 
-  &__row-body {
-    display: grid;
-    gap: var(--space-1);
+  &__row-title {
+    font-size: 1.05rem;
+  }
 
-    p {
-      color: var(--ink-550);
-    }
+  &__row-desc {
+    color: var(--ink-550);
+    font-size: var(--font-size-small);
   }
 }

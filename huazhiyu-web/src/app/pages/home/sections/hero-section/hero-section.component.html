@@ -13,15 +13,50 @@
           <span class="text-link__arrow" aria-hidden="true">→</span>
         </a>
       </div>
+
+      <ul class="hero__points">
+        @for (point of content.points; track point.label) {
+          <li class="hero__point">
+            <span class="hero__point-label">
+              <span class="hero__point-dot" aria-hidden="true"></span>
+              {{ point.label }}
+            </span>
+            <span class="hero__point-desc">{{ point.desc }}</span>
+          </li>
+        }
+      </ul>
     </div>
 
-    <!-- 静态分层视觉占位:半透明信息平面 + 细路径,Phase 4 替换为最终分层视觉 -->
+    <!-- 分层视觉(Phase 4):层叠的技术文档面板由一条线路串联,
+         末端琥珀节点 —— 技术材料 → 梳理 → 确权。可替换为正式插画。 -->
     <div class="hero__visual" aria-hidden="true" hzyReveal="stagger-item">
-      <div class="hero__plane hero__plane--back"></div>
-      <div class="hero__plane hero__plane--mid"></div>
-      <div class="hero__plane hero__plane--front"></div>
-      <svg class="hero__path" viewBox="0 0 320 240" fill="none" preserveAspectRatio="none">
-        <path d="M8 200 C 96 168, 148 96, 236 72 S 300 40, 312 32" stroke="currentColor" stroke-width="1.5" />
+      <div class="hero__grid-lines hero__layer hero__layer--far"></div>
+
+      <!-- 背景文档面板(远) -->
+      <div class="hero__doc hero__doc--back hero__layer hero__layer--far">
+        <span class="hero__doc-titlebar"></span>
+        <span class="hero__doc-lines"></span>
+      </div>
+
+      <!-- 主文档面板(中):标题条 + 文字行 + 高亮行 -->
+      <div class="hero__doc hero__doc--main hero__layer hero__layer--mid">
+        <span class="hero__doc-titlebar hero__doc-titlebar--brand"></span>
+        <span class="hero__doc-lines"></span>
+        <span class="hero__doc-highlight"></span>
+        <span class="hero__doc-lines hero__doc-lines--short"></span>
+      </div>
+
+      <!-- 小结果卡(近):徽标点 + 两行 -->
+      <div class="hero__doc hero__doc--chip hero__layer hero__layer--near">
+        <span class="hero__chip-dot"></span>
+        <span class="hero__doc-lines hero__doc-lines--chip"></span>
+      </div>
+
+      <!-- 连接线路:从文档出发,末端琥珀节点(Hero 唯一琥珀点缀;业主要求移除基底黄光) -->
+      <svg class="hero__path hero__layer hero__layer--mid" viewBox="0 0 320 240" fill="none" preserveAspectRatio="none">
+        <path d="M36 206 C 96 196, 118 150, 168 122 S 262 66, 296 44" stroke="currentColor" stroke-width="1.5" stroke-dasharray="1 0" />
+        <circle cx="168" cy="122" r="3.5" class="hero__node hero__node--blue" />
+        <circle cx="296" cy="44" r="4.5" class="hero__node hero__node--amber" />
       </svg>
     </div>
   </div>

@@ -1,6 +1,6 @@
 <section id="services" class="services section-pad" aria-labelledby="services-title">
-  <div class="site-container">
-    <header class="section-head" hzyReveal>
+  <div class="site-container services__layout">
+    <header class="section-head services__head" hzyReveal>
       <span class="section-number" aria-hidden="true">02</span>
       <h2 id="services-title">{{ content.heading }}</h2>
       <p class="section-intro">{{ content.intro }}</p>
@@ -9,10 +9,24 @@
     <div class="services__grid">
       @for (item of content.items; track item.index) {
         <article class="service-card" [class.service-card--warm]="item.warm" hzyReveal="stagger-item">
+          @if (item.warm) {
+            <!-- 特殊卡徽章(doc 04 允许的 small badge 细节) -->
+            <span class="service-card__badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 3.5l6.5 2.6v4.6c0 4.2-2.7 6.9-6.5 8.3-3.8-1.4-6.5-4.1-6.5-8.3V6.1L12 3.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                <path d="M9.2 11.6l2 2 3.6-3.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          }
           <span class="service-card__index" aria-hidden="true">{{ item.index }}</span>
           <h3 class="service-card__title">{{ item.title }}</h3>
           <p class="service-card__desc">{{ item.desc }}</p>
-          <span class="service-card__arrow" aria-hidden="true">→</span>
+          <span class="service-card__arrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none">
+              <!-- 杆子分两段,尾端留一个断口(伞柄缺口) -->
+              <path d="M6 14 L8.3 11.7 M10.5 9.5 L14 6 M8 6 H14 V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
         </article>
       }
     </div>

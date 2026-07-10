@@ -1,6 +1,17 @@
 <section class="evidence" aria-labelledby="evidence-title">
-  <div class="site-container">
-    <header class="section-head" hzyReveal>
+  <!-- 克制的大弧线,端点过渡到哑光琥珀(doc 05 unique visual) -->
+  <svg class="evidence__arc" viewBox="0 0 900 420" fill="none" aria-hidden="true" preserveAspectRatio="xMaxYMax meet">
+    <defs>
+      <linearGradient id="hzy-arc" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="rgba(255,255,255,0.05)" />
+        <stop offset="0.62" stop-color="rgba(120,150,235,0.28)" />
+        <stop offset="1" stop-color="rgba(214,161,74,0.55)" />
+      </linearGradient>
+    </defs>
+    <path d="M-40 460 A 560 560 0 0 1 880 -40" stroke="url(#hzy-arc)" stroke-width="1.5" />
+  </svg>
+  <div class="site-container evidence__layout">
+    <header class="section-head evidence__head" hzyReveal>
       <span class="section-number section-number--on-dark" aria-hidden="true">04</span>
       <h2 id="evidence-title" class="evidence__heading">{{ content.heading }}</h2>
       <p class="evidence__intro">{{ content.intro }}</p>

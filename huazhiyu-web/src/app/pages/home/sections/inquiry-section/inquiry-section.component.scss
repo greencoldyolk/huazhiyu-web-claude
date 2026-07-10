@@ -1,18 +1,64 @@
 @use "breakpoints" as bp;
 
-// 06 提交新事项 — 强靛紫渐变场 + 内部表单面板(docs/design/03/05)
-// 字段基础样式(default/hover/focus/error/disabled)在全局 _controls.scss。
+// 06 提交新事项 — 按 mock 配色:白底上的圆角深靛紫渐变面板,
+// 右下角暖琥珀光;表单字段直接坐在渐变上(无玻璃子面板)。
+// 字段的 on-dark 半透明契约在全局 _controls.scss。
 .inquiry {
-  background: linear-gradient(135deg, var(--brand-indigo-950) 8%, var(--brand-indigo-800) 55%, #2c2470 100%);
+  background: var(--surface-white);
   color: var(--text-on-dark);
-  padding-block: clamp(4rem, 7vw, 6.5rem); // CTA 段取规格下限(104px 桌面),压缩总高
+  padding-block: clamp(2rem, 3.5vw, 3rem); // 留白减半(业主要求)
+
+  // 圆角渐变面板(mock:深靛蓝 → 靛紫,右下暖琥珀角光)
+  &__panel {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: var(--radius-panel);
+    // mock 配色:左侧深靛蓝 → 向右上过渡到紫;右下角暖琥珀由角部
+    // 向上融入紫、向左融入蓝(叠加在基底渐变上)
+    background: linear-gradient(105deg, var(--brand-indigo-950) 0%, var(--brand-indigo-800) 42%, #43389e 72%, var(--brand-violet-500) 100%);
+    padding: clamp(1.5rem, 4vw, 3.25rem);
+    box-shadow: var(--shadow-panel);
+
+    // 左下角两缕极淡弧线(mock:如轻烟,只停留在左侧导语区,不压表单)
+    &::before {
+      content: "";
+      position: absolute;
+      left: -26%;
+      bottom: -58%;
+      width: 62%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgb(255 255 255 / 0.09);
+      outline: 1px solid rgb(255 255 255 / 0.05);
+      outline-offset: 30px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    // 右下角琥珀角部(mock 同款):角上近实的金黄,向上融入紫、
+    // 向左融入蓝(全页唯一大暖光)
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(
+        62% 78% at 101% 106%,
+        rgb(237 202 136 / 0.96) 0%,
+        rgb(222 165 70 / 0.62) 30%,
+        rgb(222 165 70 / 0.22) 52%,
+        transparent 70%
+      );
+    }
+  }
 
   &__grid {
     display: grid;
     gap: var(--space-5);
     align-items: start;
 
-    // 桌面:约 4 列导语 + 8 列表单
     @include bp.up(md) {
       grid-template-columns: 4fr 8fr;
     }
@@ -32,14 +78,10 @@
   }
 }
 
+// 表单直接坐在渐变面板上(mock 无玻璃子面板)
 .inquiry-form {
   display: grid;
   gap: 1.25rem;
-  padding: clamp(1.25rem, 2.5vw, 2rem); // 移动 20–24px 面板内边距
-  background: var(--surface-white);
-  color: var(--ink-850);
-  border-radius: var(--radius-panel);
-  box-shadow: var(--shadow-panel);
 
   &__row {
     display: grid;
@@ -50,13 +92,11 @@
     }
   }
 
-  // 联系方式提示紧跟联系行,收紧其上间距
   > .inquiry-form__hint {
     margin-top: -0.625rem;
   }
 
   textarea.form-control {
-    // 取规格下限(docs/design/04:桌面 140–168px、移动 132–152px);仅纵向 resize
     min-height: 140px;
     resize: vertical;
 
@@ -69,77 +109,89 @@
     position: relative;
     display: grid;
 
-    // focus 时计数器略增对比(doc 04)
     &:focus-within .inquiry-form__counter {
-      color: var(--ink-700);
+      color: var(--text-on-dark);
     }
   }
 
-  // 字符计数:右下角、视觉次要;≈450 字起增强对比
   &__counter {
     position: absolute;
     right: 0.875rem;
     bottom: 0.625rem;
     font-size: var(--font-size-small);
-    color: var(--ink-550);
+    color: rgb(255 255 255 / 0.55);
     pointer-events: none;
     transition: color var(--duration-fast) var(--ease-standard);
 
     &.is-near-limit {
-      color: var(--ink-950);
+      color: var(--text-on-dark);
       font-weight: 600;
     }
   }
 
   &__hint {
     font-size: var(--font-size-small);
-    color: var(--ink-550);
+    color: var(--text-on-dark-muted);
   }
 
   &__upload-label {
     font-weight: 600;
     font-size: var(--font-size-small);
+    color: var(--text-on-dark);
   }
 
-  // ---- 上传区壳(doc 04):虚线软边框,非聊天机器人外观 ----
+  // ---- 上传区(on-dark 半透明壳)----
   &__upload {
     position: relative;
+    overflow: hidden;
     display: grid;
     place-items: center;
     gap: 0.25rem;
     min-height: 72px;
     padding: var(--space-2);
-    border: 1.5px dashed var(--border-medium);
+    border: 1.5px dashed rgb(255 255 255 / 0.28);
     border-radius: var(--radius-card);
-    background: var(--surface-cool-50);
+    background: rgb(255 255 255 / 0.04);
     text-align: center;
     cursor: pointer;
     transition:
       border-color var(--duration-fast) var(--ease-standard),
       background-color var(--duration-fast) var(--ease-standard);
 
-    // hover:边框对比增、图标上移 2px(琥珀扫光属于 Phase 4)
+    // 琥珀/香槟扫光:hover 单次划过(doc 04);禁止持续循环
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 -40%;
+      width: 34%;
+      background: linear-gradient(100deg, transparent, rgb(237 202 136 / 0.16), transparent);
+      transform: skewX(-12deg);
+      pointer-events: none;
+    }
+
     @media (hover: hover) {
       &:hover {
-        border-color: rgb(18 45 120 / 0.34);
+        border-color: rgb(255 255 255 / 0.5);
 
         .inquiry-form__upload-icon {
           transform: translateY(-2px);
         }
+
+        &::before {
+          animation: hzy-upload-sweep 900ms var(--ease-standard) 1;
+        }
       }
     }
 
-    // 键盘聚焦隐藏的文件输入时,整个区域显示焦点环
     &:focus-within {
       border-color: var(--brand-blue-500);
       box-shadow: 0 0 0 3px var(--focus-ring);
     }
 
-    // drag active:更强品牌蓝边框 + 局部着色 + “松开放入”提示
     &.is-dragover {
       border-color: var(--brand-blue-500);
       border-style: solid;
-      background: var(--surface-blue-100);
+      background: rgb(78 124 240 / 0.16);
 
       .inquiry-form__upload-hint {
         display: none;
@@ -154,29 +206,47 @@
   &__upload-icon {
     width: 22px;
     height: 22px;
-    color: var(--ink-550);
+    color: rgb(255 255 255 / 0.72);
     transition: transform var(--duration-fast) var(--ease-standard);
   }
 
   &__upload-hint {
-    color: var(--ink-550);
+    color: var(--text-on-dark-muted);
     font-size: var(--font-size-small);
   }
 
   &__upload-drop {
     display: none;
-    color: var(--brand-blue-600);
+    color: var(--text-on-dark);
     font-size: var(--font-size-small);
     font-weight: 600;
   }
 
+  // 提交按钮:整宽,琥珀金(业主指定)——香槟浅金 → 琥珀的竖向渐变,
+  // 深墨蓝文字保证对比度;与右下角暖光同族呼应。无持续 shine 动画。
   &__submit {
-    justify-self: start;
+    justify-self: stretch;
+    width: 100%;
+    background: linear-gradient(180deg, var(--amber-soft), var(--amber-line));
+    color: var(--ink-950);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.45),
+      0 10px 24px -12px rgb(7 22 74 / 0.6);
 
-    // 移动:整宽提交按钮(docs/design/07)
-    @include bp.down(sm) {
-      justify-self: stretch;
-      width: 100%;
+    &:hover:not(:disabled) {
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.6),
+        0 14px 28px -12px rgb(7 22 74 / 0.65);
     }
+  }
+}
+
+@keyframes hzy-upload-sweep {
+  from {
+    inset-inline-start: -40%;
+  }
+
+  to {
+    inset-inline-start: 112%;
   }
 }

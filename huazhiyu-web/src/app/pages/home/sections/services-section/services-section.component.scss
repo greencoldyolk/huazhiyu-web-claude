@@ -1,8 +1,42 @@
 @use "breakpoints" as bp;
 
-// 02 核心服务 — 浅冷色背景段(docs/design/03 背景节奏)
+// 02 核心服务 — 浅冷色背景段(docs/design/03 背景节奏)。
+// mock 布局:标题块在左侧栏,卡片整体靠右。
 .services {
   background: var(--surface-cool-100);
+
+  &__layout {
+    display: grid;
+    gap: var(--space-4);
+    align-items: start;
+
+    @include bp.up(md) {
+      grid-template-columns: minmax(150px, 2fr) 10fr;
+      gap: var(--space-5);
+    }
+  }
+
+  &__head {
+    gap: var(--space-1);
+
+    @include bp.up(md) {
+      margin-bottom: 0;
+    }
+
+    .section-number {
+      font-size: 2.5rem;
+    }
+
+    h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--ink-850);
+    }
+
+    .section-intro {
+      font-size: var(--font-size-small);
+    }
+  }
 
   &__grid {
     display: grid;
@@ -14,7 +48,8 @@
       gap: var(--space-3);
     }
 
-    @include bp.up(md) {
+    // 左栏占位后,3 列从宽桌面起,保证卡片仍然「宽」
+    @include bp.up(lg) {
       grid-template-columns: repeat(3, 1fr); // 桌面:3 × 2
     }
   }
@@ -59,7 +94,7 @@
       }
 
       .service-card__arrow {
-        transform: translateX(4px);
+        transform: rotate(90deg); // ↗ 顺时针转 90° → ↘(业主指定交互)
       }
     }
   }
@@ -81,22 +116,57 @@
     max-width: 24em;
   }
 
+  // ↗ 琥珀箭头(业主指定:tokens --amber-line),hover 旋转 90° 指向右下
   &__arrow {
     margin-top: auto;
-    padding-top: var(--space-2);
-    color: var(--brand-blue-600);
-    transition: transform 240ms var(--ease-standard);
+    width: 20px;
+    height: 20px;
+    color: var(--amber-line);
+    transition: transform 240ms var(--ease-emphasized);
+    transform-origin: center;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
   }
 
-  // ---- 暖色特殊卡(docs/design/04)----
-  // 香槟白底,暖色只出现在编号与底部细线,可见暖区 ≤ ~20%;
-  // 禁止整卡黄色。局部径向辉光属于 Phase 4。
+  // ---- 暖色特殊卡(docs/design/04 + mock 的「厚度感」)----
+  // 香槟白底,左上受光、右下渐深;顶部内高光 + 斜向柔光带 + 暖色投影;
+  // 徽章为立体件。饱和暖区(徽章/编号/底线)≤ ~20%,禁止整卡黄色。
   &--warm {
-    background: var(--champagne-50);
-    border-color: rgb(214 161 74 / 0.28);
+    padding-inline-end: 4.25rem; // 给右侧徽章留位
+    background: linear-gradient(
+      145deg,
+      #fffefb 0%,
+      var(--champagne-50) 44%,
+      var(--champagne-100) 78%,
+      color-mix(in srgb, var(--amber-soft) 34%, white) 100%
+    );
+    border-color: rgb(214 161 74 / 0.34);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.85),
+      inset -8px -14px 28px rgb(214 161 74 / 0.1),
+      0 12px 26px -14px rgb(169 109 31 / 0.28);
+
+    // 右下斜向柔光带
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(120deg, transparent 46%, rgb(255 255 255 / 0.5) 64%, transparent 82%);
+      pointer-events: none;
+    }
 
     .service-card__index {
       color: var(--amber-text);
+    }
+
+    // 文字轻浮雕
+    .service-card__title {
+      text-shadow: 0 1px 0 rgb(255 255 255 / 0.75);
     }
 
     &::after {
@@ -106,6 +176,37 @@
       height: 2px;
       background: var(--amber-line);
       border-radius: 1px;
+    }
+
+    // hover:保持内高光与暖影(通用 hover 的冷影会盖掉厚度感)
+    @media (hover: hover) {
+      &:hover {
+        box-shadow:
+          inset 0 1px 0 rgb(255 255 255 / 0.85),
+          inset -8px -14px 28px rgb(214 161 74 / 0.1),
+          0 16px 32px -14px rgb(169 109 31 / 0.36);
+      }
+    }
+  }
+
+  // 立体六边形徽章(白→香槟→金渐变 + 独立暖投影)
+  &__badge {
+    position: absolute;
+    top: 50%;
+    right: var(--space-4);
+    transform: translateY(-58%);
+    width: 38px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: linear-gradient(165deg, #ffffff 0%, var(--champagne-100) 38%, var(--amber-soft) 100%);
+    filter: drop-shadow(0 4px 7px rgb(169 109 31 / 0.28));
+    color: var(--amber-text);
+
+    svg {
+      width: 18px;
+      height: 18px;
     }
   }
 }

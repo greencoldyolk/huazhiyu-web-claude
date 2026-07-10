@@ -22,6 +22,12 @@ export const SITE_CONTENT = {
     lead: '一段简短的定位说明占位,最终文案待批准。',
     primaryCta: '提交新事项',
     secondaryLink: '了解核心服务(占位)',
+    // 三个要点,文字取自业主认可的 mock,最终文案仍待批准
+    points: [
+      { label: '专业团队', desc: '技术与法律双重理解' },
+      { label: '高效赋能', desc: '快速响应,省心托付' },
+      { label: '务实透明', desc: '清晰流程,合理收费' },
+    ],
   },
 
   services: {
@@ -70,8 +76,8 @@ export const SITE_CONTENT = {
       link: '查看详情(占位)',
     },
     secondary: [
-      { category: '类别占位', title: '次要工作条目占位一' },
-      { category: '类别占位', title: '次要工作条目占位二' },
+      { index: '02', title: '次要工作条目占位一', link: '查看详情(占位)' },
+      { index: '03', title: '次要工作条目占位二', link: '查看详情(占位)' },
     ],
   },
 
