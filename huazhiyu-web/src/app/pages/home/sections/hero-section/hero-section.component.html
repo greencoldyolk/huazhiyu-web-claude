@@ -1,11 +1,16 @@
 <section class="hero" aria-labelledby="hero-title">
   <div class="site-container hero__grid">
     <div class="hero__copy" hzyReveal="stagger-item">
+      <p class="hero__eyebrow">{{ content.eyebrow }}</p>
       <h1 id="hero-title" class="hero__title">
-        {{ content.titleLine1 }}<br />
-        <span class="hero__title-accent">{{ content.titleAccent }}</span>
+        <span class="hero__title-line">{{ content.titlePre }}<span class="hero__title-accent">{{ content.titleAccent }}</span>{{ content.titlePost }}</span>
+        <span class="hero__title-line">{{ content.titleLine2 }}</span>
       </h1>
-      <p class="hero__lead">{{ content.lead }}</p>
+      <p class="hero__lead">
+        @for (segment of content.lead; track $index) {
+          <span [class.hero__lead-emphasis]="segment.emphasis">{{ segment.text }}</span>
+        }
+      </p>
       <div class="hero__actions">
         <a class="btn-primary" href="#inquiry">{{ content.primaryCta }}</a>
         <a class="text-link" href="#services">

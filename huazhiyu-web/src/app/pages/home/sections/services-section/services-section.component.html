@@ -7,18 +7,63 @@
     </header>
 
     <div class="services__grid">
-      @for (item of content.items; track item.index) {
+      @for (item of content.items; track item.title) {
         <article class="service-card" [class.service-card--warm]="item.warm" hzyReveal="stagger-item">
-          @if (item.warm) {
-            <!-- 特殊卡徽章(doc 04 允许的 small badge 细节) -->
-            <span class="service-card__badge" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M12 3.5l6.5 2.6v4.6c0 4.2-2.7 6.9-6.5 8.3-3.8-1.4-6.5-4.1-6.5-8.3V6.1L12 3.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
-                <path d="M9.2 11.6l2 2 3.6-3.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </span>
-          }
-          <span class="service-card__index" aria-hidden="true">{{ item.index }}</span>
+          <span class="service-card__icon" aria-hidden="true">
+            @switch (item.icon) {
+              @case ('domestic') {
+                <!-- 文件 + 对勾:国内专利申请 -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6.5 3.5h7.2l4.8 4.8v12.2h-12z" />
+                  <path d="M13.5 3.5v5h5" />
+                  <path class="ic-accent" d="M9.5 14.2l2 2 3.6-4" />
+                </svg>
+              }
+              @case ('foreign') {
+                <!-- 文件外发:涉外申请递交(金色外发箭头) -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6.2 4h6.6l4.2 4.2v4.4" />
+                  <path d="M12.8 4v4.4h4.2" />
+                  <path d="M6.2 4v16h7.2" />
+                  <path class="ic-accent" d="M15.4 19.6l4.4-4.4" />
+                  <path class="ic-accent" d="M16.4 15.2h3.4v3.4" />
+                </svg>
+              }
+              @case ('search') {
+                <!-- 放大镜 + 柱状:检索与分析 -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="10.5" cy="10.5" r="6.3" />
+                  <path d="M15.3 15.3 20 20" />
+                  <path d="M8 12.8v-2.2" />
+                  <path class="ic-accent" d="M10.5 12.8V8.6" />
+                  <path d="M13 12.8v-3.2" />
+                </svg>
+              }
+              @case ('layout') {
+                <!-- 组合方块 + 节点:挖掘与布局 -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3.5" y="3.5" width="7" height="7" rx="1.6" />
+                  <rect x="13.5" y="3.5" width="7" height="7" rx="1.6" />
+                  <rect x="3.5" y="13.5" width="7" height="7" rx="1.6" />
+                  <circle class="ic-accent" cx="17" cy="17" r="3" />
+                </svg>
+              }
+              @case ('dispute') {
+                <!-- 循环箭头:复审 / 无效 / 争议 -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 12a8 8 0 1 1-2.4-5.7" />
+                  <path class="ic-accent" d="M20 3.6v4.6h-4.6" />
+                </svg>
+              }
+              @case ('trademark') {
+                <!-- 标签:商标与版权 -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3.5 12.2V4.5h7.7l9.3 9.3-7.7 7.7z" />
+                  <circle class="ic-accent" cx="8.1" cy="9.1" r="1.5" />
+                </svg>
+              }
+            }
+          </span>
           <h3 class="service-card__title">{{ item.title }}</h3>
           <p class="service-card__desc">{{ item.desc }}</p>
           <span class="service-card__arrow" aria-hidden="true">

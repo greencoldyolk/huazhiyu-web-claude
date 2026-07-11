@@ -2,6 +2,8 @@
 
 // 02 核心服务 — 浅冷色背景段(docs/design/03 背景节奏)。
 // mock 布局:标题块在左侧栏,卡片整体靠右。
+// 卡片:图标 → 标题 → 一句说明 → 箭头;无编号、无底线。
+// 首卡为唯一暖色重点卡,其余 hover 用冷调蓝紫(业主定稿规格)。
 .services {
   background: var(--surface-cool-100);
 
@@ -28,9 +30,9 @@
     }
 
     h2 {
-      font-size: 1.125rem;
+      font-size: 1rem;
       font-weight: 600;
-      color: var(--ink-850);
+      color: var(--ink-700);
     }
 
     .section-intro {
@@ -59,68 +61,82 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-4);
-  background: var(--surface-white);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-card);
+  min-height: 220px;
+  padding: 28px 32px 24px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(31, 48, 82, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 3px 10px rgba(28, 43, 76, 0.025);
   transition:
-    transform 240ms var(--ease-standard),
-    border-color 240ms var(--ease-standard),
-    box-shadow 240ms var(--ease-standard);
+    transform 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease,
+    box-shadow 220ms ease;
 
-  // 底部延展线(doc 04 hover 契约);暖卡有自己的静态琥珀线
-  &:not(.service-card--warm)::after {
-    content: "";
-    position: absolute;
-    inset: auto var(--space-4) 0 var(--space-4);
-    height: 2px;
-    border-radius: 1px;
-    background: var(--brand-blue-500);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 240ms var(--ease-emphasized);
+  // 窄屏:收紧内边距,取消最小高度,避免单列时页面过长
+  @include bp.down(sm) {
+    min-height: 0;
+    padding: 22px 22px 20px;
   }
 
-  // hover:上移 3px、边框更清晰、底线延展、箭头位移 4px(220–260ms)
-  @media (hover: hover) {
-    &:hover {
-      transform: translateY(-3px);
-      border-color: var(--border-medium);
-      box-shadow: var(--shadow-hover);
+  // 图标:圆弧方形底座 + 近黑轮廓 + 一处金点;图形占底座 83%(业主定稿)
+  &__icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 22px;
+    display: grid;
+    place-items: center;
+    background: #f1f1f8;
+    border-radius: 11px;
+    color: #2e3040;
 
-      &:not(.service-card--warm)::after {
-        transform: scaleX(1);
-      }
+    svg {
+      display: block;
+      width: 35px;
+      height: 35px;
+    }
 
-      .service-card__arrow {
-        transform: rotate(90deg); // ↗ 顺时针转 90° → ↘(业主指定交互)
+    .ic-accent {
+      stroke: var(--amber-line);
+    }
+
+    @include bp.down(sm) {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 16px;
+
+      svg {
+        width: 30px;
+        height: 30px;
       }
     }
   }
 
-  &__index {
-    font-size: var(--font-size-small);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--ink-550);
-  }
-
   &__title {
-    margin-top: var(--space-1);
+    margin: 0;
+    color: #081b44;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
   }
 
   &__desc {
-    color: var(--ink-550);
-    font-size: var(--font-size-small);
-    max-width: 24em;
+    max-width: 15.5em;
+    margin: 12px 0 20px; // 底部 20px = 与箭头的最小间距(不给箭头加 padding,防旋转偏摆)
+    color: #7b86a3;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.72;
   }
 
-  // ↗ 琥珀箭头(业主指定:tokens --amber-line),hover 旋转 90° 指向右下
+  // 箭头固定底部;旋转动画不变(不给箭头本身加 padding,
+  // 否则旋转会绕含 padding 的盒中心偏摆)
   &__arrow {
     margin-top: auto;
     width: 20px;
     height: 20px;
+    opacity: 0.9;
     color: var(--amber-line);
     transition: transform 240ms var(--ease-emphasized);
     transform-origin: center;
@@ -132,74 +148,47 @@
     }
   }
 
-  // ---- 暖色特殊卡(docs/design/04 + mock 的「厚度感」)----
-  // 香槟白底,左上受光、右下渐深;顶部内高光 + 斜向柔光带 + 暖色投影;
-  // 徽章为立体件。饱和暖区(徽章/编号/底线)≤ ~20%,禁止整卡黄色。
+  // ---- 首卡:唯一的暖色重点卡(业主定稿规格)----
   &--warm {
-    padding-inline-end: 4.25rem; // 给右侧徽章留位
-    background: linear-gradient(
-      145deg,
-      #fffefb 0%,
-      var(--champagne-50) 44%,
-      var(--champagne-100) 78%,
-      color-mix(in srgb, var(--amber-soft) 34%, white) 100%
-    );
-    border-color: var(--border-soft); // 业主要求:去掉黄色描边,与普通卡一致
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.85),
-      inset -8px -14px 28px rgb(214 161 74 / 0.1),
-      0 12px 26px -14px rgb(169 109 31 / 0.28);
+    background:
+      radial-gradient(circle at 86% 22%, rgba(230, 184, 94, 0.1), transparent 32%),
+      linear-gradient(135deg, #fffdf8 0%, #fcf7eb 100%);
+    border-color: rgba(185, 137, 56, 0.2);
+    box-shadow: 0 10px 28px rgba(120, 88, 33, 0.07);
 
-    // 右下斜向柔光带
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: linear-gradient(120deg, transparent 46%, rgb(255 255 255 / 0.5) 64%, transparent 82%);
-      pointer-events: none;
-    }
-
-    .service-card__index {
-      color: var(--amber-text);
-    }
-
-    // 文字轻浮雕
-    .service-card__title {
-      text-shadow: 0 1px 0 rgb(255 255 255 / 0.75);
-    }
-
-    // (业主要求:不要底部琥珀细线)
-
-    // hover:保持内高光与暖影(通用 hover 的冷影会盖掉厚度感)
-    @media (hover: hover) {
-      &:hover {
-        box-shadow:
-          inset 0 1px 0 rgb(255 255 255 / 0.85),
-          inset -8px -14px 28px rgb(214 161 74 / 0.1),
-          0 16px 32px -14px rgb(169 109 31 / 0.36);
-      }
+    .service-card__icon {
+      background: var(--champagne-100); // 首卡底座换香槟,轮廓仍为墨色
     }
   }
 
-  // 立体六边形徽章(白→香槟→金渐变 + 独立暖投影)
-  &__badge {
-    position: absolute;
-    top: 50%;
-    right: var(--space-4);
-    transform: translateY(-58%);
-    width: 38px;
-    height: 42px;
-    display: grid;
-    place-items: center;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    background: linear-gradient(165deg, #ffffff 0%, var(--champagne-100) 38%, var(--amber-soft) 100%);
-    filter: drop-shadow(0 4px 7px rgb(169 109 31 / 0.28));
-    color: var(--amber-text);
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-3px);
 
-    svg {
-      width: 18px;
-      height: 18px;
+      .service-card__arrow {
+        transform: rotate(90deg); // ↗ 顺时针转 90° → ↘(业主指定交互)
+      }
     }
+
+    // 后五张:冷调蓝紫 hover,不复用首卡的金色
+    &:hover:not(.service-card--warm) {
+      background:
+        radial-gradient(circle at 88% 18%, rgba(108, 115, 211, 0.07), transparent 37%),
+        #ffffff;
+      border-color: rgba(76, 91, 151, 0.2);
+      box-shadow: 0 15px 34px rgba(32, 47, 86, 0.075);
+    }
+
+    // 首卡:只抬升并加深既有暖影
+    &--warm:hover {
+      box-shadow: 0 17px 38px rgba(120, 88, 33, 0.11);
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 3px rgba(79, 96, 174, 0.15),
+      0 15px 34px rgba(32, 47, 86, 0.075);
   }
 }

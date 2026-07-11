@@ -1,120 +1,177 @@
 @use "breakpoints" as bp;
 
-// 03 为什么选择华之喻 — 白色段(docs/design/03 背景节奏)
+// 03 为什么选择华之喻 — 左侧编辑导语 + 右侧纵向优势清单。
 .advantages {
-  background: var(--surface-white);
+  background: linear-gradient(180deg, var(--surface-white), var(--surface-cool-50));
 
   &__grid {
     display: grid;
-    gap: var(--space-5);
+    gap: clamp(2.5rem, 6vw, 5rem);
     align-items: start;
 
+    @include bp.up(sm) {
+      grid-template-columns: minmax(0, 0.68fr) minmax(0, 1fr);
+      gap: clamp(2rem, 5vw, 4.5rem);
+    }
+
     @include bp.up(md) {
-      grid-template-columns: minmax(150px, 2fr) 10fr; // 窄左栏(mock 尺寸)
+      grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
     }
   }
 
   &__intro {
     display: grid;
-    gap: var(--space-1);
+    justify-items: start;
 
-    // 桌面导语 sticky(docs/design/05);窄屏由布局堆叠自然禁用
     @include bp.up(md) {
       position: sticky;
-      top: calc(74px + var(--space-3));
-    }
-
-    .section-number {
-      font-size: 2.5rem;
-    }
-
-    h2 {
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: var(--ink-850);
+      top: calc(74px + var(--space-4));
     }
   }
 
-  // 内容区(mock):大字陈述 + 三项横排平分,细灰线分隔
-  &__content {
-    display: grid;
-    gap: var(--space-3);
-
-    @include bp.up(md) {
-      grid-template-columns: 1.15fr 3fr;
-      gap: var(--space-4);
-      align-items: start;
-    }
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: var(--space-2);
   }
 
-  &__statement {
-    font-size: clamp(1.25rem, 2vw, 1.5rem);
+  &__section-index,
+  &__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.12em;
+  }
+
+  &__section-index {
+    color: rgb(18 45 120 / 0.38);
+  }
+
+  &__eyebrow {
+    color: var(--brand-blue-600);
+  }
+
+  h2 {
+    color: var(--ink-700);
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
     font-weight: 600;
-    line-height: 1.6;
+    line-height: 1.35;
+  }
+
+  &__lead {
+    max-width: 10em;
+    margin-top: var(--space-2);
     color: var(--ink-950);
-    max-width: 14em;
+    font-size: clamp(2.25rem, 3.5vw, 3.25rem);
+    font-weight: 750;
+    line-height: 1.16;
+    letter-spacing: -0.035em;
+  }
+
+  &__lead-accent {
+    background: linear-gradient(92deg, var(--brand-blue-600), var(--brand-violet-500));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    white-space: nowrap;
+  }
+
+  &__summary {
+    max-width: 24em;
+    margin-top: var(--space-2);
+    color: var(--ink-550);
+    font-size: 1rem;
+    line-height: 1.75;
   }
 
   &__list {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: var(--space-3);
-
-    @include bp.up(md) {
-      grid-template-columns: repeat(3, 1fr); // 三项平分
-      gap: var(--space-4);
-    }
   }
 
   &__row {
+    position: relative;
     display: grid;
-    gap: var(--space-1);
-    align-content: start;
-    padding-block: var(--space-2);
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: clamp(1rem, 2.5vw, 2rem);
+    padding-block: clamp(1.75rem, 4vw, 3rem);
     border-top: 1px solid var(--border-soft);
-    transition: opacity var(--duration-standard) var(--ease-standard);
 
-    // 桌面:竖直细灰线分隔(含陈述与第一项之间)
-    @include bp.up(md) {
-      border-top: 0;
-      padding-block: 0;
-      padding-inline-start: var(--space-3);
-      border-inline-start: 1px solid var(--border-soft);
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -1px auto auto 0;
+      width: 1.75rem;
+      height: 1px;
+      background: rgb(49 95 214 / 0.46);
+      transform-origin: left center;
+      transition:
+        width 220ms var(--ease-standard),
+        transform 220ms var(--ease-standard),
+        background-color 220ms var(--ease-standard);
     }
   }
 
-  // hover 契约(doc 05 改横排后保留):当前项编号转实,其余项轻退让
-  @media (hover: hover) {
-    &__list:hover &__row {
-      opacity: 0.75;
-    }
-
-    &__list &__row:hover {
-      opacity: 1;
-
-      .advantages__row-index {
-        color: var(--brand-indigo-800);
-      }
-    }
+  &__row-copy {
+    display: grid;
+    gap: 0.625rem;
   }
 
-  // 项编号:默认低对比,hover 时转实色
   &__row-index {
-    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    padding-top: 0.25rem;
+    color: rgb(18 45 120 / 0.38);
+    font-size: 0.875rem;
     font-weight: 700;
     line-height: 1.2;
-    color: rgb(18 45 120 / 0.22);
-    transition: color var(--duration-standard) var(--ease-standard);
+    letter-spacing: 0.08em;
+    transition: color 220ms var(--ease-standard);
   }
 
   &__row-title {
-    font-size: 1.05rem;
+    color: var(--ink-850);
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    font-weight: 700;
+    line-height: 1.35;
+    transition: color 220ms var(--ease-standard);
   }
 
   &__row-desc {
+    max-width: 34em;
     color: var(--ink-550);
-    font-size: var(--font-size-small);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &__row:hover {
+      &::before {
+        width: 2.75rem;
+        background: var(--brand-blue-600);
+        transform: translateX(3px);
+      }
+
+      .advantages__row-index { color: var(--brand-blue-600); }
+
+      .advantages__row-title { color: var(--ink-950); }
+    }
+  }
+
+  @include bp.down(sm) {
+    &__lead { max-width: 11em; }
+
+    &__row {
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: var(--space-2);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__row::before,
+    &__row-index,
+    &__row-title {
+      transition: none;
+    }
   }
 }

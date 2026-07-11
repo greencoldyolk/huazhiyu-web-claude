@@ -1,22 +1,27 @@
-<section class="advantages section-pad" aria-labelledby="advantages-title">
+<section id="advantages" class="advantages section-pad" aria-labelledby="advantages-title">
   <div class="site-container advantages__grid">
     <header class="advantages__intro" hzyReveal>
-      <span class="section-number" aria-hidden="true">03</span>
+      <div class="advantages__meta">
+        <span class="advantages__section-index" aria-hidden="true">03</span>
+        <p class="advantages__eyebrow">{{ content.eyebrow }}</p>
+      </div>
       <h2 id="advantages-title">{{ content.heading }}</h2>
+      <p class="advantages__lead">
+        {{ content.leadPre }}<span class="advantages__lead-accent">{{ content.leadAccent }}</span>
+      </p>
+      <p class="advantages__summary">{{ content.intro }}</p>
     </header>
 
-    <div class="advantages__content">
-      <p class="advantages__statement" hzyReveal>{{ content.intro }}</p>
-
-      <ol class="advantages__list">
+    <ol class="advantages__list" aria-label="华之喻的三项专业优势">
       @for (item of content.items; track item.index) {
         <li class="advantages__row" hzyReveal="stagger-item">
           <span class="advantages__row-index" aria-hidden="true">{{ item.index }}</span>
-          <h3 class="advantages__row-title">{{ item.title }}</h3>
-          <p class="advantages__row-desc">{{ item.desc }}</p>
+          <div class="advantages__row-copy">
+            <h3 class="advantages__row-title">{{ item.title }}</h3>
+            <p class="advantages__row-desc">{{ item.desc }}</p>
+          </div>
         </li>
       }
-      </ol>
-    </div>
+    </ol>
   </div>
 </section>

@@ -5,7 +5,7 @@
  * 本文件只存放「明确标注为占位」的字符串,最终文案批准后在此集中替换。
  * (对应 docs/design/01 建议结构中的 core/config 职责。)
  *
- * 唯一的非占位内容:六个 section 的信息架构名称(已批准,见 README「已确认的范围」)
+ * 非占位内容:六个 section 的信息架构名称、已批准的 Hero 文案,
  * 与「专利申请」特殊卡占位名(docs/design/04 明确指定)。
  */
 export const SITE_CONTENT = {
@@ -30,11 +30,20 @@ export const SITE_CONTENT = {
   },
 
   hero: {
-    titleLine1: '主标题第一行占位',
-    titleAccent: '渐变短语占位',
-    lead: '一段简短的定位说明占位,最终文案待批准。',
+    eyebrow: '华之喻知识产权',
+    titlePre: '专业的 ',
+    titleAccent: '知识产权服务',
+    titlePost: '，',
+    titleLine2: '覆盖从申请到布局的关键环节',
+    lead: [
+      { text: '围绕', emphasis: false },
+      { text: '专利申请', emphasis: true },
+      { text: '、检索分析、审查答复与', emphasis: false },
+      { text: '专利布局', emphasis: true },
+      { text: '，为企业、高校及科研团队提供专业、务实的知识产权支持。', emphasis: false },
+    ],
     primaryCta: '提交新事项',
-    secondaryLink: '了解核心服务(占位)',
+    secondaryLink: '查看服务范围',
     // 三个要点,文字取自业主认可的 mock,最终文案仍待批准
     points: [
       { label: '专业团队', desc: '技术与法律双重理解' },
@@ -44,26 +53,41 @@ export const SITE_CONTENT = {
   },
 
   services: {
-    heading: '核心服务入口',
-    intro: '服务导语占位,最终文案待批准。',
+    heading: '核心服务',
+    intro: '根据实际需求，快速进入对应服务。',
+    // 定稿服务文案(业主提供);首卡为唯一暖色重点卡
     items: [
-      // 第一张为暖色特殊卡(docs/design/04 指定「专利申请」为其占位名)
-      { index: '01', title: '专利申请(占位)', desc: '服务说明占位,一到两句话。', warm: true },
-      { index: '02', title: '服务方向占位二', desc: '服务说明占位,一到两句话。', warm: false },
-      { index: '03', title: '服务方向占位三', desc: '服务说明占位,一到两句话。', warm: false },
-      { index: '04', title: '服务方向占位四', desc: '服务说明占位,一到两句话。', warm: false },
-      { index: '05', title: '服务方向占位五', desc: '服务说明占位,一到两句话。', warm: false },
-      { index: '06', title: '服务方向占位六', desc: '服务说明占位,一到两句话。', warm: false },
+      { icon: 'domestic', title: '国内专利申请', desc: '发明、实用新型及外观设计申请，并提供审查意见答复支持。', warm: true },
+      { icon: 'foreign', title: '涉外专利申请', desc: '办理 PCT 及主要国家和地区的专利申请与流程协调。', warm: false },
+      { icon: 'search', title: '专利检索与分析', desc: '提供可专利性检索、技术情报、专利导航及风险分析。', warm: false },
+      { icon: 'layout', title: '专利挖掘与布局', desc: '围绕产品与科研项目挖掘创新点，构建系统化专利组合。', warm: false },
+      { icon: 'dispute', title: '复审、无效与侵权', desc: '处理驳回复审、专利无效、侵权分析及相关争议事务。', warm: false },
+      { icon: 'trademark', title: '商标与版权事务', desc: '涵盖商标注册与维护、版权及软件著作权登记等服务。', warm: false },
     ],
   },
 
   advantages: {
+    eyebrow: 'WHY HUAZHIYU',
     heading: '为什么选择华之喻',
-    intro: '编辑式导语占位:用两三句话概括差异化定位,最终文案待批准。',
+    leadPre: '从技术理解，',
+    leadAccent: '到权利落地',
+    intro: '好的知识产权服务，不只是按流程递交材料。',
     items: [
-      { index: '01', title: '差异化优势占位一', desc: '一句展开说明占位。' },
-      { index: '02', title: '差异化优势占位二', desc: '一句展开说明占位。' },
-      { index: '03', title: '差异化优势占位三', desc: '一句展开说明占位。' },
+      {
+        index: '01',
+        title: '懂技术，才能写清保护边界',
+        desc: '覆盖多学科技术领域，准确提炼创新点与保护重点。',
+      },
+      {
+        index: '02',
+        title: '专业人员，直接参与关键环节',
+        desc: '由具备审查、代理或研发背景的专业人员直接参与。',
+      },
+      {
+        index: '03',
+        title: '围绕项目目标，而非止于材料递交',
+        desc: '结合实际需求，兼顾授权、布局与后续风险。',
+      },
     ],
   },
 

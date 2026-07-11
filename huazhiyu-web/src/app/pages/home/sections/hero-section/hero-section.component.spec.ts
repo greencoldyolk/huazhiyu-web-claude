@@ -18,7 +18,26 @@ describe('HeroSectionComponent', () => {
     const fixture = TestBed.createComponent(HeroSectionComponent);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
+    const titleLines = [...compiled.querySelectorAll('.hero__title-line')];
     expect(compiled.querySelectorAll('h1').length).toBe(1);
+    expect(titleLines.map((line) => line.textContent?.trim())).toEqual([
+      '专业的 知识产权服务，',
+      '覆盖从申请到布局的关键环节',
+    ]);
+    expect(compiled.querySelector('.hero__eyebrow')?.textContent?.trim()).toBe('华之喻知识产权');
+  });
+
+  it('should emphasize only the two approved phrases in the supporting copy', async () => {
+    const fixture = TestBed.createComponent(HeroSectionComponent);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const lead = compiled.querySelector('.hero__lead');
+    const emphasized = [...compiled.querySelectorAll('.hero__lead-emphasis')];
+
+    expect(lead?.textContent?.replace(/\s/g, '')).toBe(
+      '围绕专利申请、检索分析、审查答复与专利布局，为企业、高校及科研团队提供专业、务实的知识产权支持。',
+    );
+    expect(emphasized.map((element) => element.textContent)).toEqual(['专利申请', '专利布局']);
   });
 
   it('should render the approved Hero artwork with stable dimensions', async () => {
