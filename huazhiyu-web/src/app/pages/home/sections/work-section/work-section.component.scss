@@ -1,201 +1,335 @@
 @use "breakpoints" as bp;
 
-// 05 代表性工作 — 白/冷白段(docs/design/03)。按 mock 还原:
-// 横向主推面板(两端淡蓝→中间白),右侧两张白卡各占一半高度,
-// 中间时间线:顶端琥珀空心圈 + 中点实心灰点。
-.work {
-  background: var(--surface-cool-50);
+// 05 技术领域与行业经验 — 左白右蓝雾双栏(机械 3D 齿轮版规格)。
+// 左:信息区;右:蓝雾独立视觉区(品牌 indigo 浅端;明确垂直分区,
+// 仅一道极弱内阴影缓冲)。金色只用于:激活 tab 下划线、编号、小箭头、齿面金环。
+.fields {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
 
-  // mock 布局:窄左栏(≈1/6 容器宽)+ 内容右移;
-  // 左栏标题为小号标签,编号才是视觉主体(mock 尺寸)
-  &__layout {
+  &__inner {
     display: grid;
-    gap: var(--space-4);
-    align-items: start;
 
     @include bp.up(md) {
-      grid-template-columns: minmax(150px, 2fr) 10fr;
-      gap: var(--space-5);
+      grid-template-columns: minmax(0, 56fr) minmax(0, 44fr);
+      min-height: 640px;
     }
   }
 
-  &__head {
-    gap: var(--space-1);
+  // ---- 左:信息区(左缘与全站容器对齐) ----
+  &__content {
+    display: grid;
+    justify-items: start;
+    align-content: center;
+    padding-block: clamp(44px, 6vw, 76px);
+    padding-inline: 20px;
 
     @include bp.up(md) {
-      margin-bottom: 0;
+      padding-inline-start: max(24px, calc(50vw - 620px));
+      padding-inline-end: clamp(32px, 4vw, 72px);
+    }
+  }
+
+  &__eyebrow {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 12.5px;
+    letter-spacing: 0.22em;
+    color: #9aa0a8;
+    font-weight: 600;
+  }
+
+  &__eyebrow-num {
+    font-size: 12.5px;
+    color: rgba(217, 154, 36, 0.85);
+    letter-spacing: 0.08em;
+  }
+
+  &__heading {
+    margin-top: 18px;
+    color: #202326;
+    font-size: clamp(30px, 3.4vw, 50px);
+    font-weight: 650;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+
+  &__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 22px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #40444b;
+    text-decoration: none;
+
+    &:hover .fields__more-arrow {
+      transform: translate(2px, -2px);
+    }
+  }
+
+  &__more-arrow {
+    width: 15px;
+    height: 15px;
+    color: #d99a24;
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  // ---- Tabs ----
+  // 四个 tab 文案较长(如「生物医药 / 生命科学」):内容宽度驱动、不等宽、
+  // 强制单行;窄桌面收紧 gap 与字号,不足时横向滚动(隐藏滚动条)。
+  &__tabs {
+    display: flex;
+    gap: clamp(16px, 2vw, 34px);
+    margin-top: 44px;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 1px solid rgba(25, 30, 40, 0.08);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__tab {
+    position: relative;
+    flex-shrink: 0;
+    padding: 10px 2px 14px;
+    background: none;
+    border: 0;
+    font-size: 17px;
+    color: #6b7077;
+    white-space: nowrap;
+    transition: color 200ms ease;
+
+    @media (min-width: 768px) and (max-width: 1249.98px) {
+      font-size: 15px;
     }
 
-    .section-number {
-      font-size: 2.5rem;
+    // active line 宽度跟随文字(tab 本身即内容宽),由中心展开
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      border-radius: 1px;
+      background: #d99a24;
+      transform: scaleX(0);
+      opacity: 0;
+      transition:
+        transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 180ms ease;
     }
 
-    h2 {
-      font-size: 1rem;
+    @media (hover: hover) {
+      &:hover {
+        color: #40444b;
+      }
+
+      // hover 只给一条 60% 宽、35% 透明度的弱预览线
+      &:hover:not(.is-active)::after {
+        transform: scaleX(0.6);
+        opacity: 0.35;
+      }
+    }
+
+    &.is-active {
+      color: #202326;
       font-weight: 600;
-      color: var(--ink-700);
+
+      &::after {
+        transform: scaleX(1);
+        opacity: 1;
+      }
     }
 
-    .section-intro {
-      font-size: var(--font-size-small);
+    &:focus-visible {
+      outline: none;
+      border-radius: 6px;
+      box-shadow: 0 0 0 3px rgba(217, 154, 36, 0.22);
     }
   }
 
-  &__grid {
+  // ---- 四条领域内容 ----
+  &__list {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  &__item {
     display: grid;
-    gap: var(--space-4);
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: start;
+    padding-block: 24px;
+    border-bottom: 1px solid rgba(25, 30, 40, 0.08);
 
-    // 桌面:8 列主推 + 4 列次要,等高拉伸(次卡各占一半)
-    @include bp.up(md) {
-      grid-template-columns: 8fr 4fr;
-      gap: var(--space-5);
-      align-items: stretch;
+    &:last-child {
+      border-bottom: 0;
     }
   }
 
-  // ---- 主推面板:横向、更矮;两端淡蓝 → 中间白(mock)----
-  &__featured {
+  &__item-num {
+    font-size: clamp(28px, 2.5vw, 38px);
+    font-weight: 500;
+    line-height: 1.12;
+    color: rgba(201, 151, 63, 0.8);
+    padding-inline-end: 24px;
+    border-inline-end: 1px solid rgba(25, 30, 40, 0.1);
+  }
+
+  &__item-body {
+    display: grid;
+    gap: 6px;
+  }
+
+  &__item-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #202326;
+    line-height: 1.35;
+  }
+
+  &__item-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #6b7077;
+    max-width: 34em;
+  }
+
+  // ---- 右:蓝雾独立视觉区(V2,推荐默认) ----
+  // 三版对比与取舍见 docs/fields-bg-versions.html:
+  //  V2 蓝雾(当前) —— 品牌 indigo 浅端,中间调托白齿轮,深色重锤留给 06 CTA;
+  //  V1 深靛蓝(惊艳) / V3 浅灰优化(保守)完整样式在下方注释块,整段替换即可。
+  &__side {
     position: relative;
     overflow: hidden;
     display: grid;
-    gap: var(--space-4);
-    align-items: center;
-    padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1.5rem, 3vw, 2.5rem);
-    background: linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--brand-blue-500) 18%, white) 0%,
-      var(--surface-white) 50%,
-      color-mix(in srgb, var(--brand-blue-500) 18%, white) 100%
-    );
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-lift);
+    place-items: center;
+    background:
+      radial-gradient(circle at 60% 42%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 54%),
+      linear-gradient(168deg, #dde4f0 0%, #cbd5e6 100%);
+    box-shadow: inset 24px 0 40px rgba(18, 45, 120, 0.05); // 极弱内阴影缓冲硬切
 
-    @include bp.up(sm) {
-      grid-template-columns: auto 1fr;
-      gap: var(--space-5);
-    }
-
-    // 局部材质(Phase 4):hover 轻微位移;无大缩放
+    // 极淡结构网格(可选项,若像后台可删)
     &::before {
       content: "";
       position: absolute;
       inset: 0;
+      opacity: 0.09;
+      background-image:
+        linear-gradient(rgba(30, 60, 130, 0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 60, 130, 0.5) 1px, transparent 1px);
+      background-size: 32px 32px;
+      -webkit-mask-image: radial-gradient(circle at 58% 46%, #000 0%, transparent 66%);
+      mask-image: radial-gradient(circle at 58% 46%, #000 0%, transparent 66%);
       pointer-events: none;
-      background: repeating-linear-gradient(135deg, rgb(18 45 120 / 0.024) 0 1px, transparent 1px 14px);
-      transition: background-position 320ms var(--ease-standard);
     }
 
-    @media (hover: hover) {
-      &:hover::before {
-        background-position: 12px 0;
-      }
-    }
-  }
+    /* ---- V1 深靛蓝(惊艳版)。启用前先决定 06 CTA 面板如何让位,
+       并重调其余三个领域组件配色(它们按浅底设计) ——
+    background: radial-gradient(640px 540px at 58% 40%, #22408e 0%, #16296b 50%, #0c1a4e 100%);
+    box-shadow: none;
 
-  &__featured-side {
-    display: grid;
-    justify-items: start;
-    gap: var(--space-1);
-  }
-
-  &__featured-index {
-    font-size: clamp(3.5rem, 6vw, 5.5rem);
-    font-weight: 700;
-    line-height: 0.9;
-    color: rgb(18 45 120 / 0.14);
-  }
-
-  // 「重点案例」小白色胶囊章(小状态 chip,允许的 pill 用法)
-  &__featured-chip {
-    padding: 0.3em 0.9em;
-    background: var(--surface-white);
-    border-radius: 999px;
-    font-size: var(--font-size-small);
-    font-weight: 600;
-    color: var(--ink-700);
-    box-shadow: var(--shadow-lift);
-  }
-
-  &__featured-body {
-    display: grid;
-    gap: var(--space-1);
-    justify-items: start;
-  }
-
-  &__featured-summary {
-    color: var(--ink-550);
-    max-width: 38em;
-  }
-
-  // ---- 次要列表:两张白卡各占一半高;时间线在左 ----
-  &__secondary {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    position: relative;
-    padding-inline-start: var(--space-3);
-    border-inline-start: 1px solid var(--border-medium); // 纵向时间线
-    display: grid;
-    grid-template-rows: 1fr 1fr; // 正好平分,分界线在主面板半高处
-    gap: var(--space-3);
-
-    @include bp.down(md) {
-      grid-template-rows: none;
-    }
-
-    // 顶端:琥珀空心圈(全段唯一琥珀点)
     &::before {
-      content: "";
-      position: absolute;
-      inset-inline-start: -5.5px;
-      top: 2px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 2px solid var(--amber-line);
-      background: var(--surface-cool-50);
+      opacity: 0.1;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
     }
 
-    // 中点:实心灰点,落在两卡分界线高度
     &::after {
       content: "";
       position: absolute;
-      inset-inline-start: -4px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--ink-550);
+      left: 12%;
+      right: 12%;
+      bottom: 6%;
+      height: 26%;
+      background: radial-gradient(closest-side, rgba(78, 124, 240, 0.28), transparent 72%);
+      filter: blur(8px);
+      pointer-events: none;
+    }
+    ---- */
+
+    /* ---- V3 浅灰优化(保守版) ——
+    background:
+      radial-gradient(circle at 62% 38%, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 50%),
+      radial-gradient(120% 110% at 50% 50%, transparent 55%, rgba(96, 104, 118, 0.1) 100%),
+      linear-gradient(180deg, #eef0f2 0%, #e6e9ed 100%);
+    box-shadow: inset 24px 0 40px rgba(34, 40, 48, 0.03);
+    ---- */
+
+    // 移动/竖屏平板:变为底部视觉区
+    @include bp.down(md) {
+      min-height: 280px;
+      padding: 28px 20px 40px;
+      box-shadow: none;
+    }
+
+    @media (min-width: 700px) and (max-width: 1023.98px) {
+      min-height: 360px;
     }
   }
 
-  &__secondary-item {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--space-3);
-    align-items: center;
-    padding: var(--space-3);
-    background: var(--surface-white);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius-card);
-  }
+}
 
-  &__secondary-index {
-    font-size: clamp(1.75rem, 2.6vw, 2.25rem);
-    font-weight: 700;
-    line-height: 1;
-    color: rgb(18 45 120 / 0.16);
+// ---- 切换入场动画(奇偶两组同款,保证每次重放) ----
+@keyframes hzy-fields-in-a {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
+}
 
-  &__secondary-body {
-    display: grid;
-    gap: 0.375rem;
-    justify-items: start;
+@keyframes hzy-fields-in-b {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
+}
 
-  &__secondary-title {
-    font-size: 1.05rem;
+.fields__list.anim-a {
+  animation: hzy-fields-in-a 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fields__list.anim-b {
+  animation: hzy-fields-in-b 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+// 右区内容淡入(不位移,避免与灰底错位)
+@keyframes hzy-fields-side-a {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes hzy-fields-side-b {
+  from {
+    opacity: 0;
+  }
+}
+
+.fields__side.anim-a > * {
+  animation: hzy-fields-side-a 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fields__side.anim-b > * {
+  animation: hzy-fields-side-b 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fields__list.anim-a,
+  .fields__list.anim-b,
+  .fields__side.anim-a > *,
+  .fields__side.anim-b > * {
+    animation: none;
   }
 }

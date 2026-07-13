@@ -1,0 +1,158 @@
+@use "breakpoints" as bp;
+
+// 机械抽象组件 — 3D 等距齿轮。
+// 核心技巧:外层管姿态(rotate(-20deg) rotateX(38deg) + preserve-3d),
+// 内层只做 2D rotate() —— 投影后等价于绕自身轴的真 3D 旋转;
+// 厚度由多层 translateZ 复制叠出(层色见组件 TS 的色带数组)。
+// 视角变量:--tiltX 越小越"立"、--lean 控制屏幕内对角动势。
+:host {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mechanical-visual {
+  --tiltX: 38deg;
+  --lean: -20deg;
+
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  // 视觉中心略偏右、略偏下(spec §8)
+  translate: 3% 2.5%;
+}
+
+.iso-scene {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  perspective: 1700px;
+}
+
+.iso-float {
+  width: min(66%, 420px);
+  aspect-ratio: 1;
+  transform-style: preserve-3d;
+  animation: hzy-mech-float 7s ease-in-out infinite;
+
+  @media (min-width: 900px) and (max-width: 1199.98px) {
+    width: min(74%, 360px);
+  }
+
+  @include bp.down(sm) {
+    width: min(72vw, 300px);
+    animation: none; // 手机端关闭整体浮动,仅保留慢速旋转
+  }
+}
+
+.iso-plane {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  // 左项最后作用于屏幕坐标:先后仰(rotateX),再整体对角一歪(rotate)
+  transform: rotate(var(--lean)) rotateX(var(--tiltX));
+
+  > * {
+    position: absolute;
+    inset: 0;
+  }
+}
+
+// 投影:落在齿轮下方平面,略偏移
+.iso-shadow {
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(20 35 70 / 0.34), rgb(20 35 70 / 0) 72%);
+  filter: blur(9px);
+  transform: translateZ(-22px) translate(6px, 14px) scale(0.94);
+}
+
+// 虚线参考环:轻微独立倾角 + 反向慢转
+.dash-tilt {
+  transform: translateZ(4px) rotateX(20deg);
+  transform-style: preserve-3d;
+}
+
+.dash-ring {
+  position: absolute;
+  inset: 0;
+  animation: hzy-mech-spin-rev 90s linear infinite;
+}
+
+// 齿轮主体:整组 28s 顺时针;各层静态 translateZ 由模板内联
+.gear-spin {
+  transform-style: preserve-3d;
+  animation: hzy-mech-spin 28s linear infinite;
+
+  svg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .gear-face {
+    transform: translateZ(24px);
+  }
+
+  .hub-top {
+    transform: translateZ(38px);
+  }
+}
+
+// 齿面金环与金点:与 tab 下划线、编号同源的品牌金
+.gear-face-ring {
+  stroke: var(--amber-line, #d6a14a);
+}
+
+.marker-lift {
+  transform: translateZ(25.5px);
+}
+
+.marker {
+  position: absolute;
+  inset: 0;
+  animation: hzy-mech-spin 20s linear infinite;
+}
+
+.marker-halo {
+  fill: rgb(214 161 74 / 0.22);
+}
+
+.marker-dot {
+  fill: var(--amber-line, #d6a14a);
+}
+
+@keyframes hzy-mech-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hzy-mech-spin-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes hzy-mech-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iso-float,
+  .dash-ring,
+  .gear-spin,
+  .marker {
+    animation: none !important;
+  }
+}

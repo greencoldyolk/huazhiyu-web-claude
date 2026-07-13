@@ -1,0 +1,168 @@
+@use "breakpoints" as bp;
+
+// 生物医药抽象组件 — 3D 等距鼓面胶囊(280×120,鼓高 42)。
+// 与族内平盘组件同一台相机与技法:外层管姿态(rotate(-20deg) rotateX(38deg)
+// + preserve-3d);24 层轮廓沿四分之一圆弧逐层收缩,叠出饱满枕形曲面;
+// 整颗 28s 慢转,金点沿冠面内嵌环 offset-path 巡行(20s),整体 7s 浮动。
+// 长圆投影置于旋转组内,随胶囊同转避免长条影子静止穿帮。
+:host {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.biomedical-visual {
+  --tiltX: 38deg;
+  --lean: -20deg;
+
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  // 视觉中心略偏右、略偏下(与族内其他组件一致)
+  translate: 3% 2.5%;
+}
+
+.iso-scene {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  perspective: 1700px;
+}
+
+.iso-float {
+  width: min(72%, 450px);
+  aspect-ratio: 1;
+  transform-style: preserve-3d;
+  animation: hzy-bio-float 7s ease-in-out infinite;
+
+  @media (min-width: 900px) and (max-width: 1199.98px) {
+    width: min(78%, 390px);
+  }
+
+  @include bp.down(sm) {
+    width: min(72vw, 300px);
+    animation: none; // 手机端关闭整体浮动,仅保留慢速旋转
+  }
+}
+
+.iso-plane {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotate(var(--lean)) rotateX(var(--tiltX));
+
+  > * {
+    position: absolute;
+    inset: 0;
+  }
+}
+
+// 虚线参考环:轻微独立倾角 + 反向慢转(族不变量)
+.dash-tilt {
+  transform: translateZ(4px) rotateX(20deg);
+  transform-style: preserve-3d;
+}
+
+.dash-ring {
+  position: absolute;
+  inset: 0;
+  animation: hzy-bio-spin-rev 90s linear infinite;
+}
+
+// 整颗胶囊 28s 旋转:投影 / 囊体 / 冠面 / 金点同一坐标系
+.cap-spin {
+  transform-style: preserve-3d;
+  animation: hzy-bio-spin 28s linear infinite;
+
+  > svg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .cap-face {
+    transform: translateZ(42px);
+  }
+}
+
+// 长圆投影(随转)
+.cap-shadow {
+  position: absolute;
+  inset: 27% 9%;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgb(20 35 70 / 0.34), rgb(20 35 70 / 0) 78%);
+  filter: blur(10px);
+  transform: translateZ(-22px) translate(6px, 14px);
+}
+
+// 金色内嵌环与金点:与 tab 下划线、编号同源的品牌金
+.gold-ring {
+  stroke: var(--amber-line, #d6a14a);
+}
+
+.cap-lift {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(43.5px);
+
+  svg {
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.cap-dot {
+  offset-path: path("M -80 -20 L 80 -20 A 20 20 0 0 1 80 20 L -80 20 A 20 20 0 0 1 -80 -20 Z");
+  offset-rotate: 0deg;
+  animation: hzy-bio-patrol 20s linear infinite;
+}
+
+.cap-dot-halo {
+  fill: rgb(214 161 74 / 0.22);
+}
+
+.cap-dot-core {
+  fill: var(--amber-line, #d6a14a);
+}
+
+@keyframes hzy-bio-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hzy-bio-spin-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes hzy-bio-patrol {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes hzy-bio-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iso-float,
+  .dash-ring,
+  .cap-spin,
+  .cap-dot {
+    animation: none !important;
+  }
+}

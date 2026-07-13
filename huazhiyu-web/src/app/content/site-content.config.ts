@@ -12,6 +12,10 @@ export const SITE_CONTENT = {
   siteName: {
     zh: '华之喻', // 来源:现有 logo,最终 SVG logo 资产待提供(docs/design/10 第 12 条)
     en: 'Huazhiyu',
+    // 注册全称(来源:现有 logo/logoAlt)。头部只显示三字简称,全称在 footer 展示
+    full: '武汉华之喻知识产权代理有限公司',
+    enFull: 'Wuhan Huazhiyu Intellectual Property Agency Ltd.',
+    slogan: '高端布局 · 全球护航', // 来源:2025 宣传册封面
   },
   // 现有 logo 上的全称(来源:assets/reference/current-logo.png)
   logoAlt: '武汉华之喻知识产权代理有限公司 Wuhan Huazhiyu Intellectual Property Agency Ltd.',
@@ -30,7 +34,8 @@ export const SITE_CONTENT = {
   },
 
   hero: {
-    eyebrow: '华之喻知识产权',
+    // 首屏眉行展示注册全称(用户要求 2026-07-13;定位大标题仍为视觉主角)
+    eyebrow: '武汉华之喻知识产权代理有限公司',
     titlePre: '专业的 ',
     titleAccent: '知识产权服务',
     titlePost: '，',
@@ -92,29 +97,93 @@ export const SITE_CONTENT = {
   },
 
   evidence: {
+    eyebrow: 'VERIFIED PERFORMANCE',
     heading: '专业依据',
-    intro: '导语占位:2–3 条真实事实,数据经确认后填入。',
-    // 不得发明数据:value 一律用占位文字,真实数字确认后替换
-    facts: [
-      { value: '事实占位', label: '事实说明占位(真实数据待确认)' },
-      { value: '事实占位', label: '事实说明占位(真实数据待确认)' },
-      { value: '事实占位', label: '事实说明占位(真实数据待确认)' },
+    lead: '用长期、可核验的结果说明专业能力',
+    intro: '以公开榜单和持续稳定的授权表现，呈现华之喻的服务质量。',
+    metrics: [
+      {
+        index: '01',
+        label: '2024 发明专利授权率百强榜',
+        // 主次与宣传册一致:湖北 TOP1 为主打,全国 TOP10 为辅
+        primaryValue: '湖北 TOP 1',
+        secondaryValue: '全国 TOP 10',
+        description: '入选全国代理所发明专利授权率百强榜。',
+        metadata: null,
+      },
+      {
+        index: '02',
+        label: '高校发明专利',
+        primaryValue: '连续 3 年',
+        secondaryValue: '授权率超过 90%',
+        description: '所代理高校发明专利授权率连续三年超过90%。',
+        metadata: null,
+      },
+      {
+        index: '03',
+        label: '涉外专利',
+        primaryValue: '连续 5 年',
+        secondaryValue: '授权率超过 90%',
+        description: '涉外专利授权率连续五年超过90%。',
+        metadata: '美 / 日 / 欧申请占比 90% · 发明专利占比 95%',
+      },
     ],
+    // 资质荣誉(来源:2025 宣传册"资质荣誉/Honor",表述按原文;颁发机构全称待业主核对)
+    honorsHeading: '资质荣誉',
+    honors: [
+      { scope: '全国', title: 'A+ 信用等级', issuer: '专利代理师协会' },
+      { scope: '湖北省', title: 'AAAAA 级专利代理机构', issuer: null },
+      { scope: '湖北省', title: '专利导航服务基地唯一入选代理机构', issuer: null },
+      { scope: '武汉', title: '知识产权保护中心专利导航服务机构', issuer: null },
+      { scope: '湖北省', title: '专利申请文件质量抽查优秀机构', issuer: null },
+    ],
+    // 句末"资质荣誉以颁发机构公示为准"为合规性补写,措辞待业主确认
+    source: '数据来源：HimmPat，统计口径以原榜单及公司宣传资料为准；资质荣誉以颁发机构公示为准。',
   },
 
   work: {
-    heading: '代表性工作',
-    intro: '导语占位,最终文案待批准。',
-    featured: {
-      index: '01',
-      category: '类别占位',
-      title: '代表性工作标题占位',
-      summary: '两三句概述占位:背景、动作与结果的骨架,真实案例经确认后替换。',
-      link: '查看详情(占位)',
-    },
-    secondary: [
-      { index: '02', title: '次要工作条目占位一', link: '查看详情(占位)' },
-      { index: '03', title: '次要工作条目占位二', link: '查看详情(占位)' },
+    eyebrow: 'INDUSTRY EXPERIENCE',
+    heading: '技术领域与行业经验',
+    more: '查看更多领域能力',
+    // 四个同级技术领域;右侧配图为同族抽象 SVG 组件,按 field.id 一一对应。
+    // tab 文案规则:「/」前后各留一个空格,整体单行展示、不得拆开或缩写。
+    fields: [
+      {
+        id: 'mechanical', label: '机械 / 高端装备',
+        items: [
+          { title: '高端装备', desc: '面向精密机械、成套设备与核心部件提供专利申请与布局支持。' },
+          { title: '自动化系统', desc: '覆盖控制系统、生产线方案与智能制造相关技术成果保护。' },
+          { title: '结构改进', desc: '围绕机构优化、工艺改良与功能升级进行挖掘和专利培育。' },
+          { title: '项目配套', desc: '支持研发项目申报、验收与成果转化过程中的知识产权准备。' },
+        ],
+      },
+      {
+        id: 'electrical', label: '电学 / 通信技术',
+        items: [
+          { title: '电子系统', desc: '覆盖电路设计、模块集成与电子设备相关创新成果保护。' },
+          { title: '通信技术', desc: '支持无线通信、信号传输、网络架构与终端技术专利布局。' },
+          { title: '控制与算法实现', desc: '面向嵌入式控制、数据处理与软硬件协同方案提供申请支持。' },
+          { title: '光电与信息处理', desc: '适配光学检测、传感、图像与信息处理相关技术成果转化。' },
+        ],
+      },
+      {
+        id: 'chemical', label: '化学 / 材料工程',
+        items: [
+          { title: '化学工艺', desc: '面向配方优化、反应工艺与流程改进开展专利挖掘与申请。' },
+          { title: '材料开发', desc: '支持高分子、金属、无机及复合材料相关成果保护与布局。' },
+          { title: '性能改良', desc: '围绕强度、稳定性、耐久性与功能材料应用进行专利培育。' },
+          { title: '工程应用', desc: '服务材料制备、工艺放大与产业化应用过程中的知识产权安排。' },
+        ],
+      },
+      {
+        id: 'biomedical', label: '生物医药 / 生命科学',
+        items: [
+          { title: '生物医药', desc: '支持生物制剂、药物研发与医药相关技术方案的专利保护。' },
+          { title: '医疗器械', desc: '面向诊疗设备、检测装置与医工结合成果提供申请支持。' },
+          { title: '生命科学研究', desc: '覆盖实验技术、检测方法与科研成果转化过程中的专利布局。' },
+          { title: '技术转化配套', desc: '服务高校、科研团队与创新项目在申报、转化环节中的知识产权准备。' },
+        ],
+      },
     ],
   },
 
@@ -137,7 +206,16 @@ export const SITE_CONTENT = {
     },
   },
 
+  // 联系信息(来源:2025 宣传册末页"联系我们")
+  contact: {
+    orgCode: '42267', // 机构代码(宣传册封面)
+    address: '湖北省武汉市东湖高新区佳园路2号高科大厦8058室',
+    tel: '027-87003155',
+    email: 'hzyip@huazhiyu.cn',
+    website: 'www.huazhiyu.cn',
+  },
+
   placeholders: {
-    footerNote: '页脚信息占位(备案号、联系方式等待确认)',
+    footerNote: '© 武汉华之喻知识产权代理有限公司 · 备案号待补',
   },
 } as const;

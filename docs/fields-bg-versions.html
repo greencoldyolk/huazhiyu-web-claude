@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 05 视觉面板背景 · 三版对比</title><style>
+  :root { --gold:#d6a14a; --ink:#202326; --ink2:#6b7077; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+         background:#fbfbfc; color:var(--ink); line-height:1.7; padding:52px 28px 80px; }
+  .wrap { max-width:1240px; margin:0 auto; }
+  h1 { font-size:28px; letter-spacing:.01em; }
+  .sub { color:var(--ink2); margin-top:8px; font-size:14.5px; max-width:860px; }
+
+  /* 页面色彩叙事条 */
+  .story { display:flex; gap:10px; margin:26px 0 8px; flex-wrap:wrap; }
+  .sw { flex:1 1 120px; min-width:118px; border-radius:12px; border:1px solid #e7e9f0; padding:10px 12px 9px; font-size:11.5px; color:#57606d; }
+  .sw b { display:block; font-size:12px; color:#2a3038; margin-bottom:2px; }
+  .sw.dark { color:rgba(255,255,255,.75); } .sw.dark b { color:#fff; }
+  .story-note { font-size:13px; color:var(--ink2); margin:6px 0 40px; }
+  .story-note b { color:#8a6420; }
+
+  section.ver { margin-top:46px; }
+  .ver-head { display:flex; align-items:baseline; gap:12px; margin-bottom:14px; }
+  .ver-head h2 { font-size:20px; }
+  .ver-head .tag { font-size:12px; color:#fff; background:var(--gold); border-radius:999px; padding:3px 12px; letter-spacing:.1em; }
+  .ver-head .tag.gray { background:#98a0ac; }
+
+  .mock { position:relative; display:grid; border:1px solid #e6e9f0; border-radius:20px; overflow:hidden; background:#fff; box-shadow:0 18px 44px -28px rgb(18 45 120 / .16); }
+  @media(min-width:900px){ .mock{ grid-template-columns:56fr 44fr; min-height:560px; } }
+  .mock-left { padding:clamp(28px,4vw,56px); display:grid; align-content:center; justify-items:start; }
+  .eyebrow { font-size:12px; letter-spacing:.22em; color:#9aa0a8; font-weight:600; display:flex; gap:10px; align-items:baseline; }
+  .eyenum { color:rgba(217,154,36,.85); }
+  .mock-heading { margin-top:14px; font-size:clamp(26px,3vw,40px); font-weight:650; letter-spacing:-.015em; line-height:1.15; }
+  .more { display:inline-flex; align-items:center; gap:7px; margin-top:16px; font-size:14px; font-weight:500; color:#40444b; }
+  .more svg { width:14px; height:14px; color:#d99a24; }
+  .tabs { display:flex; gap:clamp(14px,1.8vw,30px); margin-top:32px; border-bottom:1px solid rgba(25,30,40,.08); width:100%; overflow:hidden; }
+  .tab { padding:8px 2px 12px; font-size:15px; color:#6b7077; white-space:nowrap; position:relative; }
+  .tab.is-active { color:#202326; font-weight:600; }
+  .tab.is-active::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; border-radius:1px; background:#d99a24; }
+  .items { list-style:none; width:100%; margin-top:6px; }
+  .items li { display:grid; grid-template-columns:auto 1fr; gap:20px; padding-block:16px; border-bottom:1px solid rgba(25,30,40,.08); }
+  .items li:last-child { border-bottom:0; }
+  .num { font-size:26px; font-weight:500; color:rgba(201,151,63,.8); padding-right:20px; border-right:1px solid rgba(25,30,40,.1); line-height:1.15; }
+  .items h4 { font-size:16.5px; font-weight:600; }
+  .items p { font-size:13.5px; color:#6b7077; margin-top:3px; }
+
+  .mock-side { position:relative; overflow:hidden; display:grid; place-items:center; min-height:420px; }
+  .chip { position:absolute; right:16px; top:13px; z-index:6; font-size:11.5px; letter-spacing:.14em; }
+  .badge { position:absolute; top:18px; left:18px; z-index:7; background:var(--gold); color:#fff; font-size:12px; letter-spacing:.12em; padding:4px 12px; border-radius:999px; }
+
+  /* ============ V2 蓝雾(推荐) ============ */
+  .side-v2 { background:
+      radial-gradient(circle at 60% 42%, rgba(255,255,255,.5), rgba(255,255,255,0) 54%),
+      linear-gradient(168deg, #dde4f0 0%, #cbd5e6 100%);
+    box-shadow: inset 24px 0 40px rgb(18 45 120 / .05); }
+  .side-v2::before { content:""; position:absolute; inset:0; opacity:.09; pointer-events:none;
+    background-image:linear-gradient(rgba(30,60,130,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(30,60,130,.5) 1px,transparent 1px);
+    background-size:32px 32px;
+    -webkit-mask-image:radial-gradient(circle at 58% 46%,#000 0%,transparent 66%);
+    mask-image:radial-gradient(circle at 58% 46%,#000 0%,transparent 66%); }
+  .side-v2 .chip { color:#4d5f85; }
+
+  /* ============ V1 深靛蓝(惊艳) ============ */
+  .side-v1 { background:
+      radial-gradient(640px 540px at 58% 40%, #22408e 0%, #16296b 50%, #0c1a4e 100%); }
+  .side-v1::before { content:""; position:absolute; inset:0; opacity:.10; pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);
+    background-size:32px 32px;
+    -webkit-mask-image:radial-gradient(circle at 58% 44%,#000 0%,transparent 62%);
+    mask-image:radial-gradient(circle at 58% 44%,#000 0%,transparent 62%); }
+  .side-v1::after { content:""; position:absolute; left:12%; right:12%; bottom:6%; height:26%;
+    background:radial-gradient(closest-side, rgba(78,124,240,.28), transparent 72%); filter:blur(8px); pointer-events:none; }
+  .side-v1 .chip { color:rgba(255,255,255,.55); }
+
+  /* ============ V3 浅灰优化(保守) ============ */
+  .side-v3 { background:
+      radial-gradient(circle at 62% 38%, rgba(255,255,255,.45), rgba(255,255,255,0) 50%),
+      radial-gradient(120% 110% at 50% 50%, transparent 55%, rgba(96,104,118,.10) 100%),
+      linear-gradient(180deg, #eef0f2 0%, #e6e9ed 100%);
+    box-shadow: inset 24px 0 40px rgba(34,40,48,.03); }
+  .side-v3::before { content:""; position:absolute; inset:0; opacity:.08; pointer-events:none;
+    background-image:linear-gradient(rgba(80,86,94,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(80,86,94,.5) 1px,transparent 1px);
+    background-size:32px 32px;
+    -webkit-mask-image:radial-gradient(circle at 58% 46%,#000 0%,transparent 66%);
+    mask-image:radial-gradient(circle at 58% 46%,#000 0%,transparent 66%); }
+  .side-v3 .chip { color:#9aa1a9; }
+
+  /* ============ 共用 3D 齿轮 ============ */
+  .iso-scene { display:grid; place-items:center; width:100%; height:100%; perspective:1700px; }
+  .iso-float { width:min(72%,360px); aspect-ratio:1; transform-style:preserve-3d; animation:g-float 7s ease-in-out infinite; }
+  .iso-plane { width:100%; height:100%; position:relative; transform-style:preserve-3d; transform:rotate(-20deg) rotateX(38deg); }
+  .iso-plane > * { position:absolute; inset:0; }
+  .iso-shadow { border-radius:50%; filter:blur(9px); transform:translateZ(-22px) translate(6px,14px) scale(.94); }
+  .dash-tilt { transform:translateZ(4px) rotateX(20deg); transform-style:preserve-3d; }
+  .dash-tilt svg { position:absolute; inset:0; animation:g-spin-rev 90s linear infinite; }
+  .gear-spin { transform-style:preserve-3d; animation:g-spin 28s linear infinite; }
+  .gear-spin svg { position:absolute; inset:0; }
+  .marker-lift { transform:translateZ(25.5px); }
+  .marker-lift svg { position:absolute; inset:0; animation:g-spin 20s linear infinite; }
+  @keyframes g-spin { to { transform:rotate(360deg); } }
+  @keyframes g-spin-rev { to { transform:rotate(-360deg); } }
+  @keyframes g-float { 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-8px);} }
+
+  /* 评注卡 */
+  .note { margin-top:16px; background:#fff; border:1px solid #e6e9f0; border-radius:16px; padding:20px 24px; font-size:13.5px; color:#3c424a; }
+  .note b.t { color:var(--ink); }
+  .note ul { list-style:none; margin-top:8px; }
+  .note li { padding-left:20px; position:relative; margin-bottom:4px; }
+  .note li.p::before { content:"✓"; position:absolute; left:0; color:#4e9a6f; font-weight:700; }
+  .note li.c::before { content:"!"; position:absolute; left:0; color:#c0715e; font-weight:800; }
+  .concl { margin-top:52px; background:#fff; border:1px solid #e6e9f0; border-radius:20px; padding:28px 32px; }
+  .concl h2 { font-size:19px; margin-bottom:10px; }
+  .concl p, .concl li { font-size:14px; color:#3c424a; }
+  .concl ol { margin:8px 0 0 20px; }
+  .concl li { margin-bottom:8px; }
+  code { background:#f4f5f8; border:1px solid #e6e9f0; border-radius:6px; padding:1px 7px; font-size:12.5px; color:#274a9b; font-family:"SF Mono",Menlo,Consolas,monospace; }
+  @media (prefers-reduced-motion:reduce){ *{ animation:none !important; } }
+</style></head>
+<body><div class="wrap">
+  <h1>Section 05 视觉面板背景 · 三版对比</h1>
+  <p class="sub">同一只 3D 齿轮，三种面板底色（齿轮色板随底色微调）。判断标准不只是"哪个好看"，而是它在整页色彩叙事里的位置 —— 尤其注意 05 的下一屏就是 06 的深靛蓝 CTA 大面板。</p>
+
+  <div class="story">
+    <div class="sw" style="background:linear-gradient(135deg,#fff 40%,#edf2ff)"><b>01 Hero</b>白底 + 蓝雾氛围</div>
+    <div class="sw" style="background:#f2f5fc"><b>02 服务</b>冷白</div>
+    <div class="sw" style="background:linear-gradient(180deg,#fff,#f8f9fd)"><b>03 优势</b>白 → 冷白</div>
+    <div class="sw" style="background:#f5faf7"><b>04 依据</b>浅绿 <span style="color:#245f50">■</span> 数据面板</div>
+    <div class="sw" style="background:repeating-linear-gradient(45deg,#fff,#fff 6px,#f3f4f6 6px,#f3f4f6 12px)"><b>05 领域</b>← 本次要定的面板</div>
+    <div class="sw dark" style="background:linear-gradient(105deg,#07164a,#122d78 60%,#43389e)"><b>06 咨询 CTA</b>深靛蓝渐变面板</div>
+    <div class="sw dark" style="background:#071638"><b>Footer</b>墨蓝</div>
+  </div>
+  <p class="story-note">整页只有三个色相家族：<b>靛蓝系（品牌）、绿（04 专属）、金（点缀）</b>。05 的面板只要留在靛蓝家族或中性灰里，都不会"杂"。</p>
+
+  <section class="ver">
+    <div class="ver-head"><h2>V2 · 蓝雾面板</h2><span class="tag">推 荐</span></div>
+    <div class="mock mock-v2">
+      <div class="mock-left">
+      <p class="eyebrow"><span class="eyenum">05</span>INDUSTRY EXPERIENCE</p>
+      <h3 class="mock-heading">技术领域与行业经验</h3>
+      <a class="more">查看更多领域能力 <svg viewBox="0 0 20 20" fill="none"><path d="M6 14 L14 6 M8 6 H14 V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="tabs"><span class="tab is-active">机械 / 高端装备</span><span class="tab">电学 / 通信技术</span><span class="tab">化学 / 材料工程</span><span class="tab">生物医药 / 生命科学</span></div>
+      <ol class="items"><li><span class="num">01</span><div><h4>高端装备</h4><p>面向精密机械、成套设备与核心部件提供专利申请与布局支持。</p></div></li><li><span class="num">02</span><div><h4>自动化系统</h4><p>覆盖控制系统、生产线方案与智能制造相关技术成果保护。</p></div></li><li><span class="num">03</span><div><h4>结构改进</h4><p>围绕机构优化、工艺改良与功能升级进行挖掘和专利培育。</p></div></li><li><span class="num">04</span><div><h4>项目配套</h4><p>支持研发项目申报、验收与成果转化过程中的知识产权准备。</p></div></li></ol>
+    </div>
+      <div class="mock-side side-v2">
+        <span class="chip">V2 · 蓝雾 #dde4f0 → #cbd5e6</span>
+        <div class="iso-scene"><div class="iso-float"><div class="iso-plane" id="plane-v2"></div></div></div>
+      </div>
+    </div>
+    <div class="note"><b class="t">思路：把面板从"灰"挪到品牌靛蓝的最浅层，靠中间调托白。</b>
+      <ul>
+        <li class="p">白色齿轮与中间调底色拉开明确的明度差，"看不清"直接解决；金环在冷蓝上也更醒目</li>
+        <li class="p">不新增色相 —— 蓝雾就是品牌 indigo 家族的浅端，页面依旧只有蓝 / 绿 / 金三族</li>
+        <li class="p">为 06 的深靛蓝 CTA 做了"浅蓝 → 深蓝"的铺垫，CTA 仍是全页唯一的深色重锤，节奏顺</li>
+        <li class="p">另外三个领域组件（白色磨砂背板）放上来是毛玻璃效果，基本成立、只需小调</li>
+        <li class="c">戏剧性不如 V1；想要"哇"一下的第一眼冲击，它是克制的</li>
+      </ul></div>
+  </section>
+
+  <section class="ver">
+    <div class="ver-head"><h2>V1 · 深靛蓝面板</h2><span class="tag gray">惊艳版 · 有条件推荐</span></div>
+    <div class="mock mock-v1">
+      <div class="mock-left">
+      <p class="eyebrow"><span class="eyenum">05</span>INDUSTRY EXPERIENCE</p>
+      <h3 class="mock-heading">技术领域与行业经验</h3>
+      <a class="more">查看更多领域能力 <svg viewBox="0 0 20 20" fill="none"><path d="M6 14 L14 6 M8 6 H14 V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="tabs"><span class="tab is-active">机械 / 高端装备</span><span class="tab">电学 / 通信技术</span><span class="tab">化学 / 材料工程</span><span class="tab">生物医药 / 生命科学</span></div>
+      <ol class="items"><li><span class="num">01</span><div><h4>高端装备</h4><p>面向精密机械、成套设备与核心部件提供专利申请与布局支持。</p></div></li><li><span class="num">02</span><div><h4>自动化系统</h4><p>覆盖控制系统、生产线方案与智能制造相关技术成果保护。</p></div></li><li><span class="num">03</span><div><h4>结构改进</h4><p>围绕机构优化、工艺改良与功能升级进行挖掘和专利培育。</p></div></li><li><span class="num">04</span><div><h4>项目配套</h4><p>支持研发项目申报、验收与成果转化过程中的知识产权准备。</p></div></li></ol>
+    </div>
+      <div class="mock-side side-v1">
+        <span class="chip">V1 · 深靛蓝 #22408e → #0c1a4e</span>
+        <div class="iso-scene"><div class="iso-float"><div class="iso-plane" id="plane-v1"></div></div></div>
+      </div>
+    </div>
+    <div class="note"><b class="t">思路：直接用品牌 --brand-indigo-950/800 做一块"珠宝盒"，白齿轮 + 金环对比拉满。</b>
+      <ul>
+        <li class="p">对比最强、最惊艳；金色在深靛蓝上呈首饰级质感，brand echo 也最强</li>
+        <li class="c"><b>最大问题：06 咨询 CTA 就是深靛蓝渐变大面板。</b>05 再放一块，相邻两屏出现两大块深蓝，CTA 的独占性被稀释 —— 从转化角度，页面里"最深的那块"应该留给行动号召</li>
+        <li class="c">四个 tab 共用此面板：另外三个领域组件是按浅底设计的，选它就要整组重调（可以做，是个工作量）</li>
+        <li class="c">04 浅绿 → 深靛蓝的衔接偏硬，需要加过渡带</li>
+      </ul>
+      选它的前提：要么把 06 的 CTA 面板改浅（如香槟金 / 冷白 + 靛蓝按钮），要么接受 05/06 连续两块深蓝的"沉"。</div>
+  </section>
+
+  <section class="ver">
+    <div class="ver-head"><h2>V3 · 浅灰优化</h2><span class="tag gray">保守版</span></div>
+    <div class="mock mock-v3">
+      <div class="mock-left">
+      <p class="eyebrow"><span class="eyenum">05</span>INDUSTRY EXPERIENCE</p>
+      <h3 class="mock-heading">技术领域与行业经验</h3>
+      <a class="more">查看更多领域能力 <svg viewBox="0 0 20 20" fill="none"><path d="M6 14 L14 6 M8 6 H14 V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="tabs"><span class="tab is-active">机械 / 高端装备</span><span class="tab">电学 / 通信技术</span><span class="tab">化学 / 材料工程</span><span class="tab">生物医药 / 生命科学</span></div>
+      <ol class="items"><li><span class="num">01</span><div><h4>高端装备</h4><p>面向精密机械、成套设备与核心部件提供专利申请与布局支持。</p></div></li><li><span class="num">02</span><div><h4>自动化系统</h4><p>覆盖控制系统、生产线方案与智能制造相关技术成果保护。</p></div></li><li><span class="num">03</span><div><h4>结构改进</h4><p>围绕机构优化、工艺改良与功能升级进行挖掘和专利培育。</p></div></li><li><span class="num">04</span><div><h4>项目配套</h4><p>支持研发项目申报、验收与成果转化过程中的知识产权准备。</p></div></li></ol>
+    </div>
+      <div class="mock-side side-v3">
+        <span class="chip">V3 · 浅灰 #eef0f2 → #e6e9ed + 暗角</span>
+        <div class="iso-scene"><div class="iso-float"><div class="iso-plane" id="plane-v3"></div></div></div>
+      </div>
+    </div>
+    <div class="note"><b class="t">思路：不换色相，只修"值"。你现在版本真正的问题不是灰，而是面板在齿轮正后方放了一个白色高光斑（radial at 58% 48%）—— 白齿轮叠白光斑，等于主动抹掉图底关系。</b>
+      <ul>
+        <li class="p">高光移弱移开、底色整体压深一档、四周加极轻暗角，白齿轮立刻显形；其他三个组件完全不用动</li>
+        <li class="p">最安静、零风险，保持你"颜色不要杂"的初衷</li>
+        <li class="c">依旧谈不上惊艳；如果本节想成为页面记忆点，它不够</li>
+      </ul></div>
+  </section>
+
+  <div class="concl">
+    <h2>结论与落地</h2>
+    <ol>
+      <li><b>我的推荐：V2 蓝雾。</b>它同时回答了你的两个诉求 —— "看得清"（中间调托白）和"往深蓝系靠"（进入品牌色家族），又不和 06 的深靛蓝 CTA 抢角色。</li>
+      <li><b>真想要 V1 的惊艳</b>：可以，但请连着决定 06 怎么让位（CTA 面板改浅是最干净的解法），并允许我重调另外三个领域组件的配色。</li>
+      <li>代码里我已把 <code>V2</code> 设为 <code>.fields__side</code> 的默认背景，<code>V1 / V3</code> 的完整样式以注释块附在同一位置，切换只需替换一段。</li>
+      <li>齿轮的金色统一走设计 token <code>--amber-line (#d6a14a)</code>，与 tab 下划线、编号同源。</li>
+    </ol>
+  </div>
+</div>
+<script>
+const GEAR_D = "M104.6 -9.5L131.8 -7.8L131.8 7.8L104.6 9.5L103.0 20.5L100.2 31.3L124.7 43.2L118.8 57.6L93.0 48.8L87.3 58.3L80.6 67.2L98.7 87.7L87.7 98.7L67.2 80.6L58.3 87.3L48.8 93.0L57.6 118.8L43.2 124.7L31.3 100.2L20.5 103.0L9.5 104.6L7.8 131.8L-7.8 131.8L-9.5 104.6L-20.5 103.0L-31.3 100.2L-43.2 124.7L-57.6 118.8L-48.8 93.0L-58.3 87.3L-67.2 80.6L-87.7 98.7L-98.7 87.7L-80.6 67.2L-87.3 58.3L-93.0 48.8L-118.8 57.6L-124.7 43.2L-100.2 31.3L-103.0 20.5L-104.6 9.5L-131.8 7.8L-131.8 -7.8L-104.6 -9.5L-103.0 -20.5L-100.2 -31.3L-124.7 -43.2L-118.8 -57.6L-93.0 -48.8L-87.3 -58.3L-80.6 -67.2L-98.7 -87.7L-87.7 -98.7L-67.2 -80.6L-58.3 -87.3L-48.8 -93.0L-57.6 -118.8L-43.2 -124.7L-31.3 -100.2L-20.5 -103.0L-9.5 -104.6L-7.8 -131.8L7.8 -131.8L9.5 -104.6L20.5 -103.0L31.3 -100.2L43.2 -124.7L57.6 -118.8L48.8 -93.0L58.3 -87.3L67.2 -80.6L87.7 -98.7L98.7 -87.7L80.6 -67.2L87.3 -58.3L93.0 -48.8L118.8 -57.6L124.7 -43.2L100.2 -31.3L103.0 -20.5Z";
+const TICKS = "<line x1=\"86.0\" y1=\"0.0\" x2=\"94.0\" y2=\"0.0\"/><line x1=\"74.5\" y1=\"43.0\" x2=\"81.4\" y2=\"47.0\"/><line x1=\"43.0\" y1=\"74.5\" x2=\"47.0\" y2=\"81.4\"/><line x1=\"0.0\" y1=\"86.0\" x2=\"0.0\" y2=\"94.0\"/><line x1=\"-43.0\" y1=\"74.5\" x2=\"-47.0\" y2=\"81.4\"/><line x1=\"-74.5\" y1=\"43.0\" x2=\"-81.4\" y2=\"47.0\"/><line x1=\"-86.0\" y1=\"0.0\" x2=\"-94.0\" y2=\"0.0\"/><line x1=\"-74.5\" y1=\"-43.0\" x2=\"-81.4\" y2=\"-47.0\"/><line x1=\"-43.0\" y1=\"-74.5\" x2=\"-47.0\" y2=\"-81.4\"/><line x1=\"-0.0\" y1=\"-86.0\" x2=\"-0.0\" y2=\"-94.0\"/><line x1=\"43.0\" y1=\"-74.5\" x2=\"47.0\" y2=\"-81.4\"/><line x1=\"74.5\" y1=\"-43.0\" x2=\"81.4\" y2=\"-47.0\"/>";
+const PAL = {
+  v2: { lo:'#aeb9cc', hi:'#e6eaf1', face:'#f2f4f9', plateStroke:'#e2e7ef', innerRing:'#e2e7ef',
+        ticks:'#ccd3e0', hubLo:'#c6cfdf', hubHi:'#edf0f6', hubTop:'#f5f7fb', hubEdge:'#dde3ee',
+        hubRing:'#e6ebf3', boreOuter:'#a7b0c2', boreInner:'#c2cad9', axle:'#98a2b6',
+        gold:'#d6a14a', halo:'rgba(214,161,74,.22)',
+        dash:'rgba(66,92,148,.38)', dashDot:'rgba(66,92,148,.5)',
+        shadow:'rgba(20,35,70,.34)' },
+  v1: { lo:'#7e8bab', hi:'#e3e8f4', face:'#eef1f9', plateStroke:'#dde3f0', innerRing:'#dfe4f0',
+        ticks:'#c3cbde', hubLo:'#a2adc8', hubHi:'#e8ecf6', hubTop:'#f2f4fb', hubEdge:'#d8deed',
+        hubRing:'#e2e7f3', boreOuter:'#61708f', boreInner:'#7c89a8', axle:'#55638a',
+        gold:'#e0ac57', halo:'rgba(224,172,87,.30)',
+        dash:'rgba(255,255,255,.32)', dashDot:'rgba(255,255,255,.45)',
+        shadow:'rgba(2,8,28,.62)' },
+  v3: { lo:'#bcc2cb', hi:'#e7e9ec', face:'#f0f1f3', plateStroke:'#e0e3e7', innerRing:'#e6e8eb',
+        ticks:'#d7dbdf', hubLo:'#d0d4da', hubHi:'#eff0f2', hubTop:'#f4f5f7', hubEdge:'#e2e5e9',
+        hubRing:'#e8eaed', boreOuter:'#b3b8c0', boreInner:'#cdd2d8', axle:'#a4aab1',
+        gold:'#d6a14a', halo:'rgba(214,161,74,.22)',
+        dash:'rgba(150,158,170,.55)', dashDot:'#c8cdd4',
+        shadow:'rgba(46,54,68,.32)' },
+};
+function mix(c1,c2,t){const h=c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));const[a,b]=[h(c1),h(c2)];
+  return '#'+a.map((v,i)=>Math.round(v+(b[i]-v)*t).toString(16).padStart(2,'0')).join('');}
+function buildGear(planeId, P){
+  const el = document.getElementById(planeId);
+  const uid = planeId.replace(/[^a-z0-9]/gi,'');
+  const svgo = cls => `<svg viewBox="-170 -170 340 340" aria-hidden="true"${cls?` class="${cls}"`:''}>`;
+  let html = `<div class="iso-shadow" style="background:radial-gradient(closest-side, ${P.shadow}, rgba(0,0,0,0) 72%)"></div>`;
+  html += `<div class="dash-tilt">`+svgo('')+
+    `<circle r="165" fill="none" stroke="${P.dash}" stroke-width="1" stroke-dasharray="2.5 9"/>
+     <circle cx="165" cy="0" r="3" fill="${P.dashDot}"/><circle cx="-116.7" cy="-116.7" r="2.4" fill="${P.dashDot}"/></svg></div>`;
+  html += '<div class="gear-spin">';
+  for(let i=0;i<16;i++){const f=mix(P.lo,P.hi,i/15);
+    html += `<svg viewBox="-170 -170 340 340" style="transform:translateZ(${(i*1.5).toFixed(1)}px)"><path d="${GEAR_D}" fill="${f}" stroke="${f}" stroke-width="5" stroke-linejoin="round"/></svg>`;}
+  html += `<svg viewBox="-170 -170 340 340" style="transform:translateZ(24px)">
+      <defs><radialGradient id="sheen-${uid}" cx="38%" cy="34%" r="75%">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity=".9"/><stop offset="60%" stop-color="${P.face}" stop-opacity=".2"/>
+        <stop offset="100%" stop-color="${P.face}" stop-opacity="0"/></radialGradient></defs>
+      <path d="${GEAR_D}" fill="${P.face}" stroke="${P.face}" stroke-width="5" stroke-linejoin="round"/>
+      <circle r="98" fill="url(#sheen-${uid})"/>
+      <circle r="98" fill="none" stroke="${P.gold}" stroke-width="1.4"/>
+      <g stroke="${P.ticks}" stroke-width="1.6" stroke-linecap="round">${TICKS}</g>
+      <circle r="70" fill="none" stroke="${P.innerRing}" stroke-width="1"/></svg>`;
+  for(let i=0;i<6;i++){const f=mix(P.hubLo,P.hubHi,i/5);
+    html += `<svg viewBox="-170 -170 340 340" style="transform:translateZ(${26+i*2}px)"><circle r="54" fill="${f}"/></svg>`;}
+  html += `<svg viewBox="-170 -170 340 340" style="transform:translateZ(38px)">
+      <circle r="54" fill="${P.hubTop}"/><circle r="54" fill="none" stroke="${P.hubEdge}" stroke-width="1"/>
+      <circle r="40" fill="none" stroke="${P.hubRing}" stroke-width="1"/>
+      <circle r="21" fill="${P.boreOuter}"/><circle r="19" cy="-2" fill="${P.boreInner}"/><circle r="8" fill="${P.axle}"/></svg>`;
+  html += '</div>';
+  html += `<div class="marker-lift">`+svgo('')+
+    `<g transform="translate(98 0)"><circle r="8" fill="${P.halo}"/><circle r="3.5" fill="${P.gold}"/></g></svg></div>`;
+  el.innerHTML = html;
+}
+buildGear('plane-v2', PAL.v2);
+buildGear('plane-v1', PAL.v1);
+buildGear('plane-v3', PAL.v3);
+</script>
+</body></html>

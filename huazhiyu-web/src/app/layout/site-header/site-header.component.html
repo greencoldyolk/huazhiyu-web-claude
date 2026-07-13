@@ -1,13 +1,9 @@
 <header class="site-header" [class.site-header--scrolled]="scrolled()">
   <div class="site-container site-header__inner">
-    <a class="site-header__logo" href="/">
-      <img
-        class="site-header__logo-img"
-        src="logo.png"
-        [alt]="content.logoAlt"
-        width="394"
-        height="80"
-      />
+    <a class="site-header__logo" href="/" [attr.aria-label]="content.logoAlt">
+      <!-- 注册商标图形原样保留,仅换色(hzy-mark.png,由 logo.png 裁切重着色) -->
+      <img class="site-header__logo-mark" src="hzy-mark.png" alt="" width="55" height="61" />
+      <span class="site-header__logo-name" aria-hidden="true">{{ content.siteName.zh }}</span>
     </a>
 
     <nav class="site-header__nav" aria-label="主导航">

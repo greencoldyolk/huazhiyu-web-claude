@@ -1,41 +1,79 @@
-<section id="work" class="work section-pad" aria-labelledby="work-title">
-  <div class="site-container work__layout">
-    <header class="section-head work__head" hzyReveal>
-      <span class="section-number" aria-hidden="true">05</span>
-      <h2 id="work-title">{{ content.heading }}</h2>
-      <p class="section-intro">{{ content.intro }}</p>
-    </header>
+<section id="work" class="fields" aria-labelledby="fields-title">
+  <div class="fields__inner">
+    <div class="fields__content">
+      <p class="fields__eyebrow" hzyReveal>
+        <span class="fields__eyebrow-num" aria-hidden="true">05</span>
+        {{ content.eyebrow }}
+      </p>
+      <h2 id="fields-title" class="fields__heading" hzyReveal>{{ content.heading }}</h2>
+      <a class="fields__more" href="#inquiry" hzyReveal>
+        {{ content.more }}
+        <svg class="fields__more-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M6 14 L14 6 M8 6 H14 V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
 
-    <div class="work__grid">
-      <article class="work__featured" hzyReveal>
-        <div class="work__featured-side">
-          <span class="work__featured-index" aria-hidden="true">{{ content.featured.index }}</span>
-          <span class="work__featured-chip">{{ content.featured.category }}</span>
-        </div>
-        <div class="work__featured-body">
-          <h3 class="work__featured-title">{{ content.featured.title }}</h3>
-          <p class="work__featured-summary">{{ content.featured.summary }}</p>
-          <a class="text-link" href="#inquiry">
-            {{ content.featured.link }}
-            <span class="text-link__arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </article>
+      <div class="fields__tabs" role="tablist" aria-label="技术领域" hzyReveal>
+        @for (field of content.fields; track field.id; let i = $index) {
+          <button
+            type="button"
+            role="tab"
+            class="fields__tab"
+            [id]="'field-tab-' + i"
+            [class.is-active]="activeIndex() === i"
+            [attr.aria-selected]="activeIndex() === i"
+            [attr.tabindex]="activeIndex() === i ? 0 : -1"
+            aria-controls="fields-panel"
+            (click)="select(i)"
+            (keydown)="onTablistKeydown($event)"
+          >
+            {{ field.label }}
+          </button>
+        }
+      </div>
 
-      <ul class="work__secondary">
-        @for (item of content.secondary; track item.index) {
-          <li class="work__secondary-item" hzyReveal="stagger-item">
-            <span class="work__secondary-index" aria-hidden="true">{{ item.index }}</span>
-            <div class="work__secondary-body">
-              <h3 class="work__secondary-title">{{ item.title }}</h3>
-              <a class="text-link" href="#inquiry">
-                {{ item.link }}
-                <span class="text-link__arrow" aria-hidden="true">→</span>
-              </a>
+      <ol
+        id="fields-panel"
+        class="fields__list"
+        role="tabpanel"
+        [attr.aria-labelledby]="'field-tab-' + activeIndex()"
+        [class.anim-a]="animTick() % 2 === 0"
+        [class.anim-b]="animTick() % 2 === 1"
+        hzyReveal
+      >
+        @for (item of content.fields[activeIndex()].items; track item.title; let i = $index) {
+          <li class="fields__item">
+            <span class="fields__item-num" aria-hidden="true">{{ i < 9 ? '0' + (i + 1) : i + 1 }}</span>
+            <div class="fields__item-body">
+              <h3 class="fields__item-title">{{ item.title }}</h3>
+              <p class="fields__item-desc">{{ item.desc }}</p>
             </div>
           </li>
         }
-      </ul>
+      </ol>
+    </div>
+
+    <!-- 右:浅灰独立视觉区。四领域同族抽象组件,按 field.id 一一对应 -->
+    <div
+      class="fields__side"
+      [class.anim-a]="animTick() % 2 === 0"
+      [class.anim-b]="animTick() % 2 === 1"
+      aria-hidden="true"
+    >
+      @switch (content.fields[activeIndex()].id) {
+        @case ('electrical') {
+          <hzy-electrical-visual />
+        }
+        @case ('chemical') {
+          <hzy-chemical-visual />
+        }
+        @case ('biomedical') {
+          <hzy-biomedical-visual />
+        }
+        @default {
+          <hzy-mechanical-visual />
+        }
+      }
     </div>
   </div>
 </section>

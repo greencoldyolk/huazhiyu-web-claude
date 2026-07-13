@@ -1,6 +1,35 @@
 <footer class="site-footer">
   <div class="site-container site-footer__inner">
-    <p class="site-footer__name">{{ content.siteName.zh }} · {{ content.siteName.en }}</p>
+    <div class="site-footer__cols">
+      <div class="site-footer__brand">
+        <div class="site-footer__brand-line">
+          <img class="site-footer__mark" src="hzy-mark-light.png" alt="" width="55" height="61" />
+          <span class="site-footer__brand-name">{{ content.siteName.zh }}</span>
+        </div>
+        <p class="site-footer__slogan">{{ content.siteName.slogan }}</p>
+        <p class="site-footer__full-name">{{ content.siteName.full }}</p>
+        <p class="site-footer__full-name-en">{{ content.siteName.enFull }}</p>
+        <p class="site-footer__org-code">机构代码:{{ content.contact.orgCode }}</p>
+      </div>
+
+      <ul class="site-footer__contact">
+        <li><span class="site-footer__label">地址</span>{{ content.contact.address }}</li>
+        <li>
+          <span class="site-footer__label">电话</span>
+          <a class="site-footer__link" [href]="'tel:' + content.contact.tel">{{ content.contact.tel }}</a>
+        </li>
+        <li>
+          <span class="site-footer__label">邮箱</span>
+          <a class="site-footer__link" [href]="'mailto:' + content.contact.email">{{ content.contact.email }}</a>
+        </li>
+      </ul>
+
+      <figure class="site-footer__qr">
+        <img src="images/wechat-qr.png" alt="微信咨询二维码" width="88" height="88" />
+        <figcaption>微信咨询</figcaption>
+      </figure>
+    </div>
+
     <p class="site-footer__note">{{ content.placeholders.footerNote }}</p>
   </div>
 </footer>

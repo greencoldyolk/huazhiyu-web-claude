@@ -1,0 +1,68 @@
+<!-- 生物医药领域抽象组件:3D 等距鼓面胶囊(纯 SVG + CSS 3D)。结构自外向内:
+     iso-scene(透视) → iso-float(7s 浮动) → iso-plane(姿态 rotate/rotateX)
+     → 虚线参考环(独立倾角+反向慢转) / cap-spin(28s 整体旋转:随转长圆投影
+     + 24 层收缩轮廓叠出的鼓面 + 冠面 + 巡行金点升降层)。 -->
+<div class="biomedical-visual" aria-hidden="true">
+  <div class="iso-scene">
+    <div class="iso-float">
+      <div class="iso-plane">
+        <div class="dash-tilt">
+          <svg class="dash-ring" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <circle r="165" fill="none" stroke="rgba(66, 92, 148, 0.38)" stroke-width="1" stroke-dasharray="2.5 9" />
+            <circle cx="165" cy="0" r="3" fill="rgba(66, 92, 148, 0.5)" />
+            <circle cx="-116.7" cy="-116.7" r="2.4" fill="rgba(66, 92, 148, 0.5)" />
+          </svg>
+        </div>
+
+        <div class="cap-spin">
+          <div class="cap-shadow"></div>
+
+          @for (layer of capsuleLayers; track layer.z) {
+            <svg
+              viewBox="-170 -170 340 340"
+              role="presentation"
+              focusable="false"
+              [style.transform]="'translateZ(' + layer.z + 'px)'"
+            >
+              <path [attr.d]="layer.d" [attr.fill]="layer.fill" [attr.stroke]="layer.fill" stroke-width="5" stroke-linejoin="round" />
+            </svg>
+          }
+
+          <!-- 冠面(z42,r33):高光 + 长轴光泽条 + 端部高光点 + 右半淡染 + 接缝套壳带 + 金色内嵌环 -->
+          <svg class="cap-face" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <defs>
+              <radialGradient id="hzyCapSheen" cx="36%" cy="30%" r="80%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.92" />
+                <stop offset="60%" stop-color="#f2f4f9" stop-opacity="0.2" />
+                <stop offset="100%" stop-color="#f2f4f9" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="hzyCapStripe" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85" />
+                <stop offset="70%" stop-color="#ffffff" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <path [attr.d]="crownPath" fill="#f2f4f9" stroke="#f2f4f9" stroke-width="4" stroke-linejoin="round" />
+            <path [attr.d]="crownTintPath" fill="rgba(174, 185, 204, 0.26)" />
+            <path d="M 4 -30 V 30" stroke="rgba(140, 155, 185, 0.14)" stroke-width="6" stroke-linecap="round" />
+            <path [attr.d]="crownPath" fill="url(#hzyCapSheen)" />
+            <ellipse cx="-30" cy="-11" rx="64" ry="11" fill="url(#hzyCapStripe)" />
+            <ellipse cx="-82" cy="-13" rx="12" ry="7" fill="#ffffff" opacity="0.5" />
+            <path d="M -2 -28 V 28 M 2 -28 V 28" fill="none" stroke="#dde3ee" stroke-width="1.4" stroke-linecap="round" />
+            <path class="gold-ring" [attr.d]="goldRingPath" fill="none" stroke-width="1.5" stroke-linejoin="round" />
+          </svg>
+
+          <!-- 金点:沿冠面内嵌环巡行(升降层静态定高,offset-path 驱动) -->
+          <div class="cap-lift">
+            <svg viewBox="-170 -170 340 340" role="presentation" focusable="false">
+              <g class="cap-dot">
+                <circle class="cap-dot-halo" r="8" />
+                <circle class="cap-dot-core" r="3.5" />
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

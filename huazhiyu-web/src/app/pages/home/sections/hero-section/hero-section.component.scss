@@ -29,12 +29,13 @@
     }
   }
 
+  // 注册全称:比常规眉行大一号,但用较轻字重与较缓字距让位于主标题
   &__eyebrow {
     margin-bottom: 20px;
-    color: #0f2558;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 0.02em;
+    color: #1d3260;
+    font-size: clamp(16px, 1.55vw, 20px);
+    font-weight: 600;
+    letter-spacing: 0.06em;
   }
 
   &__title {

@@ -1,0 +1,146 @@
+<!-- 电学领域抽象组件:3D 等距芯片基板(纯 SVG + CSS 3D)。结构自外向内:
+     iso-scene(透视) → iso-float(7s 浮动) → iso-plane(姿态 rotate/rotateX)
+     → 投影 / 虚线参考环(独立倾角+反向慢转) / chip-stack(16 层基板 + 蚀刻顶面
+     + 裸片A + 元件B + 编码盘 6 层) / 编码盘顶面(28s 旋转) / 金点(20s 沿密封环巡行) -->
+<div class="electrical-visual" aria-hidden="true">
+  <div class="iso-scene">
+    <div class="iso-float">
+      <div class="iso-plane">
+        <div class="iso-shadow"></div>
+
+        <div class="dash-tilt">
+          <svg class="dash-ring" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <circle r="165" fill="none" stroke="rgba(66, 92, 148, 0.38)" stroke-width="1" stroke-dasharray="2.5 9" />
+            <circle cx="165" cy="0" r="3" fill="rgba(66, 92, 148, 0.5)" />
+            <circle cx="-116.7" cy="-116.7" r="2.4" fill="rgba(66, 92, 148, 0.5)" />
+          </svg>
+        </div>
+
+        <div class="chip-stack">
+          @for (layer of plateLayers; track layer.z) {
+            <svg
+              viewBox="-170 -170 340 340"
+              role="presentation"
+              focusable="false"
+              [style.transform]="'translateZ(' + layer.z + 'px)'"
+            >
+              <path [attr.d]="platePath" [attr.fill]="layer.fill" [attr.stroke]="layer.fill" stroke-width="5" stroke-linejoin="round" />
+            </svg>
+          }
+
+          <!-- 基板顶面(z24):金色密封环 + 蚀刻走线/焊盘/过孔/通信弧/丝印框 -->
+          <svg class="plate-face" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <defs>
+              <radialGradient id="hzyChipSheen" cx="38%" cy="30%" r="80%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+                <stop offset="60%" stop-color="#f2f4f9" stop-opacity="0.2" />
+                <stop offset="100%" stop-color="#f2f4f9" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <path [attr.d]="platePath" fill="#f2f4f9" stroke="#f2f4f9" stroke-width="5" stroke-linejoin="round" />
+            <rect x="-98" y="-98" width="196" height="196" rx="20" fill="url(#hzyChipSheen)" />
+            <rect class="seal-ring" x="-92" y="-92" width="184" height="184" rx="16" fill="none" stroke-width="1.4" />
+            <circle r="48" fill="none" stroke="#e2e7ef" stroke-width="1" />
+            <g stroke="#ccd3e0" stroke-width="1.6" fill="none" stroke-linecap="round">
+              <path d="M 42 0 H 74" />
+              <path d="M -42 0 H -74" />
+              <path d="M -56 -35 V -20 H -72" />
+              <path d="M 58 51 V 66 H 38" />
+              <path d="M -37 -54 H -14 V -45" />
+              <path d="M -74 20 H -58 V 34" />
+            </g>
+            <rect x="-72" y="50" width="26" height="12" rx="2" fill="none" stroke="#dde3ee" stroke-width="1.2" />
+            <g fill="#c3ccdc">
+              <rect x="-84" y="-24" width="9" height="9" rx="1.5" />
+              <rect x="-84" y="-4.5" width="9" height="9" rx="1.5" />
+              <rect x="-84" y="15" width="9" height="9" rx="1.5" />
+              <rect x="75" y="-4.5" width="9" height="9" rx="1.5" />
+            </g>
+            <g fill="#b6c0d2">
+              <circle cx="-56" cy="-20" r="2.5" />
+              <circle cx="38" cy="66" r="2.5" />
+              <circle cx="-14" cy="-45" r="2.5" />
+              <circle cx="-58" cy="34" r="2.5" />
+            </g>
+            <g stroke="#b9c3d6" fill="none" stroke-width="1.4" stroke-linecap="round">
+              <path d="M 64 -76 A 12 12 0 0 0 76 -64" opacity="0.85" />
+              <path d="M 57 -76 A 19 19 0 0 0 76 -57" opacity="0.55" />
+              <path d="M 50 -76 A 26 26 0 0 0 76 -50" opacity="0.3" />
+            </g>
+          </svg>
+
+          @for (layer of dieALayers; track layer.z) {
+            <svg
+              viewBox="-170 -170 340 340"
+              role="presentation"
+              focusable="false"
+              [style.transform]="'translateZ(' + layer.z + 'px)'"
+            >
+              <rect x="-75" y="-73" width="38" height="38" rx="5" [attr.fill]="layer.fill" />
+            </svg>
+          }
+
+          <!-- 裸片 A 顶面(z34):pin-1 标记 + 蚀刻纹 -->
+          <svg class="die-a-top" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <rect x="-75" y="-73" width="38" height="38" rx="5" fill="#f5f7fb" />
+            <rect x="-75" y="-73" width="38" height="38" rx="5" fill="none" stroke="#dde3ee" stroke-width="1" />
+            <circle cx="-69" cy="-67" r="2" fill="#a7b0c2" />
+            <path d="M -66 -47 H -46 M -66 -41 H -52" stroke="#dde3ee" stroke-width="1.4" stroke-linecap="round" fill="none" />
+          </svg>
+
+          @for (layer of dieBLayers; track layer.z) {
+            <svg
+              viewBox="-170 -170 340 340"
+              role="presentation"
+              focusable="false"
+              [style.transform]="'translateZ(' + layer.z + 'px)'"
+            >
+              <rect x="42" y="30" width="32" height="20" rx="4" [attr.fill]="layer.fill" />
+            </svg>
+          }
+
+          <!-- 元件 B 顶面(z32) -->
+          <svg class="die-b-top" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <rect x="42" y="30" width="32" height="20" rx="4" fill="#f5f7fb" />
+            <rect x="42" y="30" width="32" height="20" rx="4" fill="none" stroke="#dde3ee" stroke-width="1" />
+            <path d="M 49 40 H 67" stroke="#dde3ee" stroke-width="1.4" stroke-linecap="round" />
+          </svg>
+
+          @for (layer of encoderLayers; track layer.z) {
+            <svg
+              viewBox="-170 -170 340 340"
+              role="presentation"
+              focusable="false"
+              [style.transform]="'translateZ(' + layer.z + 'px)'"
+            >
+              <circle r="40" [attr.fill]="layer.fill" />
+            </svg>
+          }
+        </div>
+
+        <!-- 编码盘顶面(z38):双圈断续刻度 + 索引缺口,28s 慢转(族语法主体旋转) -->
+        <div class="encoder-lift">
+          <svg class="encoder-face" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <circle r="40" fill="#f5f7fb" />
+            <circle r="40" fill="none" stroke="#dde3ee" stroke-width="1" />
+            <circle r="34" fill="none" stroke="#e2e7ef" stroke-width="1" />
+            <circle r="29" fill="none" stroke="#b9c3d6" stroke-width="5" stroke-dasharray="9.5 5.7" />
+            <circle r="19" fill="none" stroke="#a9b3c7" stroke-width="4" stroke-dasharray="5.4 4.5" />
+            <path d="M 33 0 H 39" stroke="#98a2b6" stroke-width="2" stroke-linecap="round" />
+            <circle r="5" fill="#98a2b6" />
+          </svg>
+        </div>
+
+        <!-- 金点:沿密封环巡行(offset-path,20s;不支持时静止于起点) -->
+        <div class="seal-lift">
+          <svg viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <g class="seal-dot">
+              <circle class="seal-dot-halo" r="8" />
+              <circle class="seal-dot-core" r="3.5" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

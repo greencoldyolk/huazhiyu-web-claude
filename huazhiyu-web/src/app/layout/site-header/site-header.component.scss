@@ -34,16 +34,32 @@
   &__logo {
     display: inline-flex;
     align-items: center;
+    gap: 13px;
     flex-shrink: 0;
+    text-decoration: none;
   }
 
-  // 现有 logo(assets/reference/current-logo.png,394×80)
-  &__logo-img {
-    height: 50px;
+  // 注册商标图形(public/hzy-mark.png,55×61;原形状,颜色已并入站内 token)
+  &__logo-mark {
+    height: 40px;
     width: auto;
 
     @include bp.down(xs) {
-      height: 40px;
+      height: 34px;
+    }
+  }
+
+  // 头部只留三字简称;注册全称见 footer 与链接 aria-label
+  &__logo-name {
+    color: var(--ink-950);
+    font-size: 1.375rem;
+    font-weight: 650;
+    letter-spacing: 0.3em;
+    margin-inline-end: -0.3em; // 抵消末字后的字距
+    line-height: 1;
+
+    @include bp.down(xs) {
+      font-size: 1.125rem;
     }
   }
 

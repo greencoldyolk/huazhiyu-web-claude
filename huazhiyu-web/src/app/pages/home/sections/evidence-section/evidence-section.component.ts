@@ -4,10 +4,8 @@ import { SITE_CONTENT } from '../../../../content/site-content.config';
 import { RevealDirective } from '../../../../shared/directives/reveal.directive';
 
 /**
- * 04 专业依据 — Phase 2 静态版(docs/design/05)。
- * 全宽深色墨蓝段 + 三列事实。事实值一律占位文字,
- * 不发明数据。噪点/网格材质与弧线属于 Phase 4,
- * 一次性 stagger reveal 属于 Phase 3。
+ * 04 专业依据 — 一体化证据面板。
+ * 使用经批准的数据文案、可见来源说明和现有的一次性 reveal 指令。
  */
 @Component({
   selector: 'hzy-evidence-section',

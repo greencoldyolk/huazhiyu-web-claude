@@ -1,123 +1,324 @@
-@use "breakpoints" as bp;
-
-// 04 专业依据 — 深墨蓝段,纵向节奏 88–104px(docs/design/03)。
-// Phase 4 材质:极细噪点 + 坐标网格线 + 角部弧线(端点哑光琥珀)。
+// 04 专业依据 — 一体化灰绿证据面板,数据优先且不模拟可点击卡片。
 .evidence {
+  --evidence-green: #245f50;
+  --evidence-green-strong: #184c40;
+  --evidence-ink: #17242b;
+  --evidence-blue: #1f436f;
+  --evidence-body: #5f6d69;
+  --evidence-muted: #78847f;
+  --evidence-line: rgb(36 95 80 / 0.16);
+
   position: relative;
   isolation: isolate;
-  overflow: hidden;
-  background: linear-gradient(170deg, var(--brand-indigo-950), var(--ink-950) 72%);
-  color: var(--text-on-dark);
-  padding-block: clamp(2.5rem, 4.5vw, 3.75rem); // 留白减半(业主要求)
+  overflow: clip;
+  padding-block: clamp(64px, 6vw, 80px);
+  background-color: #f5faf7;
+  background-image:
+    linear-gradient(90deg, rgb(255 255 255 / 0.42), rgb(239 249 244 / 0.08)),
+    url("/images/evidence-section-bg.png");
+  background-repeat: no-repeat;
+  background-position: 58% center;
+  background-size: cover;
 
-  // 材质层:噪点(SVG feTurbulence)+ 坐标线,均为极低对比
-  &::before {
+  // 上下渐隐带:顶部融入 03 段的白、底部融出成 05 段的暖米,
+  // 消除背景图与邻段之间的硬切线
+  &::before,
+  &::after {
     content: "";
     position: absolute;
-    inset: 0;
-    z-index: -1;
-    background:
-      repeating-linear-gradient(0deg, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 96px),
-      repeating-linear-gradient(90deg, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 96px),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-  }
-
-  // 角部大弧线(一次性静态图形,无动画)
-  &__arc {
-    position: absolute;
-    right: -4%;
-    bottom: -6%;
-    width: min(62%, 760px);
-    height: auto;
-    z-index: -1;
+    left: 0;
+    right: 0;
+    height: clamp(64px, 9vw, 140px);
     pointer-events: none;
+    z-index: 0;
   }
 
-  // mock 布局:标题块左栏,事实列右移
+  &::before {
+    top: 0;
+    background: linear-gradient(180deg, var(--surface-white) 0%, rgb(255 255 255 / 0.6) 45%, transparent 100%);
+  }
+
+  &::after {
+    bottom: 0;
+    background: linear-gradient(0deg, #f8f4ed 0%, rgb(248 244 237 / 0.6) 45%, transparent 100%);
+  }
+
+  > .site-container {
+    position: relative;
+    z-index: 1;
+  }
+
   &__layout {
     display: grid;
-    gap: var(--space-4);
-    align-items: center;
-
-    @include bp.up(md) {
-      grid-template-columns: minmax(150px, 2fr) 10fr;
-      gap: var(--space-5);
-    }
-  }
-
-  &__head {
-    gap: var(--space-1);
-
-    @include bp.up(md) {
-      margin-bottom: 0;
-    }
-
-    .section-number {
-      font-size: 2.5rem;
-    }
-
-    h2 {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .evidence__intro {
-      font-size: var(--font-size-small);
-    }
-  }
-
-  &__heading {
-    color: var(--text-on-dark);
+    grid-template-columns: minmax(250px, 0.72fr) minmax(0, 1.55fr);
+    gap: clamp(3rem, 6vw, 5rem);
+    margin: 0;
+    padding: 0;
   }
 
   &__intro {
-    color: var(--text-on-dark-muted);
+    align-self: start;
+    max-width: 24rem;
   }
 
-  &__facts {
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: var(--space-2);
+  }
+
+  &__section-index,
+  &__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.12em;
+  }
+
+  &__section-index { color: rgb(36 95 80 / 0.46); }
+
+  &__eyebrow { color: var(--evidence-green); }
+
+  h2 {
+    color: var(--evidence-ink);
+    font-size: clamp(2rem, 3.2vw, 3rem);
+    line-height: 1.14;
+    letter-spacing: -0.035em;
+  }
+
+  &__lead {
+    max-width: 12em;
+    margin-top: var(--space-3);
+    color: var(--evidence-ink);
+    font-size: clamp(1.25rem, 1.8vw, 1.7rem);
+    font-weight: 650;
+    line-height: 1.48;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  &__summary {
+    max-width: 29em;
+    margin-top: var(--space-2);
+    color: var(--evidence-body);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  &__content { min-width: 0; }
+
+  &__metrics {
+    list-style: none;
     display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     margin: 0;
-
-    // 移动:纵向堆叠 + 水平分隔(docs/design/07)
-    grid-template-columns: 1fr;
-
-    @include bp.up(sm) {
-      // 桌面:三列 + 垂直分隔
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-4);
-    }
+    padding: 0;
   }
 
-  &__fact {
+  &__metric {
+    min-width: 0;
+    padding-inline: clamp(1rem, 1.5vw, 1.5rem);
+
+    &:first-child { padding-inline-start: 0; }
+
+    &:last-child { padding-inline-end: 0; }
+
+    & + & { border-inline-start: 1px solid var(--evidence-line); }
+  }
+
+  &__metric-index {
+    display: block;
+    margin-bottom: 1rem;
+    color: rgb(36 95 80 / 0.46);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  &__metric-label {
+    min-height: 2.9em;
+    color: var(--evidence-muted);
+    font-size: 0.8125rem;
+    font-weight: 650;
+    line-height: 1.45;
+    letter-spacing: 0.015em;
+  }
+
+  &__value-group {
     display: grid;
-    gap: var(--space-1);
-    padding-block: var(--space-3);
-    border-top: 1px solid rgb(255 255 255 / 0.16);
+    align-content: start;
+    gap: 0.5rem;
+    margin-top: var(--space-3);
+  }
 
-    @include bp.up(sm) {
-      padding-block: 0;
-      padding-inline: var(--space-3);
-      border-top: 0;
-      border-left: 1px solid rgb(255 255 255 / 0.16);
+  &__metric-primary,
+  &__metric-secondary {
+    margin: 0;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
 
-      &:first-child {
-        padding-inline-start: 0;
-        border-left: 0;
+  &__metric-primary {
+    color: var(--evidence-green-strong);
+    font-size: clamp(1.75rem, 2.25vw, 2.35rem);
+    font-weight: 760;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+
+  &__metric-secondary {
+    color: var(--evidence-blue);
+    font-size: clamp(1.1rem, 1.55vw, 1.4rem);
+    font-weight: 680;
+    line-height: 1.35;
+  }
+
+  &__metric-description {
+    margin-top: var(--space-3);
+    color: var(--evidence-body);
+    font-size: 0.9375rem;
+    line-height: 1.72;
+  }
+
+  &__metric-metadata {
+    margin-top: var(--space-2);
+    color: var(--evidence-muted);
+    font-size: 0.8125rem;
+    line-height: 1.65;
+  }
+
+  &__source {
+    margin-top: var(--space-4);
+    padding-top: var(--space-2);
+    border-top: 1px solid rgb(36 95 80 / 0.1);
+    color: rgb(95 109 105 / 0.88);
+    font-size: 0.75rem;
+    line-height: 1.65;
+    text-align: end;
+  }
+
+  // ---- 资质荣誉徽带:文字徽章,克制蚀刻感 ----
+  &__honors {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+  }
+
+  &__honor {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    padding: 0.5rem 0.9375rem 0.5rem 0.5rem;
+    border: 1px solid var(--evidence-line);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.55);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  &__honor-scope {
+    flex-shrink: 0;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: rgb(36 95 80 / 0.08);
+    color: rgb(36 95 80 / 0.85);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  &__honor-title {
+    color: var(--evidence-ink);
+    font-weight: 600;
+  }
+
+  &__honor-issuer {
+    color: var(--evidence-muted);
+    font-size: 0.75rem;
+  }
+
+  // 内容驱动断点:三列数据低于此宽度会产生不自然的中文折行。
+  @media (max-width: 1199.98px) {
+    background-position: 62% center;
+
+    &__layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-5);
+    }
+
+    &__intro { max-width: 40rem; }
+
+    &__lead { max-width: 18em; }
+
+    &__metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    &__metric:first-child {
+      grid-column: 1 / -1;
+      margin-bottom: var(--space-4);
+      padding: 0 0 var(--space-4);
+      border-bottom: 1px solid var(--evidence-line);
+
+      .evidence__value-group {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 32rem;
       }
     }
+
+    &__metric:nth-child(2) { padding-inline-start: 0; }
+
+    &__source { text-align: start; }
   }
 
-  // dt 在 DOM 中先于 dd(语义:说明→值),视觉上值在上方
-  &__fact-value {
-    order: -1;
-    margin: 0;
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
-    font-weight: 700;
-    line-height: 1.15;
+  @media (max-width: 679.98px) {
+    padding-block: clamp(56px, 15vw, 72px);
+    background-image:
+      linear-gradient(90deg, rgb(255 255 255 / 0.58), rgb(239 249 244 / 0.2)),
+      url("/images/evidence-section-bg.png");
+    background-position: 68% center;
+
+    &__layout {
+      gap: var(--space-5);
+    }
+
+    &__metrics { display: block; }
+
+    &__metric,
+    &__metric:first-child,
+    &__metric:nth-child(2),
+    &__metric:last-child {
+      display: block;
+      margin: 0;
+      padding: 0;
+      border: 0;
+
+      .evidence__value-group {
+        grid-template-columns: minmax(0, 1fr);
+        max-width: none;
+      }
+    }
+
+    &__metric + &__metric {
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--evidence-line);
+      border-inline-start: 0;
+    }
+
+    &__metric-label { min-height: 0; }
+
+    &__source {
+      margin-top: var(--space-4);
+      text-align: start;
+    }
   }
 
-  &__fact-label {
-    color: var(--text-on-dark-muted);
-    font-size: var(--font-size-small);
+  @media (prefers-reduced-motion: reduce) {
+    &__layout,
+    &__metric {
+      transform: none;
+    }
   }
 }

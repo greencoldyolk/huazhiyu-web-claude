@@ -1,0 +1,173 @@
+@use "breakpoints" as bp;
+
+// 化学抽象组件 — 3D 等距六边晶格片(R142 放大版)。
+// 与族内组件共享:外层管姿态(rotate(-20deg) rotateX(38deg) + preserve-3d),
+// 厚度由层叠 translateZ 拓出;主体旋转 = 整板 28s(分子旋转),
+// 电子沿苯环 offset-path 巡行(20s,在旋转坐标系内),整体 7s 浮动。
+:host {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.chemical-visual {
+  --tiltX: 38deg;
+  --lean: -20deg;
+
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  // 视觉中心略偏右、略偏下(与族内其他组件一致)
+  translate: 3% 2.5%;
+}
+
+.iso-scene {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  perspective: 1700px;
+}
+
+.iso-float {
+  width: min(72%, 450px);
+  aspect-ratio: 1;
+  transform-style: preserve-3d;
+  animation: hzy-chem-float 7s ease-in-out infinite;
+
+  @media (min-width: 900px) and (max-width: 1199.98px) {
+    width: min(78%, 390px);
+  }
+
+  @include bp.down(sm) {
+    width: min(72vw, 300px);
+    animation: none; // 手机端关闭整体浮动,仅保留慢速旋转
+  }
+}
+
+.iso-plane {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotate(var(--lean)) rotateX(var(--tiltX));
+
+  > * {
+    position: absolute;
+    inset: 0;
+  }
+}
+
+// 投影:六边形近圆,沿用族内圆形软影
+.iso-shadow {
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(20 35 70 / 0.34), rgb(20 35 70 / 0) 72%);
+  filter: blur(9px);
+  transform: translateZ(-22px) translate(6px, 14px) scale(0.94);
+}
+
+// 虚线参考环:轻微独立倾角 + 反向慢转(族不变量)
+.dash-tilt {
+  transform: translateZ(4px) rotateX(20deg);
+  transform-style: preserve-3d;
+}
+
+.dash-ring {
+  position: absolute;
+  inset: 0;
+  animation: hzy-chem-spin-rev 90s linear infinite;
+}
+
+// 整板旋转:板层/晶格/苯环/晶粒/电子同一坐标系
+.lattice-spin {
+  transform-style: preserve-3d;
+  animation: hzy-chem-spin 28s linear infinite;
+
+  > svg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .plate-face {
+    transform: translateZ(24px);
+  }
+
+  .prism-top {
+    transform: translateZ(38px);
+  }
+
+  .crystal-top {
+    transform: translateZ(32px);
+  }
+}
+
+// 金色苯环与电子:与 tab 下划线、编号同源的品牌金
+.bond-ring {
+  stroke: var(--amber-line, #d6a14a);
+}
+
+.cell-lift {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(25.5px);
+
+  svg {
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.electron {
+  offset-path: path("M 108 0 L 54 93.5 L -54 93.5 L -108 0 L -54 -93.5 L 54 -93.5 Z");
+  offset-rotate: 0deg;
+  animation: hzy-chem-patrol 20s linear infinite;
+}
+
+.electron-halo {
+  fill: rgb(214 161 74 / 0.22);
+}
+
+.electron-core {
+  fill: var(--amber-line, #d6a14a);
+}
+
+@keyframes hzy-chem-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hzy-chem-spin-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes hzy-chem-patrol {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes hzy-chem-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iso-float,
+  .dash-ring,
+  .lattice-spin,
+  .electron {
+    animation: none !important;
+  }
+}

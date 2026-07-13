@@ -1,0 +1,110 @@
+<!-- 化学领域抽象组件:3D 等距六边晶格片(纯 SVG + CSS 3D)。结构自外向内:
+     iso-scene(透视) → iso-float(7s 浮动) → iso-plane(姿态 rotate/rotateX)
+     → 投影 / 虚线参考环(独立倾角+反向慢转) / lattice-spin(28s 整板旋转:
+     16 层六边板 + 蚀刻晶格顶面 + 中央六棱柱 + 两枚小晶粒 + 电子巡行层)。
+     金环与电子同处旋转坐标系,分子转、电子沿键巡行,几何自洽。 -->
+<div class="chemical-visual" aria-hidden="true">
+  <div class="iso-scene">
+    <div class="iso-float">
+      <div class="iso-plane">
+        <div class="iso-shadow"></div>
+
+        <div class="dash-tilt">
+          <svg class="dash-ring" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <circle r="165" fill="none" stroke="rgba(66, 92, 148, 0.38)" stroke-width="1" stroke-dasharray="2.5 9" />
+            <circle cx="165" cy="0" r="3" fill="rgba(66, 92, 148, 0.5)" />
+            <circle cx="-116.7" cy="-116.7" r="2.4" fill="rgba(66, 92, 148, 0.5)" />
+          </svg>
+        </div>
+
+        <div class="lattice-spin">
+          @for (layer of plateLayers; track layer.z) {
+            <svg
+              viewBox="-170 -170 340 340"
+              role="presentation"
+              focusable="false"
+              [style.transform]="'translateZ(' + layer.z + 'px)'"
+            >
+              <path [attr.d]="platePath" [attr.fill]="layer.fill" [attr.stroke]="layer.fill" stroke-width="5" stroke-linejoin="round" />
+            </svg>
+          }
+
+          <!-- 板顶面(z24):蜂窝晶格蚀刻 + 金色苯环 + 顶点原子节点 -->
+          <svg class="plate-face" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <defs>
+              <radialGradient id="hzyHexSheen" cx="38%" cy="30%" r="80%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+                <stop offset="60%" stop-color="#f2f4f9" stop-opacity="0.2" />
+                <stop offset="100%" stop-color="#f2f4f9" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <path [attr.d]="platePath" fill="#f2f4f9" stroke="#f2f4f9" stroke-width="5" stroke-linejoin="round" />
+            <path [attr.d]="bondPath" fill="url(#hzyHexSheen)" />
+            <path [attr.d]="latticePath" fill="none" stroke="#dbe1ec" stroke-width="1.3" stroke-linejoin="round" />
+            <path [attr.d]="framePath" fill="none" stroke="#e2e7ef" stroke-width="1" />
+            <path class="bond-ring" [attr.d]="bondPath" fill="none" stroke-width="1.5" stroke-linejoin="round" />
+            <g fill="#b6c0d2">
+              <circle cx="108" cy="0" r="2.8" />
+              <circle cx="54" cy="93.5" r="2.8" />
+              <circle cx="-54" cy="93.5" r="2.8" />
+              <circle cx="-108" cy="0" r="2.8" />
+              <circle cx="-54" cy="-93.5" r="2.8" />
+              <circle cx="54" cy="-93.5" r="2.8" />
+            </g>
+          </svg>
+
+          @for (layer of prismLayers; track layer.z) {
+            <svg
+              viewBox="-170 -170 340 340"
+              role="presentation"
+              focusable="false"
+              [style.transform]="'translateZ(' + layer.z + 'px)'"
+            >
+              <path [attr.d]="prismPath" [attr.fill]="layer.fill" [attr.stroke]="layer.fill" stroke-width="3" stroke-linejoin="round" />
+            </svg>
+          }
+
+          <!-- 中央结晶顶面(z38):内衬六边 + 凹陷六边轴孔 -->
+          <svg class="prism-top" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <path [attr.d]="prismPath" fill="#f5f7fb" stroke="#f5f7fb" stroke-width="3" stroke-linejoin="round" />
+            <path [attr.d]="prismPath" fill="none" stroke="#dde3ee" stroke-width="1" />
+            <path [attr.d]="prismInnerPath" fill="none" stroke="#e2e7ef" stroke-width="1" />
+            <path [attr.d]="boreOuterPath" fill="#a7b0c2" />
+            <path [attr.d]="boreInnerPath" fill="#c2cad9" transform="translate(0 1.2)" />
+          </svg>
+
+          @for (c of smallCrystals; track c.x) {
+            @for (layer of crystalLayers; track layer.z) {
+              <svg
+                viewBox="-170 -170 340 340"
+                role="presentation"
+                focusable="false"
+                [style.transform]="'translateZ(' + layer.z + 'px)'"
+              >
+                <g [attr.transform]="'translate(' + c.x + ' ' + c.y + ')'">
+                  <path [attr.d]="smallPath" [attr.fill]="layer.fill" [attr.stroke]="layer.fill" stroke-width="2.5" stroke-linejoin="round" />
+                </g>
+              </svg>
+            }
+            <svg class="crystal-top" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+              <g [attr.transform]="'translate(' + c.x + ' ' + c.y + ')'">
+                <path [attr.d]="smallPath" fill="#f5f7fb" stroke="#f5f7fb" stroke-width="2.5" stroke-linejoin="round" />
+                <path [attr.d]="smallPath" fill="none" stroke="#dde3ee" stroke-width="1" />
+              </g>
+            </svg>
+          }
+
+          <!-- 电子(金点):沿苯环巡行,与板同处旋转坐标系(z25.5) -->
+          <div class="cell-lift">
+            <svg viewBox="-170 -170 340 340" role="presentation" focusable="false">
+              <g class="electron">
+                <circle class="electron-halo" r="8" />
+                <circle class="electron-core" r="3.5" />
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

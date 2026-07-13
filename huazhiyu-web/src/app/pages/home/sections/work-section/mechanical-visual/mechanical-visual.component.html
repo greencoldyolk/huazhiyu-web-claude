@@ -1,0 +1,93 @@
+<!-- 机械领域抽象组件:3D 等距齿轮(纯 SVG + CSS 3D)。结构自外向内:
+     iso-scene(透视) → iso-float(7s 浮动) → iso-plane(姿态 rotate/rotateX)
+     → 投影阴影 / 虚线参考环(独立倾角+反向慢转) / gear-spin(28s 自转:16 层轮体
+     + 齿面 + 6 层轮毂 + 轮毂顶面) / 金点(20s 独立巡行,悬于齿面金环上方 1.5px) -->
+<div class="mechanical-visual" aria-hidden="true">
+  <div class="iso-scene">
+    <div class="iso-float">
+      <div class="iso-plane">
+        <div class="iso-shadow"></div>
+
+        <div class="dash-tilt">
+          <svg class="dash-ring" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <circle r="165" fill="none" stroke="rgba(66, 92, 148, 0.38)" stroke-width="1" stroke-dasharray="2.5 9" />
+            <circle cx="165" cy="0" r="3" fill="rgba(66, 92, 148, 0.5)" />
+            <circle cx="-116.7" cy="-116.7" r="2.4" fill="rgba(66, 92, 148, 0.5)" />
+          </svg>
+        </div>
+
+        <div class="gear-spin">
+          @for (layer of bodyLayers; track layer.z) {
+            <svg
+              viewBox="-170 -170 340 340"
+              role="presentation"
+              focusable="false"
+              [style.transform]="'translateZ(' + layer.z + 'px)'"
+            >
+              <path [attr.d]="gearPath" [attr.fill]="layer.fill" [attr.stroke]="layer.fill" stroke-width="5" stroke-linejoin="round" />
+            </svg>
+          }
+
+          <!-- 齿面(z24):金环 r98 + 12 根灰刻度作参照 + 弱高光 -->
+          <svg class="gear-face" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <defs>
+              <radialGradient id="hzyGearSheen" cx="38%" cy="34%" r="75%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+                <stop offset="60%" stop-color="#f2f4f9" stop-opacity="0.2" />
+                <stop offset="100%" stop-color="#f2f4f9" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <path [attr.d]="gearPath" fill="#f2f4f9" stroke="#f2f4f9" stroke-width="5" stroke-linejoin="round" />
+            <circle r="98" fill="url(#hzyGearSheen)" />
+            <circle class="gear-face-ring" r="98" fill="none" stroke-width="1.4" />
+            <g stroke="#ccd3e0" stroke-width="1.6" stroke-linecap="round">
+              <line x1="86" y1="0" x2="94" y2="0" />
+              <line x1="74.5" y1="43" x2="81.4" y2="47" />
+              <line x1="43" y1="74.5" x2="47" y2="81.4" />
+              <line x1="0" y1="86" x2="0" y2="94" />
+              <line x1="-43" y1="74.5" x2="-47" y2="81.4" />
+              <line x1="-74.5" y1="43" x2="-81.4" y2="47" />
+              <line x1="-86" y1="0" x2="-94" y2="0" />
+              <line x1="-74.5" y1="-43" x2="-81.4" y2="-47" />
+              <line x1="-43" y1="-74.5" x2="-47" y2="-81.4" />
+              <line x1="0" y1="-86" x2="0" y2="-94" />
+              <line x1="43" y1="-74.5" x2="47" y2="-81.4" />
+              <line x1="74.5" y1="-43" x2="81.4" y2="-47" />
+            </g>
+            <circle r="70" fill="none" stroke="#e2e7ef" stroke-width="1" />
+          </svg>
+
+          @for (layer of hubLayers; track layer.z) {
+            <svg
+              viewBox="-170 -170 340 340"
+              role="presentation"
+              focusable="false"
+              [style.transform]="'translateZ(' + layer.z + 'px)'"
+            >
+              <circle r="54" [attr.fill]="layer.fill" />
+            </svg>
+          }
+
+          <!-- 轮毂顶面(z38):台阶环线 + 凹陷轴孔 -->
+          <svg class="hub-top" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <circle r="54" fill="#f5f7fb" />
+            <circle r="54" fill="none" stroke="#dde3ee" stroke-width="1" />
+            <circle r="40" fill="none" stroke="#e6ebf3" stroke-width="1" />
+            <circle r="21" fill="#a7b0c2" />
+            <circle r="19" cy="-2" fill="#c2cad9" />
+            <circle r="8" fill="#98a2b6" />
+          </svg>
+        </div>
+
+        <div class="marker-lift">
+          <svg class="marker" viewBox="-170 -170 340 340" role="presentation" focusable="false">
+            <g transform="translate(98 0)">
+              <circle class="marker-halo" r="8" />
+              <circle class="marker-dot" r="3.5" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

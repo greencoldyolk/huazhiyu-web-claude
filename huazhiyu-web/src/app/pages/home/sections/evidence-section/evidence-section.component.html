@@ -1,29 +1,49 @@
-<section class="evidence" aria-labelledby="evidence-title">
-  <!-- 克制的大弧线,端点过渡到哑光琥珀(doc 05 unique visual) -->
-  <svg class="evidence__arc" viewBox="0 0 900 420" fill="none" aria-hidden="true" preserveAspectRatio="xMaxYMax meet">
-    <defs>
-      <linearGradient id="hzy-arc" x1="0" y1="1" x2="1" y2="0">
-        <stop offset="0" stop-color="rgba(255,255,255,0.05)" />
-        <stop offset="0.62" stop-color="rgba(120,150,235,0.28)" />
-        <stop offset="1" stop-color="rgba(214,161,74,0.55)" />
-      </linearGradient>
-    </defs>
-    <path d="M-40 460 A 560 560 0 0 1 880 -40" stroke="url(#hzy-arc)" stroke-width="1.5" />
-  </svg>
-  <div class="site-container evidence__layout">
-    <header class="section-head evidence__head" hzyReveal>
-      <span class="section-number section-number--on-dark" aria-hidden="true">04</span>
-      <h2 id="evidence-title" class="evidence__heading">{{ content.heading }}</h2>
-      <p class="evidence__intro">{{ content.intro }}</p>
-    </header>
-
-    <dl class="evidence__facts">
-      @for (fact of content.facts; track $index) {
-        <div class="evidence__fact" hzyReveal="stagger-item">
-          <dt class="evidence__fact-label">{{ fact.label }}</dt>
-          <dd class="evidence__fact-value">{{ fact.value }}</dd>
+<section id="evidence" class="evidence" aria-labelledby="evidence-title">
+  <div class="site-container">
+    <div class="evidence__layout">
+      <header class="evidence__intro" hzyReveal>
+        <div class="evidence__meta">
+          <span class="evidence__section-index" aria-hidden="true">04</span>
+          <p class="evidence__eyebrow">{{ content.eyebrow }}</p>
         </div>
-      }
-    </dl>
+        <h2 id="evidence-title">{{ content.heading }}</h2>
+        <p class="evidence__lead">{{ content.lead }}</p>
+        <p class="evidence__summary">{{ content.intro }}</p>
+      </header>
+
+      <div class="evidence__content">
+        <ol class="evidence__metrics" aria-label="华之喻的三项专业依据">
+          @for (metric of content.metrics; track metric.index) {
+            <li class="evidence__metric" hzyReveal="stagger-item">
+              <span class="evidence__metric-index" aria-hidden="true">{{ metric.index }}</span>
+              <p class="evidence__metric-label">{{ metric.label }}</p>
+              <div class="evidence__value-group">
+                <p class="evidence__metric-primary">{{ metric.primaryValue }}</p>
+                <p class="evidence__metric-secondary">{{ metric.secondaryValue }}</p>
+              </div>
+              <p class="evidence__metric-description">{{ metric.description }}</p>
+              @if (metric.metadata) {
+                <p class="evidence__metric-metadata">{{ metric.metadata }}</p>
+              }
+            </li>
+          }
+        </ol>
+
+        <!-- 资质荣誉徽带:文字徽章(不用具象花环素材),与数据同属"专业依据" -->
+        <ul class="evidence__honors" [attr.aria-label]="content.honorsHeading">
+          @for (honor of content.honors; track honor.title) {
+            <li class="evidence__honor" hzyReveal="stagger-item">
+              <span class="evidence__honor-scope">{{ honor.scope }}</span>
+              <span class="evidence__honor-title">{{ honor.title }}</span>
+              @if (honor.issuer) {
+                <span class="evidence__honor-issuer">{{ honor.issuer }}</span>
+              }
+            </li>
+          }
+        </ul>
+
+        <p class="evidence__source">{{ content.source }}</p>
+      </div>
+    </div>
   </div>
 </section>
